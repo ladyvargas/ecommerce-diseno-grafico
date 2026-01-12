@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto - CNC CAMPAS Pro</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --primary: #3d4d9e;
+            --primary-dark: #2d3d7e;
+            --secondary: #4a2f1a;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: white;
+            color: var(--gray-900);
+            padding-top: 80px;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.25rem 2rem;
+            z-index: 1000;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+        
+        .breadcrumb a {
+            color: var(--brown-dark);
+            text-decoration: none;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+        
+        .product-image {
+            width: 100%;
+            border-radius: 20px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .product-category {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brown-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .product-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .stars {
+            color: #fbbf24;
+            font-size: 1.2rem;
+        }
+        
+        .product-price {
+            font-size: 3rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: var(--brown-dark);
+        }
+        
+        .product-description {
+            line-height: 1.8;
+            color: var(--gray-600);
+        }
+        
+        .product-features {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--gray-700);
+        }
+        
+        .feature-item i {
+            color: var(--brown-dark);
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-outline {
+            background: white;
+            color: var(--brown-dark);
+            border: 2px solid var(--brown-dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--brown-dark);
+            color: white;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <a href="/">Inicio</a>
+            <span>/</span>
+            <a href="/#productos">Productos</a>
+            <span>/</span>
+            <span id="productBreadcrumb">Producto</span>
+        </div>
+        
+        <div class="product-grid" id="productContainer">
+            <div style="text-align: center; padding: 4rem;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 3rem; color: var(--brown-dark);"></i>
+                <p style="margin-top: 1rem; color: var(--gray-600);">Cargando producto...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        // Obtener ID desde query parameter (?id=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = parseInt(urlParams.get('id'));
+        let currentProduct = null;
+        
+        async function loadProduct() {
+            try {
+                if (!productId) {
+                    throw new Error('No se proporcionó ID de producto');
+                }
+                
+                const response = await fetch(`${API_URL}/products/${productId}`);
+                if (!response.ok) {
+                    throw new Error('Producto no encontrado');
+                }
+                
+                currentProduct = await response.json();
+                console.log('Producto cargado:', currentProduct);
+                
+                // Convertir precios
+                const price = parseFloat(currentProduct.price) || 0;
+                const salePrice = currentProduct.sale_price ? parseFloat(currentProduct.sale_price) : null;
+                const finalPrice = salePrice || price;
+                
+                document.getElementById('productBreadcrumb').textContent = currentProduct.name;
+                document.title = `${currentProduct.name} - CNC CAMPAS`;
+                
+                document.getElementById('productContainer').innerHTML = `
+                    <div>
+                        <img src="${currentProduct.image}" alt="${currentProduct.name}" class="product-image">
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">${currentProduct.category || 'Servicios'}</div>
+                        <h1 class="product-title">${currentProduct.name}</h1>
+                        
+                        <div class="product-rating">
+                            <span class="stars">${'★'.repeat(Math.floor(currentProduct.rating || 5))}${'☆'.repeat(5 - Math.floor(currentProduct.rating || 5))}</span>
+                            <span style="color: var(--gray-600);">(${currentProduct.downloads || 0} descargas)</span>
+                        </div>
+                        
+                        <div class="product-price">$${finalPrice.toFixed(2)}</div>
+                        
+                        <p class="product-description">${currentProduct.description}</p>
+                        
+                        <div class="product-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Licencia comercial incluida</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Archivos editables: ${currentProduct.file_format || 'Personalizado'}</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Actualizaciones gratuitas</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Soporte premium 24/7</span>
+                            </div>
+                        </div>
+                        
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="addToCart()">
+                                <i class="fas fa-shopping-cart"></i>
+                                Agregar al Carrito
+                            </button>
+                            <button class="btn btn-outline" onclick="window.location.href='/pages/productos.html'">
+                                <i class="fas fa-arrow-left"></i>
+                                Volver
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('productContainer').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444;"></i>
+                        <p style="margin-top: 1rem;">Error al cargar el producto</p>
+                        <button class="btn btn-primary" onclick="window.location.href='/'" style="margin-top: 2rem;">
+                            Volver al inicio
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function addToCart() {
+            if (!currentProduct) {
+                showToast('❌ Error: Producto no cargado', 'error');
+                return;
+            }
+            
+            // Obtener carrito
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Validar stock
+            if (currentProduct.stock === 0) {
+                showToast('❌ Producto sin stock disponible', 'error');
+                return;
+            }
+            
+            if (currentProduct.active === false) {
+                showToast('❌ Producto no disponible', 'error');
+                return;
+            }
+            
+            // Buscar si ya está en el carrito (usar productId consistentemente)
+            const existingItem = cart.find(item => item.productId === currentProduct.id);
+            
+            if (existingItem) {
+                if (existingItem.quantity >= currentProduct.stock) {
+                    showToast(`⚠️ Stock máximo alcanzado (${currentProduct.stock} disponibles)`, 'warning');
+                    return;
+                }
+                existingItem.quantity++;
+                showToast('Cantidad actualizada: ' + currentProduct.name, 'success');
+            } else {
+                cart.push({
+                    productId: currentProduct.id,  // Usar productId
+                    quantity: 1
+                });
+                showToast(currentProduct.name + ' agregado al carrito', 'success');
+            }
+            
+            // Guardar carrito
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Actualizar badge si existe
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.textContent = totalItems;
+                badge.style.display = 'flex';
+            }
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                min-width: 300px;
+                animation: slideInRight 0.3s ease-out;
+                border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#4a2f1a'};
+            `;
+            
+            const icons = {
+                success: '✓',
+                error: '✕',
+                info: 'ℹ',
+                warning: '⚠'
+            };
+            
+            toast.innerHTML = `
+                <div style="
+                    width: 36px;
+                    height: 36px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    background: ${type === 'success' ? '#d1fae5' : type === 'error' ? '#fee2e2' : type === 'warning' ? '#fef3c7' : '#dbeafe'};
+                    color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#4a2f1a'};
+                ">${icons[type] || icons.info}</div>
+                <div style="flex: 1; color: #1e293b; font-weight: 500;">${message}</div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Agregar animaciones si no existen
+            if (!document.getElementById('toastAnimations')) {
+                const style = document.createElement('style');
+                style.id = 'toastAnimations';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        loadProduct();
+    </script>
+    
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+</body>
+</html>

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - CNC CAMPAS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #4a2f1a;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            --font-primary: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            color: var(--gray-900);
+            background: #ffffff;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--gray-900);
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .btn {
+            padding: 0.625rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1920&q=80') center/cover;
+            opacity: 0.1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            opacity: 0.95;
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        /* Sections */
+        .section {
+            margin-bottom: 5rem;
+        }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--gray-900);
+        }
+        
+        .section-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--gray-700);
+        }
+        
+        .section-content p {
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .stat-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            border-radius: 20px;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.25rem;
+            opacity: 0.95;
+        }
+        
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .value-card {
+            background: var(--gray-50);
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+        
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            background: white;
+        }
+        
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .value-title {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+        
+        .value-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+        
+        /* Team Grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .team-member {
+            text-align: center;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--brown-dark);
+        }
+        
+        .team-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3.5rem;
+        }
+        
+        .team-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-900);
+        }
+        
+        .team-role {
+            color: var(--brown-dark);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .team-bio {
+            color: var(--gray-600);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 3rem auto;
+            padding-left: 3rem;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -3.5rem;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--brown-dark);
+        }
+        
+        .timeline-year {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--brown-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .timeline-content {
+            color: var(--gray-700);
+            line-height: 1.7;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            padding: 5rem 2rem;
+            text-align: center;
+            border-radius: 30px;
+            margin-top: 5rem;
+            color: white;
+        }
+        
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-description {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+        }
+        
+        .btn-white {
+            background: white;
+            color: var(--brown-dark);
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+        }
+        
+        .btn-white:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        /* Footer */
+        .footer {
+            background: var(--gray-900);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 5rem;
+        }
+        
+        .footer-text {
+            opacity: 0.8;
+        }
+    </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        header.header {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            <nav>
+                <a href="/">Inicio</a>
+                <a href="/pages/productos.html">Productos</a>
+                <a href="/pages/about.html">Sobre Nosotros</a>
+                <a href="#contacto">Contacto</a>
+                
+            </nav>
+            <div class="header-icons">
+                <button class="icon-btn" onclick="window.location.href='/cart'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count" style="display: none;">0</span>
+                </button>
+                <div class="user-menu-container">
+                    <button class="icon-btn" onclick="toggleUserMenu()" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown" style="display: none;">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">Usuario</span>
+                        </div>
+                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        </a>
+                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
+                            <i class="fas fa-cog"></i> Panel Admin
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="logout()" class="dropdown-item logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content" data-aos="fade-up">
+            <h1 class="hero-title">Sobre CNC CAMPAS</h1>
+            <p class="hero-subtitle">
+                Innovación y calidad en diseño gráfico desde 2020
+            </p>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Nuestra Historia -->
+        <section class="section" data-aos="fade-up">
+            <h2 class="section-title">Nuestra Historia</h2>
+            <div class="section-content">
+                <p>
+                    <strong>CNC CAMPAS</strong> nació en 2020 con una visión clara: democratizar el acceso a recursos 
+                    de diseño gráfico profesional de alta calidad. Lo que comenzó como un pequeño proyecto de diseño 
+                    ha crecido hasta convertirse en una plataforma líder en recursos creativos para diseñadores, 
+                    agencias y empresas en toda América Latina.
+                </p>
+                <p>
+                    Nuestro equipo está compuesto por diseñadores apasionados, desarrolladores talentosos y creativos 
+                    visionarios que creen firmemente en el poder del buen diseño. Cada recurso que ofrecemos es 
+                    cuidadosamente seleccionado y creado para cumplir con los más altos estándares de calidad profesional.
+                </p>
+                <p>
+                    A lo largo de estos años, hemos construido una comunidad vibrante de creativos que confían en 
+                    nosotros para impulsar sus proyectos. Desde logos y plantillas hasta mockups y kits completos de 
+                    branding, nuestra misión es proporcionar las herramientas que los diseñadores necesitan para crear 
+                    trabajos excepcionales.
+                </p>
+            </div>
+        </section>
+        
+        <!-- Estadísticas -->
+        <section class="section" data-aos="fade-up">
+            <h2 class="section-title">Nuestro Impacto</h2>
+            <div class="stats-grid">
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="0">
+                    <div class="stat-number">15K+</div>
+                    <div class="stat-label">Recursos Disponibles</div>
+                </div>
+                
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="stat-number">50K+</div>
+                    <div class="stat-label">Diseñadores Activos</div>
+                </div>
+                
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Descargas Realizadas</div>
+                </div>
+                
+                <div class="stat-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="stat-number">4.9/5</div>
+                    <div class="stat-label">Calificación Promedio</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Nuestros Valores -->
+        <section class="section" data-aos="fade-up">
+            <h2 class="section-title">Nuestros Valores</h2>
+            <div class="values-grid">
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="value-title">Innovación Constante</h3>
+                    <p class="value-description">
+                        Nos mantenemos a la vanguardia de las tendencias de diseño, actualizando 
+                        constantemente nuestro catálogo con estilos frescos y contemporáneos.
+                    </p>
+                </div>
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Comunidad Primero</h3>
+                    <p class="value-description">
+                        Nuestra comunidad de diseñadores es nuestra prioridad. Escuchamos feedback, 
+                        respondemos necesidades y crecemos juntos.
+                    </p>
+                </div>
+                
+                <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3 class="value-title">Confianza Total</h3>
+                    <p class="value-description">
+                        Operamos con total transparencia en licencias, derechos de uso y políticas. 
+                        Tu tranquilidad y confianza son nuestra responsabilidad.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Timeline -->
+        <section class="section" data-aos="fade-up">
+            <h2 class="section-title">Nuestro Recorrido</h2>
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2020</div>
+                    <div class="timeline-content">
+                        Fundación de CNC CAMPAS con un catálogo inicial de 100 logos y plantillas básicas.
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="100">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2021</div>
+                    <div class="timeline-content">
+                        Expansión del catálogo a 5,000 recursos y lanzamiento de la plataforma web mejorada.
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="200">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2022</div>
+                    <div class="timeline-content">
+                        Alcanzamos 20,000 usuarios activos y lanzamos nuestro programa de afiliados.
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="300">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2023</div>
+                    <div class="timeline-content">
+                        Superamos 1 millón de descargas y expandimos el equipo a 15 profesionales.
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right" data-aos-delay="400">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-year">2024</div>
+                    <div class="timeline-content">
+                        Lanzamiento de la nueva plataforma con banner interactivo y experiencia de usuario mejorada.
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Equipo -->
+        <section class="section" data-aos="fade-up">
+            <h2 class="section-title">Nuestro Equipo</h2>
+            <div class="team-grid">
+                <div class="team-member" data-aos="fade-up" data-aos-delay="0">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="team-name">Carlos Campas</h3>
+                    <p class="team-role">CEO & Fundador</p>
+                    <p class="team-bio">
+                        Visionario del diseño con más de 15 años de experiencia en la industria creativa 
+                        y emprendimiento digital.
+                    </p>
+                </div>
+                
+                <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-avatar">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="team-name">María González</h3>
+                    <p class="team-role">Directora Creativa</p>
+                    <p class="team-bio">
+                        Diseñadora gráfica premiada, especialista en branding corporativo y diseño editorial 
+                        con portafolio internacional.
+                    </p>
+                </div>
+                
+                <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="team-name">Luis Ramírez</h3>
+                    <p class="team-role">Director de Tecnología</p>
+                    <p class="team-bio">
+                        Ingeniero de software experto en desarrollo web y UX, enfocado en crear 
+                        experiencias digitales excepcionales.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA -->
+        <div class="cta-section" data-aos="fade-up">
+            <h2 class="cta-title">¿Listo para Crear Algo Increíble?</h2>
+            <p class="cta-description">
+                Únete a miles de diseñadores que confían en CNC CAMPAS para sus proyectos
+            </p>
+            <a href="/" class="btn btn-white">
+                <i class="fas fa-rocket"></i>
+                Explorar Recursos
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-cubic',
+            once: true,
+            offset: 100
+        });
+    </script>
+    
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+    <script src="/js/common-footer.js"></script>
+</body>
+</html>

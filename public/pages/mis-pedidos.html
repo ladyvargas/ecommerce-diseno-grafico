@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Pedidos - CNC CAMPAS Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main-redesign.css">
+    <style>
+        .orders-header {
+            background: linear-gradient(135deg, #d4a574 0%, #6b4423 100%);
+            color: white;
+            padding: 4rem 0 3rem;
+            text-align: center;
+        }
+        
+        .orders-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .orders-container {
+            margin: -3rem 0 3rem;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        
+        .order-card:hover {
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 1.5rem;
+        }
+        
+        .order-number {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1e293b;
+        }
+        
+        .order-date {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .order-status {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+        
+        .status-processing {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+        
+        .status-completed {
+            background: #d1fae5;
+            color: #10b981;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+        
+        .order-items {
+            margin-bottom: 1.5rem;
+        }
+        
+        .order-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .order-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .order-item-info {
+            flex: 1;
+        }
+        
+        .order-item-name {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .order-item-details {
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+        
+        .order-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f1f5f9;
+        }
+        
+        .order-total {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4a2f1a;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .empty-icon {
+            font-size: 4rem;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+    </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 100px; right: 20px; z-index: 10000;"></div>
+    
+    <div style="height: 80px;"></div>
+    
+    <!-- Header -->
+    <div class="orders-header">
+        <div class="container">
+            <h1>Mis Pedidos</h1>
+            <p>Historial de compras y seguimiento de pedidos</p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="orders-container" id="ordersContainer">
+                <!-- Contenido dinámico -->
+            </div>
+        </div>
+    </main>
+    
+    <!-- Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="cart-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-body" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter"></div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        
+        // Función para actualizar badge del carrito
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.textContent = totalItems;
+                if (totalItems > 0) {
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+        
+        // Función para toggle del carrito
+        function toggleCart() {
+            window.location.href = '/checkout';
+        }
+        
+        // Función para recuperar pedidos ingresando email
+        function recuperarPedidos() {
+            const email = document.getElementById('emailInput').value.trim();
+            
+            if (!email) {
+                alert('Por favor ingresa tu email');
+                return;
+            }
+            
+            if (!email.includes('@')) {
+                alert('Por favor ingresa un email válido');
+                return;
+            }
+            
+            console.log('💾 Guardando email:', email);
+            localStorage.setItem('userEmail', email);
+            
+            // Recargar pedidos
+            loadMyOrders();
+        }
+        
+        async function loadMyOrders() {
+            const container = document.getElementById('ordersContainer');
+            
+            try {
+                // Cargar todos los pedidos
+                console.log('📋 Cargando pedidos...');
+                const response = await fetch(`${API_URL}/orders/all`);
+                
+                if (!response.ok) {
+                    throw new Error('Error al cargar pedidos');
+                }
+                
+                let orders = await response.json();
+                console.log('✅ Pedidos obtenidos:', orders.length);
+                console.log('📦 Todos los pedidos:', orders);
+                
+                // Verificar userEmail en localStorage
+                let userEmail = localStorage.getItem('userEmail');
+                console.log('📧 Email en localStorage:', userEmail);
+                
+                // Si NO hay email, pedir al usuario
+                if (!userEmail && orders.length > 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-envelope" style="color: #f59e0b;"></i>
+                            </div>
+                            <h2 style="color: #1e293b; margin-bottom: 1rem;">¿Cuál es tu email?</h2>
+                            <p style="color: #64748b; margin-bottom: 2rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                                Para ver tus pedidos, ingresa el email que usaste al hacer tu compra.
+                            </p>
+                            <div style="max-width: 400px; margin: 0 auto 2rem;">
+                                <input 
+                                    type="email" 
+                                    id="emailInput" 
+                                    placeholder="tu-email@ejemplo.com"
+                                    style="width: 100%; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 1rem; margin-bottom: 1rem;"
+                                />
+                                <button 
+                                    onclick="recuperarPedidos()" 
+                                    style="width: 100%; padding: 1rem 2rem; background: #3d4d9e; color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;"
+                                >
+                                    <i class="fas fa-search"></i> Ver Mis Pedidos
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Filtrar pedidos por email
+                if (userEmail) {
+                    console.log('🔍 Filtrando por email:', userEmail);
+                    const filteredOrders = orders.filter(o => 
+                        o.customer_email === userEmail
+                    );
+                    console.log('✅ Pedidos filtrados:', filteredOrders.length);
+                    
+                    if (filteredOrders.length > 0) {
+                        orders = filteredOrders;
+                    } else {
+                        // Si no hay coincidencias, mostrar mensaje
+                        container.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-icon">
+                                    <i class="fas fa-inbox"></i>
+                                </div>
+                                <h2>No tienes pedidos aún</h2>
+                                <p style="color: #64748b; margin: 1rem 0;">
+                                    Email registrado: ${userEmail}
+                                </p>
+                                <button 
+                                    onclick="localStorage.removeItem('userEmail'); location.reload();" 
+                                    class="btn btn-secondary"
+                                    style="margin: 1rem 0.5rem 0;"
+                                >
+                                    Cambiar Email
+                                </button>
+                                <a href="/pages/productos.html" class="btn btn-primary" style="margin: 1rem 0.5rem 0;">
+                                    <i class="fas fa-shopping-cart"></i> Ir a Productos
+                                </a>
+                            </div>
+                        `;
+                        return;
+                    }
+                }
+                
+                // Si no hay pedidos
+                if (orders.length === 0) {
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <h2>No hay pedidos aún</h2>
+                            <p style="color: #64748b; margin: 1rem 0 2rem;">
+                                No hay pedidos en el sistema
+                            </p>
+                            <a href="/pages/productos.html" class="btn btn-primary">
+                                <i class="fas fa-shopping-cart"></i> Ir a Productos
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Renderizar pedidos (más recientes primero)
+                orders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                container.innerHTML = orders.map(order => renderOrder(order)).join('');
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h2>Error al cargar pedidos</h2>
+                        <p style="color: #64748b; margin: 1rem 0 2rem;">
+                            No pudimos cargar tus pedidos. Intenta de nuevo.
+                        </p>
+                        <button class="btn btn-primary" onclick="loadMyOrders()">
+                            <i class="fas fa-sync"></i> Reintentar
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function renderOrder(order) {
+            const statusLabels = {
+                'pending': 'Pendiente',
+                'processing': 'Procesando',
+                'completed': 'Completado',
+                'cancelled': 'Cancelado'
+            };
+            
+            const statusClass = `status-${order.status}`;
+            const statusLabel = statusLabels[order.status] || order.status;
+            
+            const date = new Date(order.created_at).toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <div class="order-number">Pedido #${order.id}</div>
+                            <div class="order-date">${date}</div>
+                        </div>
+                        <div class="order-status ${statusClass}">
+                            ${statusLabel}
+                        </div>
+                    </div>
+                    
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <img src="${item.image}" alt="${item.productName || item.name}" class="order-item-image">
+                                <div class="order-item-info">
+                                    <div class="order-item-name">${item.productName || item.name}</div>
+                                    <div class="order-item-details">
+                                        Cantidad: ${item.quantity} × $${(item.price || 0).toFixed(2)}
+                                    </div>
+                                </div>
+                                <div style="font-weight: 600; color: #1e293b;">
+                                    $${((item.price || 0) * item.quantity).toFixed(2)}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="order-footer">
+                        <div>
+                            <div style="color: #64748b; font-size: 0.875rem; margin-bottom: 0.25rem;">Total del pedido</div>
+                            <div class="order-total">$${parseFloat(order.total || 0).toFixed(2)}</div>
+                        </div>
+                        <div>
+                            ${order.status === 'completed' ? `
+                                <button class="btn btn-primary" onclick="alert('Descarga no disponible en esta demo')">
+                                    <i class="fas fa-download"></i> Descargar
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                min-width: 300px;
+                animation: slideInRight 0.3s ease-out;
+                border-left: 4px solid ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#4a2f1a'};
+            `;
+            
+            const icons = { success: '✓', error: '✕', info: 'ℹ', warning: '⚠' };
+            
+            toast.innerHTML = `
+                <div style="width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: bold; background: ${type === 'success' ? '#d1fae5' : type === 'error' ? '#fee2e2' : '#dbeafe'}; color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#4a2f1a'};">${icons[type] || icons.info}</div>
+                <div style="flex: 1; color: #1e293b; font-weight: 500;">${message}</div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.animation = 'slideOutRight 0.3s ease-out';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+        
+        // Toggle del menú de usuario
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('userMenu');
+            const userMenuBtns = document.querySelectorAll('[onclick="toggleUserMenu()"]');
+            let clickedButton = false;
+            userMenuBtns.forEach(btn => {
+                if (btn.contains(event.target)) clickedButton = true;
+            });
+            if (menu && !menu.contains(event.target) && !clickedButton) {
+                menu.style.display = 'none';
+            }
+        });
+        
+        // Cargar pedidos al iniciar
+        loadMyOrders();
+        updateCartBadge();
+    </script>
+    
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+</body>
+</html>

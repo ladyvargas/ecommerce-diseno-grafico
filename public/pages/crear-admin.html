@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Admin - CNC CAMPAS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 3rem;
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 { color: #1a1a2e; margin-bottom: 0.5rem; }
+        .subtitle { color: #64748b; margin-bottom: 2rem; }
+        .section {
+            background: #f9fafb;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        button:hover { background: #2563eb; }
+        button.secondary {
+            background: #10b981;
+        }
+        button.secondary:hover {
+            background: #059669;
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        .credentials {
+            background: #fef3c7;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 2px solid #fbbf24;
+            margin-top: 1rem;
+        }
+        .credentials h3 {
+            color: #92400e;
+            margin-bottom: 0.5rem;
+        }
+        .credentials p {
+            color: #78350f;
+            font-family: monospace;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Crear Usuario Admin</h1>
+        <p class="subtitle">Herramienta para crear usuario administrador</p>
+
+        <div class="section">
+            <h3 style="margin-bottom: 1rem;">Paso 1: Eliminar usuario anterior</h3>
+            <button onclick="deleteUser()">🗑️ Eliminar admin@cnccampas.com</button>
+            <div id="deleteResult"></div>
+        </div>
+
+        <div class="section">
+            <h3 style="margin-bottom: 1rem;">Paso 2: Crear nuevo usuario</h3>
+            <button class="secondary" onclick="createUser()">✨ Crear Usuario Admin</button>
+            <div id="createResult"></div>
+        </div>
+
+        <div class="section">
+            <h3 style="margin-bottom: 1rem;">Paso 3: Probar Login</h3>
+            <button onclick="testLogin()">🔐 Probar Login</button>
+            <div id="loginResult"></div>
+        </div>
+
+        <div class="credentials">
+            <h3>📧 Credenciales por defecto:</h3>
+            <p>Email: admin@cnccampas.com</p>
+            <p>Password: admin123</p>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+
+        async function deleteUser() {
+            const result = document.getElementById('deleteResult');
+            result.innerHTML = '<div class="result info">⏳ Eliminando usuario...</div>';
+
+            try {
+                // Primero intentamos login para verificar si existe
+                const checkResponse = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'admin@cnccampas.com',
+                        password: 'cualquiera'
+                    })
+                });
+
+                if (checkResponse.status === 401) {
+                    result.innerHTML = '<div class="result info">✅ Usuario listo para ser creado (o ya fue eliminado)</div>';
+                } else {
+                    result.innerHTML = '<div class="result info">⚠️ Usuario existe. Necesitas eliminarlo en SQL:\n\nDELETE FROM users WHERE email = \'admin@cnccampas.com\';</div>';
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        async function createUser() {
+            const result = document.getElementById('createResult');
+            result.innerHTML = '<div class="result info">⏳ Creando usuario...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: 'Administrador CNC',
+                        email: 'admin@cnccampas.com',
+                        password: 'admin123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    result.innerHTML = `
+                        <div class="result success">
+✅ Usuario creado exitosamente
+
+Token: ${data.token}
+
+Ahora necesitas actualizar el rol a 'admin':
+1. Ve a phpMyAdmin
+2. Ejecuta: UPDATE users SET role = 'admin' WHERE email = 'admin@cnccampas.com';
+3. Luego prueba el login
+                        </div>
+                    `;
+
+                    // Actualizar rol automáticamente (requiere endpoint)
+                    setTimeout(() => {
+                        result.innerHTML += '<div class="result info">💡 Intenta ejecutar el SQL manualmente para cambiar el rol a admin</div>';
+                    }, 2000);
+                } else {
+                    if (data.error === 'El email ya está registrado') {
+                        result.innerHTML = `
+                            <div class="result error">
+❌ El email ya está registrado
+
+Opciones:
+1. Elimínalo en SQL: DELETE FROM users WHERE email = 'admin@cnccampas.com';
+2. O usa el endpoint de login si ya existe
+                            </div>
+                        `;
+                    } else {
+                        result.innerHTML = `<div class="result error">❌ Error: ${data.error}</div>`;
+                    }
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ Error: ${error.message}\n\n⚠️ ¿Está el servidor corriendo?</div>`;
+            }
+        }
+
+        async function testLogin() {
+            const result = document.getElementById('loginResult');
+            result.innerHTML = '<div class="result info">⏳ Probando login...</div>';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: 'admin@cnccampas.com',
+                        password: 'admin123'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    result.innerHTML = `
+                        <div class="result success">
+✅ LOGIN EXITOSO
+
+Usuario: ${data.user.name}
+Email: ${data.user.email}
+Rol: ${data.user.role}
+Token: ${data.token.substring(0, 50)}...
+
+${data.user.role === 'admin' ? '✅ El usuario tiene rol ADMIN' : '⚠️ El usuario NO tiene rol admin. Ejecuta: UPDATE users SET role = \'admin\' WHERE email = \'admin@cnccampas.com\';'}
+                        </div>
+                    `;
+                } else {
+                    result.innerHTML = `
+                        <div class="result error">
+❌ LOGIN FALLÓ: ${data.error}
+
+Posibles causas:
+1. Usuario no existe → Créalo primero
+2. Contraseña incorrecta → Verifica que sea 'admin123'
+3. Hash de password incorrecto → Vuelve a crear el usuario
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                result.innerHTML = `<div class="result error">❌ Error: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-check al cargar
+        window.addEventListener('load', () => {
+            document.getElementById('deleteResult').innerHTML = '<div class="result info">👆 Click para verificar si el usuario existe</div>';
+            document.getElementById('createResult').innerHTML = '<div class="result info">👆 Click para crear el usuario</div>';
+            document.getElementById('loginResult').innerHTML = '<div class="result info">👆 Click para probar el login</div>';
+        });
+    </script>
+</body>
+</html>

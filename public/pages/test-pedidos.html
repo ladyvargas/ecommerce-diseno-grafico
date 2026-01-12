@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Pedidos - CNC CAMPAS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 { color: #1a1a2e; margin-bottom: 2rem; }
+        .test-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        button:hover { background: #2563eb; }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .success { color: #10b981; font-weight: 600; }
+        .error { color: #ef4444; font-weight: 600; }
+        .order-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .product-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Pedidos - Diagnóstico Completo</h1>
+        
+        <div class="test-section">
+            <h2>Test 1: API Raw</h2>
+            <button onclick="testApiRaw()">GET /api/orders (Raw)</button>
+            <div id="rawResult" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test 2: API /orders/all</h2>
+            <button onclick="testApiAll()">GET /api/orders/all</button>
+            <div id="allResult" class="result"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test 3: Ver como Cards</h2>
+            <button onclick="renderCards()">Mostrar Pedidos como Cards</button>
+            <div id="cardsResult"></div>
+        </div>
+
+        <div class="test-section">
+            <h2>Test 4: localStorage</h2>
+            <button onclick="checkStorage()">Ver localStorage</button>
+            <button onclick="clearStorage()">Limpiar localStorage</button>
+            <div id="storageResult" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let allOrders = [];
+
+        async function testApiRaw() {
+            const result = document.getElementById('rawResult');
+            result.innerHTML = '<span style="color: #3b82f6;">⏳ Cargando...</span>';
+            
+            try {
+                const response = await fetch(`${API_URL}/orders`);
+                const data = await response.json();
+                
+                result.innerHTML = `<span class="success">✅ Status: ${response.status}</span>\n\n`;
+                result.innerHTML += `Total pedidos: ${data.length}\n\n`;
+                result.innerHTML += JSON.stringify(data, null, 2);
+                
+                allOrders = data;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Error:</span>\n\n${error.message}`;
+            }
+        }
+
+        async function testApiAll() {
+            const result = document.getElementById('allResult');
+            result.innerHTML = '<span style="color: #3b82f6;">⏳ Cargando...</span>';
+            
+            try {
+                const response = await fetch(`${API_URL}/orders/all`);
+                const data = await response.json();
+                
+                result.innerHTML = `<span class="success">✅ Status: ${response.status}</span>\n\n`;
+                result.innerHTML += `Total pedidos: ${data.length}\n\n`;
+                result.innerHTML += JSON.stringify(data, null, 2);
+                
+                allOrders = data;
+            } catch (error) {
+                result.innerHTML = `<span class="error">❌ Error:</span>\n\n${error.message}`;
+            }
+        }
+
+        async function renderCards() {
+            const container = document.getElementById('cardsResult');
+            
+            if (allOrders.length === 0) {
+                container.innerHTML = '<p style="color: #ef4444;">Primero ejecuta "GET /api/orders" o "GET /api/orders/all"</p>';
+                return;
+            }
+
+            container.innerHTML = allOrders.map(order => {
+                const hasNameImage = order.items && order.items.length > 0 && order.items[0].name;
+                
+                return `
+                    <div class="order-card">
+                        <div class="order-header">
+                            <div>
+                                <h3>Pedido #${order.id}</h3>
+                                <p>Cliente: ${order.customer_name || 'N/A'}</p>
+                                <p>Email: ${order.customer_email || 'N/A'}</p>
+                            </div>
+                            <div>
+                                <h3>$${parseFloat(order.total).toFixed(2)}</h3>
+                                <p>Estado: ${order.status}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4>Productos (${order.items ? order.items.length : 0}):</h4>
+                            ${hasNameImage ? 
+                                order.items.map(item => `
+                                    <div class="product-item">
+                                        <img src="${item.image}" class="product-image" alt="${item.name}">
+                                        <div>
+                                            <strong>${item.name}</strong>
+                                            <p>Cantidad: ${item.quantity} × $${parseFloat(item.price).toFixed(2)}</p>
+                                        </div>
+                                    </div>
+                                `).join('') 
+                            : 
+                                '<p style="color: #ef4444;">❌ Items NO tienen name ni image</p>'
+                            }
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function checkStorage() {
+            const result = document.getElementById('storageResult');
+            const data = {
+                userEmail: localStorage.getItem('userEmail'),
+                userName: localStorage.getItem('userName'),
+                cart: localStorage.getItem('cart'),
+                token: localStorage.getItem('token'),
+                user: localStorage.getItem('user')
+            };
+            result.innerHTML = JSON.stringify(data, null, 2);
+        }
+
+        function clearStorage() {
+            if (confirm('¿Limpiar todo el localStorage?')) {
+                localStorage.clear();
+                checkStorage();
+                alert('✅ localStorage limpiado');
+            }
+        }
+
+        // Auto-load
+        window.addEventListener('load', () => {
+            testApiRaw();
+        });
+    </script>
+</body>
+</html>

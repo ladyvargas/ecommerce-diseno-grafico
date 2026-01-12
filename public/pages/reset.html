@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reiniciar Sistema - CNC CAMPAS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+        .icon {
+            font-size: 5rem;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            color: #1a1a2e;
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        p {
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        .info-box {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #1e293b;
+        }
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+        .info-item i {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: #ef4444;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+        }
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            margin-left: 1rem;
+        }
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        .success {
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 1rem;
+            display: none;
+            font-size: 1.1rem;
+        }
+        .success i {
+            font-size: 1.5rem;
+        }
+    </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        body > header:first-child {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">
+            <i class="fas fa-sync-alt"></i>
+        </div>
+        <h1>Reiniciar Sistema CNC CAMPAS</h1>
+        <p>Esta acción limpiará todos los datos almacenados localmente y reiniciará el sistema para solucionar problemas con el carrito.</p>
+        
+        <div class="info-box">
+            <div class="info-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Se limpiará el carrito de compras</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-user"></i>
+                <span>Se cerrará la sesión actual</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-database"></i>
+                <span>Se eliminarán datos temporales</span>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-redo"></i>
+                <span>El sistema quedará como nuevo</span>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="resetSystem()">
+            <i class="fas fa-trash-alt"></i> Reiniciar Sistema
+        </button>
+        <a href="/" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
+        
+        <div class="success" id="success">
+            <i class="fas fa-check-circle"></i> Sistema reiniciado exitosamente
+        </div>
+    </div>
+
+    <script>
+        function resetSystem() {
+            // Limpiar TODO el localStorage
+            localStorage.clear();
+            
+            // Mostrar mensaje de éxito
+            document.getElementById('success').style.display = 'block';
+            
+            // Redirigir después de 2 segundos
+            setTimeout(() => {
+                window.location.href = '/pages/productos.html';
+            }, 2000);
+        }
+        
+        // Si se accede con ?reset=true, reiniciar automáticamente
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('reset') === 'true') {
+            resetSystem();
+        }
+    </script>
+    
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!-- Este es solo el código del carrusel para copiar en index.html -->
+
+<style>
+/* Carrusel de Banners */
+.banner-carousel {
+    position: relative;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    margin-top: 80px;
+}
+
+.carousel-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+}
+
+.carousel-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(99,102,241,0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.carousel-content {
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.carousel-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.8s;
+}
+
+.carousel-subtitle {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    animation: fadeInUp 0.8s 0.2s both;
+}
+
+.carousel-button {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, #4a2f1a, #ec4899);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s;
+    animation: fadeInUp 0.8s 0.4s both;
+    box-shadow: 0 10px 30px rgba(99,102,241,0.4);
+}
+
+.carousel-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(99,102,241,0.6);
+}
+
+/* Controles */
+.carousel-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.75rem;
+    z-index: 10;
+}
+
+.carousel-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    border: 2px solid white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.carousel-dot.active {
+    background: white;
+    width: 40px;
+    border-radius: 20px;
+}
+
+.carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.carousel-arrow:hover {
+    background: rgba(255,255,255,0.4);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-arrow.prev {
+    left: 2rem;
+}
+
+.carousel-arrow.next {
+    right: 2rem;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .banner-carousel {
+        height: 400px;
+    }
+    
+    .carousel-title {
+        font-size: 2rem;
+    }
+    
+    .carousel-subtitle {
+        font-size: 1rem;
+    }
+    
+    .carousel-arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<!-- HTML del Carrusel -->
+<section class="banner-carousel">
+    <div class="carousel-slides" id="carouselSlides">
+        <!-- Slide 1 -->
+        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1920&q=80');">
+            <div class="carousel-overlay">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Diseños Premium que Inspiran</h1>
+                    <p class="carousel-subtitle">Miles de recursos de alta calidad para tus proyectos creativos</p>
+                    <a href="#productos" class="carousel-button">
+                        <i class="fas fa-rocket"></i> Explorar Ahora
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 2 -->
+        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1626785774573-4b799315345d?w=1920&q=80');">
+            <div class="carousel-overlay">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Logos Modernos y Profesionales</h1>
+                    <p class="carousel-subtitle">Plantillas editables y personalizables para tu marca</p>
+                    <a href="#productos" class="carousel-button">
+                        <i class="fas fa-palette"></i> Ver Logos
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Slide 3 -->
+        <div class="carousel-slide" style="background-image: url('https://images.unsplash.com/photo-1634942537034-2531766767d1?w=1920&q=80');">
+            <div class="carousel-overlay">
+                <div class="carousel-content">
+                    <h1 class="carousel-title">Kits de Branding Completos</h1>
+                    <p class="carousel-subtitle">Identidad visual profesional lista para usar</p>
+                    <a href="#productos" class="carousel-button">
+                        <i class="fas fa-crown"></i> Descubrir Más
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Flechas de navegación -->
+    <button class="carousel-arrow prev" onclick="prevSlide()">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="carousel-arrow next" onclick="nextSlide()">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    
+    <!-- Indicadores -->
+    <div class="carousel-controls" id="carouselDots"></div>
+</section>
+
+<script>
+// Variables del carrusel
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const totalSlides = slides.length;
+let autoplayInterval;
+
+// Crear indicadores
+function createDots() {
+    const dotsContainer = document.getElementById('carouselDots');
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.onclick = () => goToSlide(i);
+        dotsContainer.appendChild(dot);
+    }
+}
+
+// Ir a slide específico
+function goToSlide(n) {
+    currentSlide = n;
+    if (currentSlide >= totalSlides) currentSlide = 0;
+    if (currentSlide < 0) currentSlide = totalSlides - 1;
+    
+    const slidesContainer = document.getElementById('carouselSlides');
+    slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+    
+    // Actualizar indicadores
+    const dots = document.querySelectorAll('.carousel-dot');
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
+
+// Siguiente slide
+function nextSlide() {
+    goToSlide(currentSlide + 1);
+    resetAutoplay();
+}
+
+// Slide anterior
+function prevSlide() {
+    goToSlide(currentSlide - 1);
+    resetAutoplay();
+}
+
+// Autoplay
+function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+        nextSlide();
+    }, 5000); // Cambiar cada 5 segundos
+}
+
+function resetAutoplay() {
+    clearInterval(autoplayInterval);
+    startAutoplay();
+}
+
+// Inicializar
+createDots();
+startAutoplay();
+
+// Pausar al hacer hover
+const carousel = document.querySelector('.banner-carousel');
+carousel.addEventListener('mouseenter', () => clearInterval(autoplayInterval));
+carousel.addEventListener('mouseleave', () => startAutoplay());
+
+console.log('✅ Carrusel de banners inicializado');
+</script>

@@ -1,0 +1,105 @@
+<!-- Formulario mejorado de productos con URL de imagen -->
+<div class="modal" id="productFormModal">
+    <div class="modal-dialog" style="max-width: 800px;">
+        <div class="modal-header">
+            <h2 class="modal-title">
+                <i class="fas fa-box"></i> <span id="formTitle">Nuevo Producto</span>
+            </h2>
+            <button class="modal-close" onclick="closeProductForm()">&times;</button>
+        </div>
+        
+        <form id="productForm" onsubmit="saveProduct(event)">
+            <input type="hidden" id="productId">
+            
+            <div class="modal-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                    <!-- Columna 1 -->
+                    <div>
+                        <div class="form-group">
+                            <label for="productName">Nombre del Producto *</label>
+                            <input type="text" id="productName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productPrice">Precio *</label>
+                            <input type="number" id="productPrice" class="form-control" step="0.01" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productSalePrice">Precio de Oferta</label>
+                            <input type="number" id="productSalePrice" class="form-control" step="0.01">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productCategory">Categoría *</label>
+                            <select id="productCategory" class="form-control" required>
+                                <option value="">Seleccionar...</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Columna 2 -->
+                    <div>
+                        <div class="form-group">
+                            <label for="productImage">URL de Imagen *</label>
+                            <input type="url" id="productImage" class="form-control" 
+                                   placeholder="https://ejemplo.com/imagen.jpg" required>
+                            <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
+                                <i class="fas fa-link"></i> Pega la URL directa de la imagen
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productFormat">Formato</label>
+                            <input type="text" id="productFormat" class="form-control" placeholder="AI, PSD, SVG" value="AI, PSD">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productRating">Rating</label>
+                            <input type="number" id="productRating" class="form-control" min="1" max="5" step="0.1" value="4.5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="productDownloads">Descargas</label>
+                            <input type="number" id="productDownloads" class="form-control" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Descripción *</label>
+                    <textarea id="productDescription" class="form-control" rows="3" required></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="productFeatured">
+                        ⭐ Destacado
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="productTrending">
+                        🔥 Tendencia
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="productBestseller">
+                        🏆 Más Vendido
+                    </label>
+                </div>
+                
+                <div id="imagePreview" style="margin-top: 1.5rem; display: none;">
+                    <label>Vista Previa:</label>
+                    <div style="margin-top: 0.5rem; border: 2px dashed #e5e7eb; border-radius: 12px; padding: 1rem; text-align: center;">
+                        <img id="previewImg" src="" style="max-width: 100%; max-height: 200px; border-radius: 8px;">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeProductForm()">Cancelar</button>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

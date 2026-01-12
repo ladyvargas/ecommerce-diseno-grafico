@@ -1,0 +1,125 @@
+/* ================= HERO CNC CAMPAS ================= */
+
+.hero {
+    position: relative;
+    min-height: 520px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr auto;
+    align-items: center;
+    padding: 0 5%;
+    background: #d1ab77;
+    overflow: hidden;
+}
+
+/* curva blanca del fondo */
+.hero::after {
+    content: "";
+    position: absolute;
+    right: -120px;
+    top: -120px;
+    width: 600px;
+    height: 600px;
+    background: #f6f2eb;
+    border-radius: 50%;
+}
+
+/* ===== TEXTO ===== */
+.hero-container {
+    z-index: 2;
+}
+
+.hero-content h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.hero-content p {
+    color: #f7f3ed;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 1.8rem;
+}
+
+.cta-button {
+    background: #6b3d17;
+    color: white;
+    border: none;
+    padding: 0.9rem 1.8rem;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0,0,0,.25);
+    transition: all .3s;
+}
+
+.cta-button:hover {
+    background: #8b5523;
+    transform: translateY(-2px);
+}
+
+/* ===== IMAGEN ===== */
+.hero-image {
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-image img {
+    max-width: 420px;
+    filter: drop-shadow(0 25px 40px rgba(0,0,0,.35));
+}
+
+/* ===== BOTONES LATERALES ===== */
+.service-buttons {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: .9rem;
+}
+
+.service-btn {
+    background: #6b3d17;
+    color: #fff;
+    border: none;
+    padding: .7rem 1.3rem;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .25s;
+    opacity: .85;
+}
+
+.service-btn:hover {
+    background: #8b5523;
+    opacity: 1;
+}
+
+.service-btn.active {
+    background: #4b2a10;
+    box-shadow: 0 6px 18px rgba(0,0,0,.3);
+    opacity: 1;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 3rem 2rem;
+    }
+
+    .hero::after {
+        display: none;
+    }
+
+    .service-buttons {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 2rem;
+    }
+}

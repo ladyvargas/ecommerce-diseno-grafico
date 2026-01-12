@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - CNC CAMPAS Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main-redesign.css">
+    <style>
+        .catalog-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0 3rem;
+            text-align: center;
+        }
+        
+        .catalog-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .filters-container {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: -3rem 0 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e2e8f0;
+            background: white;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .view-btn.active {
+            background: #4a2f1a;
+            color: white;
+            border-color: #4a2f1a;
+        }
+        
+        .list-view .product-card {
+            display: flex;
+            gap: 2rem;
+            padding: 1.5rem;
+        }
+        
+        .list-view .product-image-container {
+            width: 200px;
+            height: 150px;
+            flex-shrink: 0;
+        }
+        
+        .list-view .product-info {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 100px; right: 20px; z-index: 10000;"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="navbar-brand">
+                <i class="fas fa-palette"></i>
+                <span>CNC CAMPAS Pro</span>
+            </a>
+            
+            <div class="navbar-menu">
+                <a href="/" class="navbar-link">Inicio</a>
+                <a href="/catalogo" class="navbar-link active">Catálogo</a>
+                <a href="#" class="navbar-link">Categorías</a>
+            </div>
+            
+            <div class="navbar-actions">
+                <button class="navbar-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Header -->
+    <div class="catalog-header">
+        <div class="container">
+            <h1>Catálogo Completo</h1>
+            <p>Explora nuestra colección de recursos de diseño</p>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label><i class="fas fa-search"></i> Buscar</label>
+                        <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label><i class="fas fa-tag"></i> Categoría</label>
+                        <select id="categoryFilter">
+                            <option value="">Todas las categorías</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label><i class="fas fa-dollar-sign"></i> Precio Min</label>
+                        <input type="number" id="priceMin" placeholder="0.00" min="0" step="0.01">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label><i class="fas fa-dollar-sign"></i> Precio Max</label>
+                        <input type="number" id="priceMax" placeholder="100.00" min="0" step="0.01">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label><i class="fas fa-sort"></i> Ordenar por</label>
+                        <select id="sortBy">
+                            <option value="name">Nombre</option>
+                            <option value="price-asc">Precio: Menor a Mayor</option>
+                            <option value="price-desc">Precio: Mayor a Menor</option>
+                            <option value="rating">Mejor valorados</option>
+                            <option value="downloads">Más vendidos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary" onclick="applyFilters()" style="width: 100%;">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Header -->
+            <div class="results-header">
+                <div>
+                    <h2>Resultados</h2>
+                    <p style="color: #64748b;" id="resultsCount">0 productos encontrados</p>
+                </div>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="setView('grid')" id="gridViewBtn">
+                        <i class="fas fa-th"></i> Cuadrícula
+                    </button>
+                    <button class="view-btn" onclick="setView('list')" id="listViewBtn">
+                        <i class="fas fa-list"></i> Lista
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Products Grid -->
+            <div id="productsGrid" class="products-grid"></div>
+        </div>
+    </main>
+    
+    <!-- Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3>Carrito de Compras</h3>
+            <button class="cart-close" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-body" id="cartItems"></div>
+        <div class="cart-footer" id="cartFooter"></div>
+    </div>
+    
+    <script src="/js/main-redesign.js"></script>
+    <script>
+        let currentView = 'grid';
+        let allProducts = [];
+        let filteredProducts = [];
+        
+        // Cargar productos al iniciar
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                allProducts = await response.json();
+                
+                // Llenar categorías
+                const categories = [...new Set(allProducts.map(p => p.category))];
+                const categorySelect = document.getElementById('categoryFilter');
+                categories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat;
+                    categorySelect.appendChild(option);
+                });
+                
+                // Mostrar todos los productos inicialmente
+                filteredProducts = allProducts;
+                renderProducts();
+            } catch (error) {
+                console.error('Error al cargar productos:', error);
+            }
+        }
+        
+        // Aplicar filtros
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const priceMin = parseFloat(document.getElementById('priceMin').value) || 0;
+            const priceMax = parseFloat(document.getElementById('priceMax').value) || Infinity;
+            const sortBy = document.getElementById('sortBy').value;
+            
+            // Filtrar
+            filteredProducts = allProducts.filter(p => {
+                const matchSearch = !search || p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search);
+                const matchCategory = !category || p.category === category;
+                const matchPrice = p.price >= priceMin && p.price <= priceMax;
+                const hasStock = p.stock > 0;
+                
+                return matchSearch && matchCategory && matchPrice && hasStock;
+            });
+            
+            // Ordenar
+            switch(sortBy) {
+                case 'price-asc':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-desc':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                    break;
+                case 'downloads':
+                    filteredProducts.sort((a, b) => (b.downloads || 0) - (a.downloads || 0));
+                    break;
+                default:
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+            }
+            
+            renderProducts();
+        }
+        
+        // Renderizar productos
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const count = document.getElementById('resultsCount');
+            
+            count.textContent = `${filteredProducts.length} producto${filteredProducts.length !== 1 ? 's' : ''} encontrado${filteredProducts.length !== 1 ? 's' : ''}`;
+            
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; padding: 4rem; grid-column: 1/-1;">
+                        <i class="fas fa-search" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #64748b;">No se encontraron productos</h3>
+                        <p style="color: #94a3b8;">Intenta con otros filtros</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            grid.className = currentView === 'grid' ? 'products-grid' : 'products-grid list-view';
+            
+            grid.innerHTML = filteredProducts.map(product => `
+                <div class="product-card" onclick="window.location.href='/product/${product.id}'">
+                    <div class="product-image-container">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <div class="product-badges">
+                            ${product.featured ? '<span class="product-badge badge-new">✨ Destacado</span>' : ''}
+                            ${product.stock <= 10 ? '<span class="product-badge" style="background: #f59e0b;">⚠️ Stock Bajo</span>' : ''}
+                        </div>
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        
+                        <div class="product-footer">
+                            <div>
+                                <div class="product-price-container">
+                                    <span class="product-price">$${product.price}</span>
+                                </div>
+                                <div class="product-rating">
+                                    <span class="product-stars">
+                                        ${'★'.repeat(Math.floor(product.rating || 5))}${'☆'.repeat(5 - Math.floor(product.rating || 5))}
+                                    </span>
+                                    <span class="product-reviews">(${product.downloads || 0})</span>
+                                </div>
+                                <div style="color: #10b981; font-size: 0.875rem; margin-top: 0.25rem; font-weight: 500;">
+                                    📦 ${product.stock} disponibles
+                                </div>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart(${product.id})">
+                                <i class="fas fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Cambiar vista
+        function setView(view) {
+            currentView = view;
+            document.getElementById('gridViewBtn').classList.toggle('active', view === 'grid');
+            document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
+            renderProducts();
+        }
+        
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+        document.getElementById('sortBy').addEventListener('change', applyFilters);
+        
+        // Iniciar
+        loadProducts();
+        updateCartBadge();
+    </script>
+</body>
+</html>

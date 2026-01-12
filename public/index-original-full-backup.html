@@ -1,0 +1,1916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CNC CAMPAS - Recursos de diseño gráfico premium para creativos y empresas">
+    <title>CNC CAMPAS</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            /* Colors - CNC CAMPAS Brand (Solo Azul) */
+            --primary: #3d4d9e;          /* Azul del logo */
+            --primary-dark: #2d3d7e;     /* Azul más oscuro */
+            --secondary: #4a2f1a;        /* Azul claro secundario */
+            --secondary-dark: #4f46e5;   /* Azul secundario oscuro */
+            --accent: #3d4d9e;           /* Azul acento */
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            
+            /* Neutrals */
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            
+            /* Typography */
+            --font-primary: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+            
+            /* Spacing */
+            --container-width: 1280px;
+            --section-padding: 120px;
+            
+            /* Effects */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            color: var(--gray-900);
+            background: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* ==================== HEADER ==================== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            transition: var(--transition);
+        }
+        
+        .header.scrolled {
+            box-shadow: var(--shadow-lg);
+            background: rgba(255, 255, 255, 0.98);
+        }
+        
+        .header-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--gray-900);
+            transition: var(--transition);
+        }
+        
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .logo-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        
+        .logo:hover { transform: scale(1.05); }
+        
+        .nav {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: var(--transition);
+        }
+        
+        .nav-link:hover {
+            color: var(--brown-dark);
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .cart-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+        }
+        
+        .cart-btn:hover {
+            background: var(--brown-dark);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .cart-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            border: 2px solid white;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-primary);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--brown-dark);
+            border: 2px solid var(--brown-dark);
+        }
+        
+        .btn-outline:hover {
+            background: var(--brown-dark);
+            color: white;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+        
+        /* ==================== HERO SECTION ==================== */
+        .hero {
+            padding: 180px 2rem 120px;
+            background: linear-gradient(180deg, var(--gray-50) 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.1), transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(236, 72, 153, 0.1), transparent 50%);
+            pointer-events: none;
+        }
+        
+        .hero-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            max-width: 700px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brown-dark);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--gray-900), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--gray-600);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            margin-top: 5rem;
+            padding-top: 4rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--brown-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-stat-label {
+            font-size: 0.95rem;
+            color: var(--gray-600);
+        }
+        
+        /* ==================== FEATURES ==================== */
+        .features {
+            padding: var(--section-padding) 2rem;
+            background: white;
+        }
+        
+        .features-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 5rem;
+        }
+        
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1.25rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(236, 72, 153, 0.1));
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brown-dark);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+        
+        .section-description {
+            font-size: 1.15rem;
+            color: var(--gray-600);
+            line-height: 1.8;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            padding: 2.5rem;
+            background: white;
+            border: 1px solid var(--gray-200);
+            border-radius: 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+        
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+        
+        .feature-card:nth-child(1) .feature-icon {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.2));
+            color: var(--brown-dark);
+        }
+        
+        .feature-card:nth-child(2) .feature-icon {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(236, 72, 153, 0.2));
+            color: var(--secondary);
+        }
+        
+        .feature-card:nth-child(3) .feature-icon {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.2));
+            color: var(--accent);
+        }
+        
+        .feature-card:nth-child(4) .feature-icon {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.2));
+            color: var(--success);
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray-900);
+        }
+        
+        .feature-description {
+            color: var(--gray-600);
+            line-height: 1.7;
+        }
+        
+        /* ==================== PRODUCTS ==================== */
+        .products {
+            padding: var(--section-padding) 2rem;
+            background: var(--gray-50);
+        }
+        
+        .products-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+        
+        .products-filters {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1.75rem;
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            cursor: pointer;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+            border-color: transparent;
+        }
+        
+        .product-image-container {
+            position: relative;
+            padding-top: 75%;
+            overflow: hidden;
+            background: var(--gray-100);
+        }
+        
+        .product-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .product-card:hover .product-image {
+            transform: scale(1.1);
+        }
+        
+        .product-badges {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .product-badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-new {
+            background: rgba(99, 102, 241, 0.9);
+            color: white;
+        }
+        
+        .badge-sale {
+            background: rgba(239, 68, 68, 0.9);
+            color: white;
+        }
+        
+        .badge-trending {
+            background: rgba(245, 158, 11, 0.9);
+            color: white;
+        }
+        
+        .product-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: var(--transition);
+        }
+        
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .product-action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+        }
+        
+        .product-action-btn:hover {
+            background: var(--brown-dark);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .product-info {
+            padding: 1.5rem;
+        }
+        
+        .product-category {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--brown-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        
+        .product-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--gray-900);
+            line-height: 1.4;
+        }
+        
+        .product-description {
+            font-size: 0.9rem;
+            color: var(--gray-600);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .product-price-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        
+        .product-price {
+            font-size: 1.75rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            color: var(--gray-900);
+        }
+        
+        .product-price-old {
+            font-size: 1rem;
+            color: var(--gray-500);
+            text-decoration: line-through;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .product-stars {
+            color: #fbbf24;
+            font-size: 0.9rem;
+        }
+        
+        .product-reviews {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+        }
+        
+        .add-to-cart-btn {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .add-to-cart-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* ==================== CTA SECTION ==================== */
+        .cta-section {
+            padding: var(--section-padding) 2rem;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></svg>');
+            opacity: 0.5;
+        }
+        
+        .cta-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-title {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+        
+        .cta-description {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+        
+        .cta-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-white {
+            background: white;
+            color: var(--brown-dark);
+        }
+        
+        .btn-white:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+        }
+        
+        /* ==================== FOOTER ==================== */
+        .footer {
+            background: var(--gray-900);
+            color: var(--gray-400);
+            padding: 5rem 2rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: white;
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        .footer-description {
+            line-height: 1.8;
+            color: var(--gray-400);
+        }
+        
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--gray-800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .social-btn:hover {
+            background: var(--brown-dark);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        
+        .footer-title {
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-link {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-link:hover {
+            color: var(--brown-dark);
+            padding-left: 5px;
+        }
+        
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-800);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .footer-copyright {
+            color: var(--gray-500);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        /* ==================== CART MODAL ==================== */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 450px;
+            height: 100vh;
+            background: white;
+            box-shadow: var(--shadow-xl);
+            z-index: 2000;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .cart-modal.active {
+            right: 0;
+        }
+        
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1999;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+        }
+        
+        .cart-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .cart-header {
+            padding: 2rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .cart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+        }
+        
+        .cart-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--gray-100);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-700);
+            transition: var(--transition);
+        }
+        
+        .cart-close:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .cart-empty {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray-500);
+        }
+        
+        .cart-empty i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+        
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--gray-50);
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-title {
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        
+        .cart-item-price {
+            font-weight: 700;
+            color: var(--brown-dark);
+            font-size: 1rem;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .cart-item-quantity button {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-300);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--gray-700);
+        }
+        
+        .cart-item-quantity button:hover {
+            background: var(--brown-dark);
+            color: white;
+            border-color: var(--brown-dark);
+        }
+        
+        .cart-item-quantity span {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+            font-size: 1rem;
+        }
+        
+        .cart-item-remove {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid var(--danger);
+            background: white;
+            color: var(--danger);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .cart-item-remove:hover {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+        
+        .cart-qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-300);
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .cart-qty-btn:hover {
+            background: var(--brown-dark);
+            color: white;
+            border-color: var(--brown-dark);
+        }
+        
+        .cart-remove {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .cart-remove:hover {
+            transform: scale(1.2);
+        }
+        
+        .cart-footer {
+            padding: 2rem;
+            border-top: 1px solid var(--gray-200);
+        }
+        
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+        
+        .cart-checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .cart-checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* ==================== LOADING ==================== */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-200);
+            border-top-color: var(--brown-dark);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1024px) {
+            .hero-title { font-size: 3rem; }
+            .section-title { font-size: 2.5rem; }
+            .hero-stats { grid-template-columns: repeat(2, 1fr); }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --section-padding: 80px;
+            }
+            
+            .nav { display: none; }
+            .mobile-menu-btn { display: block; }
+            
+            .hero {
+                padding: 140px 1.5rem 80px;
+            }
+            
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-title {
+                font-size: 2rem;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="/" class="logo">
+                <div class="logo-icon">
+                    <img src="/img/logo.png" alt="CNC CAMPAS" class="logo-img">
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="/" class="nav-link">Inicio</a>
+                <a href="/productos" class="nav-link">Productos</a>
+                <a href="/pages/about.html" class="nav-link">Sobre Nosotros</a>
+                <a href="#contacto" class="nav-link">Contacto</a>
+            </nav>
+            
+            <div class="header-actions">
+                <button class="cart-btn" id="cartBtn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-badge" id="cartBadge">0</span>
+                </button>
+                
+                <!-- User Menu con Dropdown -->
+                <div style="position: relative;">
+                    <button class="cart-btn" id="userMenuBtn" onclick="toggleUserMenu()" style="width: 44px; height: 44px;">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    
+                    <!-- Dropdown Menu -->
+                    <div id="userMenu" style="position: absolute; top: 55px; right: 0; background: white; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); min-width: 200px; display: none; z-index: 1000;">
+                        <div style="padding: 1rem; border-bottom: 1px solid #e2e8f0;">
+                            <div style="font-weight: 600; color: #1e293b;">Mi Cuenta</div>
+                            <div style="font-size: 0.875rem; color: #64748b;">Invitado</div>
+                        </div>
+                        <a href="/mis-pedidos" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: #1e293b; text-decoration: none; transition: background 0.3s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+                            <i class="fas fa-shopping-bag" style="width: 20px; color: #4a2f1a;"></i>
+                            <span>Mis Pedidos</span>
+                        </a>
+                        <a href="/login" style="display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; color: #1e293b; text-decoration: none; transition: background 0.3s; border-top: 1px solid #e2e8f0;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='white'">
+                            <i class="fas fa-sign-in-alt" style="width: 20px; color: #4a2f1a;"></i>
+                            <span>Ingresar</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Banner Interactivo con Productos -->
+    <section id="heroBanner" style="margin-top: 80px; position: relative; height: 650px; overflow: hidden; background: linear-gradient(135deg, #d4a574 0%, #6b4423 100%);">
+        <div style="max-width: 1400px; margin: 0 auto; height: 100%; display: flex; align-items: center; justify-content: space-between; padding: 0 3rem; position: relative;">
+            
+            <!-- Contenido Izquierdo -->
+            <div style="flex: 1; max-width: 500px; z-index: 2; position: relative;">
+                <!-- Título -->
+                <h1 id="bannerTitle" style="font-family: var(--font-display); font-size: 4rem; font-weight: 800; color: white; margin-bottom: 1.5rem; line-height: 1.1;">
+                    Mockups 3D Premium
+                </h1>
+                
+                <!-- Descripción -->
+                <p id="bannerDescription" style="font-size: 1.25rem; color: rgba(255,255,255,0.9); margin-bottom: 3rem; line-height: 1.6;">
+                    Colección de 30 mockups 3D de alta calidad para presentar tus diseños. Incluye dispositivos, packaging y más.
+                </p>
+                
+                <!-- Botón Buy Now con imagen decorativa -->
+                <div style="position: relative; width: fit-content;">
+                    <button onclick="buyNowBanner()" style="padding: 1rem 2.5rem; background: white; color: #3d4d9e; border: none; border-radius: 50px; font-size: 1.125rem; font-weight: 700; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); transition: all 0.3s; position: relative; z-index: 2;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 40px rgba(0,0,0,0.4)'; this.style.background='#f8f9fa'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 30px rgba(0,0,0,0.3)'; this.style.background='white'">
+                        Comprar Ahora
+                    </button>
+                    
+                </div>
+            </div>
+            
+            <!-- Imagen Central del Producto -->
+            <div id="bannerMainImage" style="flex: 0 0 450px; display: flex; align-items: center; justify-content: center; z-index: 3;">
+                <div style="width: 420px; height: 420px; border-radius: 50%; background: white; box-shadow: 0 20px 60px rgba(0,0,0,0.15); border: 10px solid rgba(255,255,255,0.3); display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <img id="mainProductImage" src="https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&q=80" alt="Featured Product" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            
+            <!-- Lista de Productos (Solo Imágenes) -->
+            <div id="productList" style="flex: 0 0 300px; display: flex; flex-direction: column; gap: 1.25rem; z-index: 2;">
+                <!-- Los productos se cargarán dinámicamente aquí -->
+            </div>
+        </div>
+    </section>
+    
+    <script>
+    // ============================================
+    // BANNER INTERACTIVO CON PRODUCTOS
+    // ============================================
+    (function() {
+        let featuredProducts = [];
+        let currentProductIndex = 0;
+        
+        // Cargar productos destacados para el banner
+        async function loadBannerProducts() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                const data = await response.json();
+                const allProducts = data.products || data || [];
+                
+                // Obtener productos destacados
+                featuredProducts = allProducts.filter(p => p.featured).slice(0, 4);
+                
+                // Si no hay destacados, usar los primeros 4
+                if (featuredProducts.length < 4) {
+                    featuredProducts = allProducts.slice(0, 4);
+                }
+                
+                console.log('🎨 Banner: Productos cargados:', featuredProducts.length);
+                
+                renderBannerProductList();
+                
+                if (featuredProducts.length > 0) {
+                    updateBannerMainProduct(0);
+                }
+            } catch (error) {
+                console.error('Error loading banner products:', error);
+            }
+        }
+        
+        // Renderizar lista de productos en el lateral (SOLO IMÁGENES)
+        function renderBannerProductList() {
+            const productList = document.getElementById('productList');
+            if (!productList || featuredProducts.length === 0) return;
+            
+            productList.innerHTML = featuredProducts.map((product, index) => `
+                <div 
+                    onclick="selectBannerProduct(${index})"
+                    style="
+                        width: 100%;
+                        height: 110px;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        transition: all 0.3s;
+                        overflow: hidden;
+                        position: relative;
+                        background: ${index === currentProductIndex ? '#fef08a' : 'white'};
+                        padding: ${index === currentProductIndex ? '8px' : '0'};
+                        box-shadow: ${index === currentProductIndex ? '0 10px 30px rgba(0,0,0,0.2)' : '0 5px 15px rgba(0,0,0,0.1)'};
+                    "
+                    onmouseover="if(${index} !== ${currentProductIndex}) { this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)'; }"
+                    onmouseout="if(${index} !== ${currentProductIndex}) { this.style.transform='scale(1)'; this.style.boxShadow='0 5px 15px rgba(0,0,0,0.1)'; }"
+                >
+                    <!-- Imagen del producto -->
+                    <img 
+                        src="${product.image}" 
+                        alt="${product.name}" 
+                        style="
+                            width: 100%; 
+                            height: 100%; 
+                            object-fit: cover;
+                            border-radius: ${index === currentProductIndex ? '14px' : '20px'};
+                        "
+                    >
+                    
+                    <!-- Overlay con nombre y precio (aparece en hover) -->
+                    <div style="
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+                        padding: 1rem 0.75rem 0.5rem;
+                        opacity: 0;
+                        transition: opacity 0.3s;
+                    "
+                    onmouseover="this.style.opacity='1'"
+                    onmouseout="this.style.opacity='0'">
+                        <div style="color: white; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">
+                            ${product.name}
+                        </div>
+                        <div style="color: #fbbf24; font-size: 0.85rem; font-weight: 700;">
+                            Precio: $${product.salePrice || product.price}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Actualizar producto principal del banner
+        function updateBannerMainProduct(index) {
+            if (index < 0 || index >= featuredProducts.length) return;
+            
+            currentProductIndex = index;
+            const product = featuredProducts[index];
+            
+            // Actualizar imagen principal
+            const mainImage = document.getElementById('mainProductImage');
+            if (mainImage) {
+                mainImage.style.opacity = '0';
+                setTimeout(() => {
+                    mainImage.src = product.image;
+                    mainImage.style.opacity = '1';
+                }, 200);
+            }
+            
+            // Actualizar título
+            const title = document.getElementById('bannerTitle');
+            if (title) {
+                title.style.opacity = '0';
+                setTimeout(() => {
+                    title.textContent = product.name;
+                    title.style.opacity = '1';
+                }, 200);
+            }
+            
+            // Actualizar descripción
+            const description = document.getElementById('bannerDescription');
+            if (description) {
+                description.style.opacity = '0';
+                setTimeout(() => {
+                    description.textContent = product.description || 'Diseño premium de alta calidad';
+                    description.style.opacity = '1';
+                }, 200);
+            }
+            
+            // Actualizar lista de productos (highlight)
+            renderBannerProductList();
+            
+            console.log('🎨 Banner: Producto seleccionado:', product.name);
+        }
+        
+        // Función global para seleccionar producto
+        window.selectBannerProduct = function(index) {
+            updateBannerMainProduct(index);
+        };
+        
+        // Función global para comprar desde el banner
+        window.buyNowBanner = function() {
+            if (featuredProducts.length === 0) {
+                showToast('Cargando productos...', 'info');
+                return;
+            }
+            
+            const product = featuredProducts[currentProductIndex];
+            
+            // Agregar al carrito
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const existing = cart.find(item => item.productId === product.id);
+            
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ productId: product.id, quantity: 1 });
+            }
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Actualizar badge del carrito
+            if (typeof updateCartBadge === 'function') {
+                updateCartBadge();
+            }
+            
+            showToast(`¡${product.name} agregado al carrito!`, 'success');
+        };
+        
+        // Auto-rotar productos cada 5 segundos
+        function startAutoRotate() {
+            setInterval(() => {
+                const nextIndex = (currentProductIndex + 1) % featuredProducts.length;
+                updateBannerMainProduct(nextIndex);
+            }, 5000);
+        }
+        
+        // Inicializar banner
+        function initBanner() {
+            loadBannerProducts().then(() => {
+                startAutoRotate();
+            });
+        }
+        
+        // Agregar transiciones suaves a elementos del banner
+        const style = document.createElement('style');
+        style.textContent = `
+            #mainProductImage, #bannerTitle, #bannerDescription {
+                transition: opacity 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initBanner);
+        } else {
+            initBanner();
+        }
+        
+        console.log('✅ Banner interactivo inicializado');
+    })();
+    </script>
+    
+    <!-- Features Section - SERVICIOS CNC CAMPAS -->
+    <section class="features" style="background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%); padding: 6rem 0; position: relative; overflow: hidden;">
+        <!-- Patrón de fondo -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background-image: url('https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=1920&q=80'); background-size: cover; background-position: center;"></div>
+        
+        <div class="features-container" style="position: relative; z-index: 1;">
+            <div class="section-header" data-aos="fade-up">
+                <div class="section-badge" style="background: rgba(20,184,166,0.2); color: #14b8a6; border: 1px solid rgba(20,184,166,0.4); font-weight: 600;">Nuestros Servicios</div>
+                <h2 class="section-title" style="color: white; font-size: 3rem;">Tecnología de Vanguardia para tus Proyectos</h2>
+                <p class="section-description" style="color: rgba(255,255,255,0.9); font-size: 1.25rem;">
+                    Trabajamos con materiales de alta calidad: Acrílico, PVC, Madera, MDF, Plywood, Vinil, Lonas y más
+                </p>
+            </div>
+            
+            <!-- Grid de Servicios -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; margin-top: 4rem;">
+                
+                <!-- Servicio 1: Plotter de Impresión -->
+                <div data-aos="fade-up" data-aos-delay="0" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #ec4899, #8b5cf6); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&q=80" alt="Plotter de Impresión" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-print"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Plotter de Impresión
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Impresión de alta calidad para rótulos, vallas publicitarias y señalética. Ideal para exteriores e interiores.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #fce7f3; border-radius: 8px; font-size: 0.875rem; color: #ec4899; font-weight: 600;">Rótulos</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #fce7f3; border-radius: 8px; font-size: 0.875rem; color: #ec4899; font-weight: 600;">Vallas</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #fce7f3; border-radius: 8px; font-size: 0.875rem; color: #ec4899; font-weight: 600;">Lonas</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Servicio 2: Router CNC -->
+                <div data-aos="fade-up" data-aos-delay="100" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #f59e0b, #ef4444); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1565024640326-b2ae7c1c2fd9?w=600&q=80" alt="Router CNC" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Router CNC
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Corte, mecanizado y fresado de precisión en materiales sólidos: madera, PVC, melanina, alucobond y acrílico.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #fef3c7; border-radius: 8px; font-size: 0.875rem; color: #f59e0b; font-weight: 600;">Madera</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #fef3c7; border-radius: 8px; font-size: 0.875rem; color: #f59e0b; font-weight: 600;">PVC</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #fef3c7; border-radius: 8px; font-size: 0.875rem; color: #f59e0b; font-weight: 600;">Acrílico</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Servicio 3: Impresora UV -->
+                <div data-aos="fade-up" data-aos-delay="200" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #8b5cf6, #4a2f1a); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=600&q=80" alt="Impresora UV" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-fill-drip"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Impresora UV
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Impresión DTF y sobre superficies sólidas con tecnología UV de última generación. Resultados duraderos.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #ede9fe; border-radius: 8px; font-size: 0.875rem; color: #8b5cf6; font-weight: 600;">DTF</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ede9fe; border-radius: 8px; font-size: 0.875rem; color: #8b5cf6; font-weight: 600;">UV</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ede9fe; border-radius: 8px; font-size: 0.875rem; color: #8b5cf6; font-weight: 600;">Sólidos</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Servicio 4: Cortadora Láser -->
+                <div data-aos="fade-up" data-aos-delay="300" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #10b981, #06b6d4); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=600&q=80" alt="Cortadora Láser" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-laser"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Cortadora Láser
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Corte y grabado láser de alta precisión. Perfecto para diseños detallados y personalizaciones únicas.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #d1fae5; border-radius: 8px; font-size: 0.875rem; color: #10b981; font-weight: 600;">Corte</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #d1fae5; border-radius: 8px; font-size: 0.875rem; color: #10b981; font-weight: 600;">Grabado</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #d1fae5; border-radius: 8px; font-size: 0.875rem; color: #10b981; font-weight: 600;">Precisión</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Servicio 5: Impresora 3D -->
+                <div data-aos="fade-up" data-aos-delay="400" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #14b8a6, #0891b2); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1614025767867-c072ca0cdc18?w=600&q=80" alt="Impresora 3D" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Impresión 3D
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Prototipos, maquetas y piezas personalizadas con tecnología de impresión 3D profesional.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #ccfbf1; border-radius: 8px; font-size: 0.875rem; color: #14b8a6; font-weight: 600;">Prototipos</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ccfbf1; border-radius: 8px; font-size: 0.875rem; color: #14b8a6; font-weight: 600;">Maquetas</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ccfbf1; border-radius: 8px; font-size: 0.875rem; color: #14b8a6; font-weight: 600;">Custom</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Servicio 6: Letreros LED -->
+                <div data-aos="fade-up" data-aos-delay="500" style="background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-10px)'" onmouseout="this.style.transform='translateY(0)'">
+                    <div style="height: 220px; background: linear-gradient(135deg, #f97316, #dc2626); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&q=80" alt="Letreros LED" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.3;">
+                        <div style="position: absolute; font-size: 4.5rem; color: white;">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                    </div>
+                    <div style="padding: 2rem;">
+                        <h3 style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--gray-900); margin-bottom: 1rem;">
+                            Letreros LED
+                        </h3>
+                        <p style="color: var(--gray-600); line-height: 1.7; margin-bottom: 1.5rem;">
+                            Señalética luminosa LED y letreros tradicionales. Máxima visibilidad para tu negocio día y noche.
+                        </p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                            <span style="padding: 0.375rem 0.75rem; background: #ffedd5; border-radius: 8px; font-size: 0.875rem; color: #f97316; font-weight: 600;">LED</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ffedd5; border-radius: 8px; font-size: 0.875rem; color: #f97316; font-weight: 600;">Neón</span>
+                            <span style="padding: 0.375rem 0.75rem; background: #ffedd5; border-radius: 8px; font-size: 0.875rem; color: #f97316; font-weight: 600;">24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Características Adicionales -->
+            <div style="margin-top: 4rem; text-align: center;" data-aos="fade-up">
+                <div style="display: inline-flex; gap: 3rem; flex-wrap: wrap; justify-content: center; background: rgba(255,255,255,0.1); padding: 2rem 3rem; border-radius: 20px; backdrop-filter: blur(10px);">
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-display); margin-bottom: 0.5rem;">
+                            100%
+                        </div>
+                        <div style="font-size: 1rem; opacity: 0.9;">
+                            Personalizado
+                        </div>
+                    </div>
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-display); margin-bottom: 0.5rem;">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div style="font-size: 1rem; opacity: 0.9;">
+                            Entrega Rápida
+                        </div>
+                    </div>
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-display); margin-bottom: 0.5rem;">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div style="font-size: 1rem; opacity: 0.9;">
+                            Alta Calidad
+                        </div>
+                    </div>
+                    <div style="text-align: center; color: white;">
+                        <div style="font-size: 2.5rem; font-weight: 800; font-family: var(--font-display); margin-bottom: 0.5rem;">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div style="font-size: 1rem; opacity: 0.9;">
+                            Tecnología Moderna
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+            
+    
+    <!-- Products Section -->
+    <section class="products" id="productos">
+        <div class="products-container">
+            <div class="section-header" data-aos="fade-up">
+                <div class="section-badge">Selección Especial</div>
+                <h2 class="section-title">Productos Destacados</h2>
+                <p class="section-description">
+                    Los mejores recursos de diseño seleccionados especialmente para ti
+                </p>
+            </div>
+            
+            <div class="products-filters" data-aos="fade-up" data-aos-delay="100">
+                <button class="filter-btn active" data-filter="all">
+                    <i class="fas fa-th"></i> Todos
+                </button>
+                <button class="filter-btn" data-filter="Letreros y Señalética">
+                    <i class="fas fa-sign"></i> Letreros
+                </button>
+                <button class="filter-btn" data-filter="Publicidad y Rotulación">
+                    <i class="fas fa-bullhorn"></i> Publicidad
+                </button>
+                <button class="filter-btn" data-filter="Mecanizado CNC">
+                    <i class="fas fa-cog"></i> CNC
+                </button>
+                <button class="filter-btn" data-filter="Corte y Grabado Láser">
+                    <i class="fas fa-cut"></i> Láser
+                </button>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Cargando productos increíbles...</p>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;" data-aos="fade-up">
+                <a href="/productos" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">
+                    <i class="fas fa-th-large"></i> Ver Todos los Productos
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title" data-aos="fade-up">
+                ¿Listo para Llevar tus Diseños al Siguiente Nivel?
+            </h2>
+            <p class="cta-description" data-aos="fade-up" data-aos-delay="100">
+                Únete a miles de diseñadores que confían en CNC CAMPAS Pro para sus proyectos profesionales
+            </p>
+            <div class="cta-actions" data-aos="fade-up" data-aos-delay="200">
+                <a href="#productos" class="btn btn-white">
+                    <i class="fas fa-rocket"></i>
+                    Comenzar Ahora
+                </a>
+                <a href="#contacto" class="btn btn-outline" style="color: white; border-color: white;">
+                    <i class="fas fa-envelope"></i>
+                    Contactar Ventas
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contacto" style="padding: 6rem 0; background: #f8fafc;">
+        <div class="container">
+            <div class="section-header" style="text-align: center; margin-bottom: 4rem;">
+                <div class="section-badge">Contáctanos</div>
+                <h2 class="section-title">¿Necesitas Ayuda?</h2>
+                <p class="section-description">
+                    Estamos aquí para responder tus preguntas
+                </p>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; max-width: 900px; margin: 0 auto;">
+                <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">Email</h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;">Escríbenos tus dudas</p>
+                    <a href="mailto:admin@CNC CAMPAS.com" style="color: #4a2f1a; font-weight: 600;">admin@CNC CAMPAS.com</a>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">WhatsApp</h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;">Atención inmediata</p>
+                    <a href="https://wa.me/593968526332" target="_blank" style="color: #4a2f1a; font-weight: 600;">+593 96 852 6332</a>
+                </div>
+                
+                <div style="text-align: center; padding: 2rem; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; color: white; font-size: 1.5rem;">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 style="margin-bottom: 0.5rem;">Horario</h3>
+                    <p style="color: #64748b; margin-bottom: 1rem;">Estamos disponibles</p>
+                    <p style="color: #4a2f1a; font-weight: 600;">Lun - Vie: 9am - 6pm</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-grid" style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem; max-width: 1200px; margin: 0 auto;">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <img src="/img/logo.png" alt="CNC CAMPAS" style="width: 100%; height: 100%; object-fit: contain;">
+                        </div>
+                        <span style="font-size: 1.5rem; font-weight: 700;">CNC CAMPAS</span>
+                    </div>
+                    <p class="footer-description" style="margin: 1.5rem 0;">
+                        Recursos de diseño gráfico premium para creativos profesionales. 
+                        Innovando desde 2020.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-btn"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-btn"><i class="fab fa-behance"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h4 class="footer-title">Enlaces Rápidos</h4>
+                    <a href="/" class="footer-link">Inicio</a>
+                    <a href="/pages/productos.html" class="footer-link">Productos</a>
+                    <a href="/pages/about.html" class="footer-link">Sobre Nosotros</a>
+                    <a href="#contacto" class="footer-link">Contacto</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h4 class="footer-title">Legal</h4>
+                    <a href="#" class="footer-link">Términos de Uso</a>
+                    <a href="#" class="footer-link">Privacidad</a>
+                    <a href="#" class="footer-link">Licencias</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom" style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                <p class="footer-copyright">
+                    © 2024 CNC CAMPAS. Diseñando el futuro, un píxel a la vez.
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cart Modal -->
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h3 class="cart-title">Mi Carrito</h3>
+            <button class="cart-close" id="cartClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Tu carrito está vacío</p>
+            </div>
+        </div>
+        <div class="cart-footer" style="display: none;" id="cartFooter">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0.00</span>
+            </div>
+            <button class="cart-checkout-btn" onclick="proceedToCheckout()">
+                <i class="fas fa-lock"></i>
+                Proceder al Pago
+            </button>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/js/main-redesign.js"></script>
+    <script>
+        // Toggle del menú de usuario
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('userMenu');
+            const btn = document.getElementById('userMenuBtn');
+            if (menu && btn && !menu.contains(event.target) && !btn.contains(event.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

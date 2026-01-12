@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - CNC CAMPAS Pro</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f3f4f6; }
+        
+        .admin-container { display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .admin-sidebar { width: 280px; background: #1f2937; color: white; position: fixed; height: 100vh; overflow-y: auto; z-index: 1000; }
+        .admin-logo { padding: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; gap: 1rem; }
+        .admin-logo i { font-size: 2rem; color: #4a2f1a; }
+        .logo-text h3 { font-size: 1.5rem; margin: 0; }
+        .logo-text span { font-size: 0.75rem; color: #ec4899; letter-spacing: 2px; }
+        
+        .admin-nav { padding: 1rem 0; }
+        .admin-nav a { display: flex; align-items: center; gap: 1rem; padding: 1rem 2rem; color: white; text-decoration: none; transition: all 0.3s; }
+        .admin-nav a:hover { background: rgba(99, 102, 241, 0.2); }
+        .admin-nav a.active { background: #4a2f1a; border-left: 4px solid #ec4899; }
+        .admin-nav i { width: 20px; font-size: 1.1rem; }
+        
+        /* Main Content */
+        .admin-main { flex: 1; margin-left: 280px; padding: 2rem; }
+        .admin-header { background: white; padding: 1.5rem 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .admin-header h1 { font-size: 2rem; color: #1f2937; }
+        .user-info { display: flex; align-items: center; gap: 1rem; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .stat-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .stat-icon { width: 60px; height: 60px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; }
+        .stat-icon.revenue { background: #d1fae5; color: #065f46; }
+        .stat-icon.orders { background: #dbeafe; color: #1e40af; }
+        .stat-icon.products { background: #fef3c7; color: #92400e; }
+        .stat-icon.users { background: #fce7f3; color: #9f1239; }
+        .stat-value { font-size: 2rem; font-weight: bold; color: #1f2937; margin-bottom: 0.5rem; }
+        .stat-label { color: #6b7280; font-size: 0.9rem; }
+        .stat-change { font-size: 0.875rem; }
+        .stat-change.positive { color: #10b981; }
+        .stat-change.negative { color: #ef4444; }
+        
+        /* Sections */
+        .admin-section { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 2rem; display: none; }
+        .admin-section.active { display: block; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #f3f4f6; }
+        .section-header h2 { font-size: 1.5rem; color: #1f2937; }
+        
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table thead { background: #f9fafb; }
+        .data-table th, .data-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        .data-table th { font-weight: 600; color: #374151; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .data-table tbody tr:hover { background: #f9fafb; }
+        .data-table img { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; }
+        
+        /* Badges */
+        .badge { padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; }
+        .badge.pending { background: #fef3c7; color: #92400e; }
+        .badge.processing { background: #dbeafe; color: #1e40af; }
+        .badge.completed { background: #d1fae5; color: #065f46; }
+        .badge.paid { background: #d1fae5; color: #065f46; }
+        .badge.featured { background: #dbeafe; color: #1e40af; }
+        .badge.trending { background: #fef3c7; color: #92400e; }
+        
+        /* Buttons */
+        .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .btn-primary { background: #4a2f1a; color: white; }
+        .btn-primary:hover { background: #4f46e5; }
+        .btn-success { background: #10b981; color: white; }
+        .btn-success:hover { background: #059669; }
+        .btn-danger { background: #ef4444; color: white; }
+        .btn-danger:hover { background: #dc2626; }
+        .btn-action { padding: 0.5rem 1rem; font-size: 0.875rem; }
+        
+        /* Charts */
+        .charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 2rem; }
+        .chart-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .chart-card h3 { margin-bottom: 1.5rem; color: #1f2937; }
+        
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); overflow-y: auto; }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
+        .modal-header h2 { font-size: 1.5rem; }
+        .close { font-size: 2rem; cursor: pointer; color: #6b7280; }
+        .close:hover { color: #ef4444; }
+        
+        /* Form */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #374151; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.75rem; border: 2px solid #e5e7eb; border-radius: 8px; font-size: 1rem; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #4a2f1a; }
+        .form-group.checkbox { display: flex; align-items: center; gap: 0.5rem; }
+        .form-group.checkbox input { width: auto; }
+        
+        /* Empty State */
+        .empty-state { text-align: center; padding: 3rem; color: #6b7280; }
+        .empty-state i { font-size: 4rem; margin-bottom: 1rem; }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 3rem; }
+        .spinner { border: 3px solid #f3f4f6; border-top: 3px solid #4a2f1a; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* Reports */
+        .report-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #f9fafb; border-radius: 8px; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-sidebar { width: 0; transform: translateX(-100%); }
+            .admin-main { margin-left: 0; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .charts-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-logo">
+                <i class="fas fa-palette"></i>
+                <div class="logo-text">
+                    <h3>CNC CAMPAS</h3>
+                    <span>ADMIN PANEL</span>
+                </div>
+            </div>
+            <nav class="admin-nav">
+                <a href="#dashboard" class="nav-link active" data-section="dashboard">
+                    <i class="fas fa-chart-line"></i> Dashboard
+                </a>
+                <a href="#productos" class="nav-link" data-section="productos">
+                    <i class="fas fa-box"></i> Productos
+                </a>
+                <a href="#pedidos" class="nav-link" data-section="pedidos">
+                    <i class="fas fa-shopping-cart"></i> Pedidos
+                </a>
+                <a href="#reportes" class="nav-link" data-section="reportes">
+                    <i class="fas fa-file-chart"></i> Reportes
+                </a>
+                <a href="#categorias" class="nav-link" data-section="categorias">
+                    <i class="fas fa-tags"></i> Categorías
+                </a>
+                <a href="/">
+                    <i class="fas fa-home"></i> Ver Tienda
+                </a>
+                <a href="#" id="adminLogout">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </nav>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <div class="admin-header">
+                <h1 id="pageTitle">Dashboard</h1>
+                <div class="user-info">
+                    <div>
+                        <div style="font-weight: 600;" id="adminUserName">Admin</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;" id="adminUserEmail">admin@CNC CAMPAS.com</div>
+                    </div>
+                    <img id="adminUserAvatar" class="user-avatar" src="" alt="Avatar">
+                </div>
+            </div>
+            
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section active">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div>
+                                <div class="stat-value">$<span id="totalRevenue">0</span></div>
+                                <div class="stat-label">Ingresos Totales</div>
+                            </div>
+                            <div class="stat-icon revenue">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +12.5% vs mes anterior
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div>
+                                <div class="stat-value"><span id="totalOrders">0</span></div>
+                                <div class="stat-label">Total Pedidos</div>
+                            </div>
+                            <div class="stat-icon orders">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +8.2% vs mes anterior
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div>
+                                <div class="stat-value"><span id="totalProducts">0</span></div>
+                                <div class="stat-label">Total Productos</div>
+                            </div>
+                            <div class="stat-icon products">
+                                <i class="fas fa-box"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +3 nuevos esta semana
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div>
+                                <div class="stat-value"><span id="totalUsers">0</span></div>
+                                <div class="stat-label">Total Usuarios</div>
+                            </div>
+                            <div class="stat-icon users">
+                                <i class="fas fa-users"></i>
+                            </div>
+                        </div>
+                        <div class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> +15 nuevos este mes
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Ventas por Mes</h3>
+                        <canvas id="salesChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Productos Más Vendidos</h3>
+                        <canvas id="productsChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Recent Orders -->
+                <div class="chart-card">
+                    <h3>Pedidos Recientes</h3>
+                    <div id="recentOrdersTable"></div>
+                </div>
+            </div>
+            
+            <!-- Productos Section -->
+            <div id="productos-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestión de Productos</h2>
+                    <button class="btn btn-primary" onclick="openProductModal()">
+                        <i class="fas fa-plus"></i> Agregar Producto
+                    </button>
+                </div>
+                <div id="productosTable"></div>
+            </div>
+            
+            <!-- Pedidos Section -->
+            <div id="pedidos-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestión de Pedidos</h2>
+                    <div>
+                        <select id="orderStatusFilter" class="btn" style="background: white; border: 2px solid #e5e7eb;">
+                            <option value="">Todos los estados</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="processing">En Proceso</option>
+                            <option value="completed">Completados</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="pedidosTable"></div>
+            </div>
+            
+            <!-- Reportes Section -->
+            <div id="reportes-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Reportes y Estadísticas</h2>
+                    <button class="btn btn-success" onclick="exportReport()">
+                        <i class="fas fa-download"></i> Exportar Reporte
+                    </button>
+                </div>
+                
+                <div class="report-filters">
+                    <div class="form-group">
+                        <label>Fecha Inicio</label>
+                        <input type="date" id="reportStartDate" class="btn" style="background: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha Fin</label>
+                        <input type="date" id="reportEndDate" class="btn" style="background: white;">
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Reporte</label>
+                        <select id="reportType" class="btn" style="background: white;">
+                            <option value="sales">Ventas</option>
+                            <option value="products">Productos</option>
+                            <option value="customers">Clientes</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary" onclick="generateReport()">
+                            <i class="fas fa-chart-bar"></i> Generar
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="reportResults"></div>
+            </div>
+            
+            <!-- Categorías Section -->
+            <div id="categorias-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Categorías</h2>
+                </div>
+                <div id="categoriasGrid"></div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Producto -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="productModalTitle">Agregar Producto</h2>
+                <span class="close" onclick="closeModal('productModal')">&times;</span>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción Corta *</label>
+                    <input type="text" id="productShortDesc" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción Completa *</label>
+                    <textarea id="productDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Precio ($) *</label>
+                    <input type="number" id="productPrice" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Precio de Oferta ($)</label>
+                    <input type="number" id="productSalePrice" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Categoría *</label>
+                    <select id="productCategory" required></select>
+                </div>
+                <div class="form-group">
+                    <label>URL de Imagen *</label>
+                    <input type="url" id="productImage" required>
+                </div>
+                <div class="form-group">
+                    <label>Formato de Archivo</label>
+                    <input type="text" id="productFileFormat" placeholder="ej. AI, PSD, SVG">
+                </div>
+                <div class="form-group">
+                    <label>Stock</label>
+                    <input type="number" id="productStock" value="999">
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="productFeatured">
+                    <label for="productFeatured">Destacado</label>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="productTrending">
+                    <label for="productTrending">Tendencia</label>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="productBestseller">
+                    <label for="productBestseller">Más Vendido</label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                    <i class="fas fa-save"></i> Guardar Producto
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="toastContainer" style="position: fixed; top: 20px; right: 20px; z-index: 3000;"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>

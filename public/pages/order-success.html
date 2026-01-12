@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido Confirmado - CNC CAMPAS Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .success-container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 3rem;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            animation: scaleIn 0.5s ease-out;
+        }
+        
+        .success-icon i {
+            font-size: 3rem;
+            color: white;
+        }
+        
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        
+        .order-number {
+            font-size: 1.25rem;
+            color: #4a2f1a;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .message {
+            color: #6b7280;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+        
+        .info-box {
+            background: #f9fafb;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .info-box h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .info-value {
+            color: #111827;
+        }
+        
+        .transfer-info {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+        
+        .transfer-info h3 {
+            color: #92400e;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .transfer-detail {
+            margin-bottom: 0.75rem;
+        }
+        
+        .transfer-detail strong {
+            color: #78350f;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4a2f1a, #ec4899);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        
+        .btn-whatsapp:hover {
+            background: #128C7E;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+    </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        body > header:first-child {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <h1>¡Pedido Confirmado!</h1>
+        <div class="order-number" id="orderNumber">Pedido #0000</div>
+        
+        <p class="message">
+            Gracias por tu compra. Hemos recibido tu pedido y te hemos enviado un email de confirmación 
+            con todos los detalles.
+        </p>
+        
+        <div class="transfer-info">
+            <h3>
+                <i class="fas fa-university"></i>
+                Datos para Transferencia
+            </h3>
+            <div class="transfer-detail">
+                <strong>Banco:</strong> Banco Pichincha
+            </div>
+            <div class="transfer-detail">
+                <strong>Cuenta Corriente:</strong> 2100123456
+            </div>
+            <div class="transfer-detail">
+                <strong>Beneficiario:</strong> CNC CAMPAS Pro
+            </div>
+            <div class="transfer-detail">
+                <strong>Monto a transferir:</strong> <span id="totalAmount">$0.00</span>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.9rem; color: #78350f;">
+                <strong>Importante:</strong> Una vez realizada la transferencia, envíanos el comprobante 
+                por WhatsApp o email para procesar tu pedido.
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>Información del Pedido</h3>
+            <div id="orderDetails"></div>
+        </div>
+        
+        <div class="actions">
+            <button class="btn btn-whatsapp" id="whatsappBtn">
+                <i class="fab fa-whatsapp"></i>
+                Enviar Comprobante por WhatsApp
+            </button>
+            <a href="/" class="btn btn-secondary">
+                <i class="fas fa-home"></i>
+                Volver al Inicio
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+        
+        async function loadOrderDetails() {
+            if (!orderId) {
+                window.location.href = '/';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_URL}/orders/guest/${orderId}`);
+                const order = await response.json();
+                
+                if (response.ok) {
+                    console.log('✅ Pedido cargado:', order);
+                    
+                    document.getElementById('orderNumber').textContent = `Pedido #${order.id}`;
+                    document.getElementById('totalAmount').textContent = `$${parseFloat(order.total).toFixed(2)}`;
+                    
+                    document.getElementById('orderDetails').innerHTML = `
+                        <div class="info-item">
+                            <span class="info-label">Cliente:</span>
+                            <span class="info-value">${order.customer_name || 'No disponible'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Email:</span>
+                            <span class="info-value">${order.customer_email || 'No disponible'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Teléfono:</span>
+                            <span class="info-value">${order.customer_phone || 'No disponible'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Items:</span>
+                            <span class="info-value">${order.items ? order.items.length : 0} producto(s)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Total:</span>
+                            <span class="info-value">$${parseFloat(order.total).toFixed(2)}</span>
+                        </div>
+                    `;
+                    
+                    // Configurar botón de WhatsApp
+                    const whatsappBtn = document.getElementById('whatsappBtn');
+                    const message = `Hola! Realicé una transferencia para el pedido #${order.id} por un monto de $${parseFloat(order.total).toFixed(2)}. Adjunto el comprobante.`;
+                    const whatsappNumber = '593968526332'; // Número de CNC CAMPAS
+                    whatsappBtn.onclick = () => {
+                        window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                    };
+                } else {
+                    console.error('❌ Error al cargar pedido:', order);
+                    alert('Error al cargar el pedido. Serás redirigido.');
+                    setTimeout(() => {
+                        window.location.href = '/pages/mis-pedidos.html';
+                    }, 2000);
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar pedido:', error);
+                alert('Error al cargar el pedido. Serás redirigido a Mis Pedidos.');
+                setTimeout(() => {
+                    window.location.href = '/pages/mis-pedidos.html';
+                }, 2000);
+            }
+        }
+        
+        loadOrderDetails();
+    </script>
+    
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+</body>
+</html>
