@@ -131,7 +131,7 @@ router.get("/", async (req, res) => {
 });
 
 // Crear pedido sin autenticación (guest checkout)
-router.post("/create-guest", async (req, res) => {
+router.post('/create-guest', async (req, res) => {
   const conn = await pool.getConnection();
 
   try {
@@ -146,31 +146,29 @@ router.post("/create-guest", async (req, res) => {
       discount,
       couponCode,
       tax,
-      total,
+      total
     } = req.body;
 
-    if (!items || items.length === 0) {
-      return res.status(400).json({ error: "No hay productos en el pedido" });
-    }
+    await conn.beginTransaction();
 
     // 1️⃣ Crear orden
-    const [result] = await pool.query(
+    const [orderResult] = await conn.query(
       `INSERT INTO orders 
-   (user_id, customer_name, customer_email, customer_phone, notes,
-    payment_method, subtotal, discount, coupon_code, tax, total)
-   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      (user_id, customer_name, customer_email, customer_phone, notes,
+       payment_method, subtotal, tax, total, coupon_code, discount)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        null, // 👈 INVITADO
+        null,
         customerName,
         customerEmail,
         customerPhone,
-        notes || null,
+        notes,
         paymentMethod,
         subtotal,
-        discount || 0,
-        couponCode,
         tax,
         total,
+        couponCode,
+        discount
       ]
     );
 
@@ -179,43 +177,46 @@ router.post("/create-guest", async (req, res) => {
     // 2️⃣ Insertar items
     for (const item of items) {
       await conn.query(
-        `
-        INSERT INTO order_items (
-          order_id,
-          product_id,
-          product_name,
-          quantity,
-          price,
-          image
-        ) VALUES (?, ?, ?, ?, ?, ?)
-        `,
+        `INSERT INTO order_items 
+        (order_id, product_id, product_name, quantity, price)
+        VALUES (?, ?, ?, ?, ?)`,
         [
           orderId,
           item.productId,
           item.productName,
           item.quantity,
-          item.price,
-          item.image || null,
+          item.price
         ]
       );
     }
 
-    res.json({
+    await conn.commit();
+
+    res.status(201).json({
       success: true,
-      message: "Pedido creado correctamente",
-      orderId,
+      message: 'Pedido creado correctamente',
+      order: {
+        id: orderId,
+        total,
+        customerName,
+        customerEmail
+      }
     });
+
   } catch (error) {
-    console.error("❌ Error creando pedido:", error);
+    await conn.rollback();
+    console.error('❌ Error al crear pedido:', error);
+
     res.status(500).json({
       success: false,
-      error: "Error al crear pedido",
-      details: error.message,
+      error: 'Error al crear pedido',
+      details: error.message
     });
   } finally {
     conn.release();
   }
 });
+
 
 // Crear pedido
 router.post("/", async (req, res) => {
