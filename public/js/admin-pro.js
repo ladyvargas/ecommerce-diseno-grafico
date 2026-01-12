@@ -2,7 +2,7 @@
 // ADMIN PRO - JAVASCRIPT COMPLETO
 // ========================================
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
 let currentToken = localStorage.getItem('token');
 let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
