@@ -172,75 +172,77 @@ async function initializeDatabase() {
 async function ensureColumns() {
   const conn = await pool.getConnection();
 
-  try {
-    // ---------- PRODUCTS ----------
-    const productColumns = [
-      {
-        name: "active",
-        sql: "ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE",
-      },
-      {
-        name: "stock",
-        sql: "ALTER TABLE products ADD COLUMN stock INT DEFAULT 100",
-      },
-    ];
-
-    for (const col of productColumns) {
-      const [exists] = await conn.query(`SHOW COLUMNS FROM products LIKE ?`, [
-        col.name,
-      ]);
-      if (exists.length === 0) {
-        await conn.query(col.sql);
-        console.log(`🛠 Columna ${col.name} agregada en products`);
-      }
-    }
-
-    // ---------- ORDERS ----------
-    const orderColumns = [
-      {
-        name: "customer_name",
-        sql: "ALTER TABLE orders ADD COLUMN customer_name VARCHAR(255)",
-      },
-      {
-        name: "customer_email",
-        sql: "ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255)",
-      },
-      {
-        name: "customer_phone",
-        sql: "ALTER TABLE orders ADD COLUMN customer_phone VARCHAR(50)",
-      },
-      { name: "notes", sql: "ALTER TABLE orders ADD COLUMN notes TEXT" },
-      {
-        name: "discount",
-        sql: "ALTER TABLE orders ADD COLUMN discount DECIMAL(10,2) DEFAULT 0",
-      },
-      {
-        name: "coupon_code",
-        sql: "ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(50)",
-      },
-    ];
-
-    for (const col of orderColumns) {
-      const [exists] = await conn.query(`SHOW COLUMNS FROM orders LIKE ?`, [
-        col.name,
-      ]);
-      if (exists.length === 0) {
-        await conn.query(col.sql);
-        console.log(`🛠 Columna ${col.name} agregada en orders`);
-      }
-    }
-
-    // ---------- ORDER_ITEMS ----------
-    const [imgCol] = await conn.query(
-      `SHOW COLUMNS FROM order_items LIKE 'image'`
+  // ---------- PRODUCTS ----------
+  const [c1] = await conn.query(`SHOW COLUMNS FROM products LIKE 'active'`);
+  if (c1.length === 0) {
+    await conn.query(
+      `ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE`
     );
-    if (imgCol.length === 0) {
-      await conn.query(`ALTER TABLE order_items ADD COLUMN image TEXT`);
-      console.log("🛠 Columna image agregada en order_items");
-    }
-  } finally {
-    conn.release();
+    console.log("🛠 products.active agregado");
   }
+
+  const [c2] = await conn.query(`SHOW COLUMNS FROM products LIKE 'stock'`);
+  if (c2.length === 0) {
+    await conn.query(`ALTER TABLE products ADD COLUMN stock INT DEFAULT 100`);
+    console.log("🛠 products.stock agregado");
+  }
+
+  // ---------- ORDERS ----------
+  const altersOrders = [
+    ["customer_name", "VARCHAR(255)"],
+    ["customer_email", "VARCHAR(255)"],
+    ["customer_phone", "VARCHAR(50)"],
+    ["notes", "TEXT"],
+    ["discount", "DECIMAL(10,2) DEFAULT 0"],
+    ["coupon_code", "VARCHAR(50)"],
+  ];
+
+  for (const [col, type] of altersOrders) {
+    const [exists] = await conn.query(`SHOW COLUMNS FROM orders LIKE '${col}'`);
+    if (exists.length === 0) {
+      await conn.query(`ALTER TABLE orders ADD COLUMN ${col} ${type}`);
+      console.log(`🛠 orders.${col} agregado`);
+    }
+  }
+
+  // ---------- ORDER ITEMS ----------
+  const [c3] = await conn.query(`SHOW COLUMNS FROM order_items LIKE 'image'`);
+  if (c3.length === 0) {
+    await conn.query(`ALTER TABLE order_items ADD COLUMN image TEXT`);
+    console.log("🛠 order_items.image agregado");
+  }
+
+  // ---------- PROMOTIONS ----------
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS promotions (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      description TEXT,
+      discount_type ENUM('percent','fixed') NOT NULL,
+      discount_value DECIMAL(10,2) NOT NULL,
+      active BOOLEAN DEFAULT TRUE,
+      start_date DATE,
+      end_date DATE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  // ---------- COUPONS ----------
+  await conn.query(`
+    CREATE TABLE IF NOT EXISTS coupons (
+      id INT AUTO_INCREMENT PRIMARY KEY,
+      code VARCHAR(50) UNIQUE NOT NULL,
+      discount_type ENUM('percent','fixed') NOT NULL,
+      discount_value DECIMAL(10,2) NOT NULL,
+      max_uses INT DEFAULT 1,
+      used_count INT DEFAULT 0,
+      active BOOLEAN DEFAULT TRUE,
+      expires_at DATE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
+  conn.release();
 }
 
 // ===============================
