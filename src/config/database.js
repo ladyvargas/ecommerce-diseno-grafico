@@ -167,51 +167,77 @@ async function initializeDatabase() {
 }
 
 // ===============================
-// VERIFICAR Y AGREGAR COLUMNAS
+// VERIFICAR Y CREAR COLUMNAS FALTANTES
 // ===============================
 async function ensureColumns() {
   const conn = await pool.getConnection();
 
   try {
-    // -------- products --------
+    // ---------- PRODUCTS ----------
     const productColumns = [
-      { name: "active", sql: "ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE" },
-      { name: "stock", sql: "ALTER TABLE products ADD COLUMN stock INT DEFAULT 100" }
+      {
+        name: "active",
+        sql: "ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE",
+      },
+      {
+        name: "stock",
+        sql: "ALTER TABLE products ADD COLUMN stock INT DEFAULT 100",
+      },
     ];
 
     for (const col of productColumns) {
-      const [rows] = await conn.query(`SHOW COLUMNS FROM products LIKE ?`, [col.name]);
-      if (rows.length === 0) {
+      const [exists] = await conn.query(`SHOW COLUMNS FROM products LIKE ?`, [
+        col.name,
+      ]);
+      if (exists.length === 0) {
         await conn.query(col.sql);
-        console.log(`🛠 Columna ${col.name} agregada a products`);
+        console.log(`🛠 Columna ${col.name} agregada en products`);
       }
     }
 
-    // -------- orders --------
+    // ---------- ORDERS ----------
     const orderColumns = [
-      { name: "customer_name", sql: "ALTER TABLE orders ADD COLUMN customer_name VARCHAR(255)" },
-      { name: "customer_email", sql: "ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255)" },
-      { name: "customer_phone", sql: "ALTER TABLE orders ADD COLUMN customer_phone VARCHAR(50)" },
+      {
+        name: "customer_name",
+        sql: "ALTER TABLE orders ADD COLUMN customer_name VARCHAR(255)",
+      },
+      {
+        name: "customer_email",
+        sql: "ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255)",
+      },
+      {
+        name: "customer_phone",
+        sql: "ALTER TABLE orders ADD COLUMN customer_phone VARCHAR(50)",
+      },
       { name: "notes", sql: "ALTER TABLE orders ADD COLUMN notes TEXT" },
-      { name: "discount", sql: "ALTER TABLE orders ADD COLUMN discount DECIMAL(10,2) DEFAULT 0" },
-      { name: "coupon_code", sql: "ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(50)" }
+      {
+        name: "discount",
+        sql: "ALTER TABLE orders ADD COLUMN discount DECIMAL(10,2) DEFAULT 0",
+      },
+      {
+        name: "coupon_code",
+        sql: "ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(50)",
+      },
     ];
 
     for (const col of orderColumns) {
-      const [rows] = await conn.query(`SHOW COLUMNS FROM orders LIKE ?`, [col.name]);
-      if (rows.length === 0) {
+      const [exists] = await conn.query(`SHOW COLUMNS FROM orders LIKE ?`, [
+        col.name,
+      ]);
+      if (exists.length === 0) {
         await conn.query(col.sql);
-        console.log(`🛠 Columna ${col.name} agregada a orders`);
+        console.log(`🛠 Columna ${col.name} agregada en orders`);
       }
     }
 
-    // -------- order_items --------
-    const [oiCols] = await conn.query(`SHOW COLUMNS FROM order_items LIKE 'image'`);
-    if (oiCols.length === 0) {
+    // ---------- ORDER_ITEMS ----------
+    const [imgCol] = await conn.query(
+      `SHOW COLUMNS FROM order_items LIKE 'image'`
+    );
+    if (imgCol.length === 0) {
       await conn.query(`ALTER TABLE order_items ADD COLUMN image TEXT`);
-      console.log("🛠 Columna image agregada a order_items");
+      console.log("🛠 Columna image agregada en order_items");
     }
-
   } finally {
     conn.release();
   }
