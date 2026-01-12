@@ -3,18 +3,17 @@ const router = express.Router();
 const { auth, adminAuth } = require('../middleware/auth');
 const { pool } = require('../config/database');
 
-// Obtener todos los productos
+// ===============================
+// OBTENER TODOS LOS PRODUCTOS
+// ===============================
 router.get('/', async (req, res) => {
     try {
-        const { category, featured, search, includeInactive } = req.query;
+        const { category, featured, search } = req.query;
         
         let query = 'SELECT * FROM products WHERE 1=1';
         const params = [];
 
-        // Por defecto, filtrar productos inactivos
-        if (includeInactive !== 'true') {
-            query += ' AND (active IS NULL OR active = TRUE)';
-        }
+        // ❌ QUITADO: filtro por active (no existe la columna)
 
         // Filtrar por categoría
         if (category && category !== 'all') {
@@ -43,7 +42,9 @@ router.get('/', async (req, res) => {
     }
 });
 
-// Obtener producto por ID
+// ===============================
+// OBTENER PRODUCTO POR ID
+// ===============================
 router.get('/:id', async (req, res) => {
     try {
         const [products] = await pool.query(
@@ -62,12 +63,14 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// Crear producto (temporal sin auth)
+// ===============================
+// CREAR PRODUCTO (sin auth temporal)
+// ===============================
 router.post('/', async (req, res) => {
     try {
         const { 
             name, description, price, sale_price, salePrice, category, image, 
-            file_format, fileFormat, featured, trending, active, stock 
+            file_format, fileFormat, featured, trending, stock 
         } = req.body;
 
         if (!name || !description || !price || !category) {
@@ -80,8 +83,9 @@ router.post('/', async (req, res) => {
         const finalStock = stock || 100;
 
         const [result] = await pool.query(
-            `INSERT INTO products (name, description, price, sale_price, category, image, file_format, featured, trending, active, stock) 
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            `INSERT INTO products 
+            (name, description, price, sale_price, category, image, file_format, featured, trending, stock) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 name,
                 description,
@@ -92,7 +96,6 @@ router.post('/', async (req, res) => {
                 finalFileFormat,
                 featured ? 1 : 0,
                 trending ? 1 : 0,
-                active !== false ? 1 : 0,
                 parseInt(finalStock)
             ]
         );
@@ -108,16 +111,16 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Actualizar producto (solo admin)
-// Actualizar producto (temporal sin auth para debugging)
+// ===============================
+// ACTUALIZAR PRODUCTO
+// ===============================
 router.put('/:id', async (req, res) => {
     try {
         const { 
             name, description, price, sale_price, salePrice, category, image, 
-            file_format, fileFormat, featured, trending, active, stock 
+            file_format, fileFormat, featured, trending, stock 
         } = req.body;
 
-        // Compatibilidad con ambos formatos de nombres
         const finalSalePrice = sale_price || salePrice;
         const finalFileFormat = file_format || fileFormat;
         const finalStock = stock || 100;
@@ -125,7 +128,7 @@ router.put('/:id', async (req, res) => {
         const [result] = await pool.query(
             `UPDATE products 
              SET name = ?, description = ?, price = ?, sale_price = ?, category = ?, 
-                 image = ?, file_format = ?, featured = ?, trending = ?, active = ?, stock = ?
+                 image = ?, file_format = ?, featured = ?, trending = ?, stock = ?
              WHERE id = ?`,
             [
                 name,
@@ -137,7 +140,6 @@ router.put('/:id', async (req, res) => {
                 finalFileFormat,
                 featured ? 1 : 0,
                 trending ? 1 : 0,
-                active !== false ? 1 : 0,
                 parseInt(finalStock),
                 req.params.id
             ]
@@ -157,7 +159,9 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-// Eliminar producto (temporal sin auth)
+// ===============================
+// ELIMINAR PRODUCTO
+// ===============================
 router.delete('/:id', async (req, res) => {
     try {
         const [result] = await pool.query(
@@ -179,7 +183,9 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-// Actualizar stock del producto
+// ===============================
+// ACTUALIZAR STOCK
+// ===============================
 router.patch('/:id/stock', auth, adminAuth, async (req, res) => {
     try {
         const { stock } = req.body;
