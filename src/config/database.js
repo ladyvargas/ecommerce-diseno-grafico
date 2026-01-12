@@ -242,6 +242,11 @@ async function ensureColumns() {
     )
   `);
 
+  // Forzar que user_id acepte NULL
+  await conn.query(`
+  ALTER TABLE orders MODIFY user_id INT NULL
+`);
+
   conn.release();
 }
 

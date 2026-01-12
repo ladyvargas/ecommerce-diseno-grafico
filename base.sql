@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.order_items: ~11 rows (aproximadamente)
+-- Volcando datos para la tabla cnc_campas.order_items: ~13 rows (aproximadamente)
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `quantity`, `price`) VALUES
 	(1, 1, 3, NULL, 1, 19.99),
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `promotions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.promotions: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla cnc_campas.promotions: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `promotions` DISABLE KEYS */;
 INSERT INTO `promotions` (`id`, `name`, `description`, `discount_type`, `discount_value`, `applies_to`, `product_ids`, `category_ids`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`) VALUES
 	(2, 'Oferta de Temporada', 'Descuento especial en productos seleccionados', 'percentage', 20.00, 'products', NULL, NULL, '2026-01-11 20:09:58', '2026-01-26 20:09:58', 1, '2026-01-11 20:09:58', '2026-01-11 20:09:58'),
