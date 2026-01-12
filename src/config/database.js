@@ -146,7 +146,7 @@ async function initializeDatabase() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
-
+    await ensureColumns();
     dbConnection.release();
     console.log("✅ Tablas de base de datos creadas correctamente");
 
@@ -157,6 +157,33 @@ async function initializeDatabase() {
   }
 }
 
+// Verificar columnas faltantes
+async function ensureColumns() {
+  const conn = await pool.getConnection();
+
+  const [cols] = await conn.query(`
+    SHOW COLUMNS FROM products LIKE 'active'
+  `);
+
+  if (cols.length === 0) {
+    await conn.query(
+      `ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE`
+    );
+    console.log("🛠 Columna active agregada");
+  }
+
+  const [cols2] = await conn.query(`
+    SHOW COLUMNS FROM products LIKE 'stock'
+  `);
+
+  if (cols2.length === 0) {
+    await conn.query(`ALTER TABLE products ADD COLUMN stock INT DEFAULT 100`);
+    console.log("🛠 Columna stock agregada");
+  }
+
+  conn.release();
+}
+
 // ===============================
 // SEED DE DATOS
 // ===============================
@@ -165,7 +192,9 @@ async function seedDatabase() {
   const connection = await pool.getConnection();
 
   try {
-    const [users] = await connection.query("SELECT COUNT(*) as count FROM users");
+    const [users] = await connection.query(
+      "SELECT COUNT(*) as count FROM users"
+    );
 
     if (users[0].count === 0) {
       console.log("📦 Insertando datos iniciales...");
