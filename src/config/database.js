@@ -44,6 +44,10 @@ async function initializeDatabase() {
 
     const dbConnection = await pool.getConnection();
 
+    // ===============================
+    // TABLAS
+    // ===============================
+
     await dbConnection.query(`
       CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -78,7 +82,7 @@ async function initializeDatabase() {
     await dbConnection.query(`
       CREATE TABLE IF NOT EXISTS orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
+        user_id INT NULL,
         user_name VARCHAR(255),
         user_email VARCHAR(255),
         status ENUM('pending', 'processing', 'completed', 'cancelled') DEFAULT 'pending',
@@ -146,9 +150,14 @@ async function initializeDatabase() {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
     `);
+
+    // ===============================
+    // 🔥 SINCRONIZAR COLUMNAS FALTANTES
+    // ===============================
     await ensureColumns();
+
     dbConnection.release();
-    console.log("✅ Tablas de base de datos creadas correctamente");
+    console.log("✅ Tablas de base de datos creadas y sincronizadas");
 
     return true;
   } catch (error) {
@@ -157,31 +166,55 @@ async function initializeDatabase() {
   }
 }
 
-// Verificar columnas faltantes
+// ===============================
+// VERIFICAR Y AGREGAR COLUMNAS
+// ===============================
 async function ensureColumns() {
   const conn = await pool.getConnection();
 
-  const [cols] = await conn.query(`
-    SHOW COLUMNS FROM products LIKE 'active'
-  `);
+  try {
+    // -------- products --------
+    const productColumns = [
+      { name: "active", sql: "ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE" },
+      { name: "stock", sql: "ALTER TABLE products ADD COLUMN stock INT DEFAULT 100" }
+    ];
 
-  if (cols.length === 0) {
-    await conn.query(
-      `ALTER TABLE products ADD COLUMN active BOOLEAN DEFAULT TRUE`
-    );
-    console.log("🛠 Columna active agregada");
+    for (const col of productColumns) {
+      const [rows] = await conn.query(`SHOW COLUMNS FROM products LIKE ?`, [col.name]);
+      if (rows.length === 0) {
+        await conn.query(col.sql);
+        console.log(`🛠 Columna ${col.name} agregada a products`);
+      }
+    }
+
+    // -------- orders --------
+    const orderColumns = [
+      { name: "customer_name", sql: "ALTER TABLE orders ADD COLUMN customer_name VARCHAR(255)" },
+      { name: "customer_email", sql: "ALTER TABLE orders ADD COLUMN customer_email VARCHAR(255)" },
+      { name: "customer_phone", sql: "ALTER TABLE orders ADD COLUMN customer_phone VARCHAR(50)" },
+      { name: "notes", sql: "ALTER TABLE orders ADD COLUMN notes TEXT" },
+      { name: "discount", sql: "ALTER TABLE orders ADD COLUMN discount DECIMAL(10,2) DEFAULT 0" },
+      { name: "coupon_code", sql: "ALTER TABLE orders ADD COLUMN coupon_code VARCHAR(50)" }
+    ];
+
+    for (const col of orderColumns) {
+      const [rows] = await conn.query(`SHOW COLUMNS FROM orders LIKE ?`, [col.name]);
+      if (rows.length === 0) {
+        await conn.query(col.sql);
+        console.log(`🛠 Columna ${col.name} agregada a orders`);
+      }
+    }
+
+    // -------- order_items --------
+    const [oiCols] = await conn.query(`SHOW COLUMNS FROM order_items LIKE 'image'`);
+    if (oiCols.length === 0) {
+      await conn.query(`ALTER TABLE order_items ADD COLUMN image TEXT`);
+      console.log("🛠 Columna image agregada a order_items");
+    }
+
+  } finally {
+    conn.release();
   }
-
-  const [cols2] = await conn.query(`
-    SHOW COLUMNS FROM products LIKE 'stock'
-  `);
-
-  if (cols2.length === 0) {
-    await conn.query(`ALTER TABLE products ADD COLUMN stock INT DEFAULT 100`);
-    console.log("🛠 Columna stock agregada");
-  }
-
-  conn.release();
 }
 
 // ===============================
