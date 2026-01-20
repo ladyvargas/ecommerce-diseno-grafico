@@ -257,39 +257,33 @@
 
     <!-- CONTACTO -->
     <section class="contacto-section" id="contacto">
-        <div class="contacto-container">
+        <h2 class="contacto-title">CONTÁCTANOS</h2>
+        <p class="contacto-subtitle">
+            Estamos listos para ayudarte en tus proyectos de corte, grabado e impresión profesional.
+        </p>
+        <div class="contacto-grid">
+            <div class="contacto-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h4>Ubicación</h4>
+                <p>Esmeraldas, Ecuador</p>
+            </div>
 
-            <h2 class="contacto-title">CONTÁCTANOS</h2>
-            <p class="contacto-subtitle">
-                Estamos listos para ayudarte en tus proyectos de corte, grabado e impresión profesional.
-            </p>
+            <div class="contacto-card">
+                <i class="fas fa-phone"></i>
+                <h4>Teléfono</h4>
+                <p>+593 XX XXX XXXX</p>
+            </div>
 
-            <div class="contacto-grid">
+            <div class="contacto-card">
+                <i class="fas fa-envelope"></i>
+                <h4>Email</h4>
+                <p>cnccampas@gmail.com</p>
+            </div>
 
-                <div class="contacto-card">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h4>Ubicación</h4>
-                    <p>Esmeraldas, Ecuador</p>
-                </div>
-
-                <div class="contacto-card">
-                    <i class="fas fa-phone"></i>
-                    <h4>Teléfono</h4>
-                    <p>+593 XX XXX XXXX</p>
-                </div>
-
-                <div class="contacto-card">
-                    <i class="fas fa-envelope"></i>
-                    <h4>Email</h4>
-                    <p>cnccampas@gmail.com</p>
-                </div>
-
-                <div class="contacto-card">
-                    <i class="fas fa-clock"></i>
-                    <h4>Horario</h4>
-                    <p>Lun – Vie<br>8:00 AM – 6:00 PM</p>
-                </div>
-
+            <div class="contacto-card">
+                <i class="fas fa-clock"></i>
+                <h4>Horario</h4>
+                <p>Lun – Vie<br>8:00 AM – 6:00 PM</p>
             </div>
         </div>
     </section>
@@ -572,23 +566,20 @@
         });
 
         // User Menu
-        document.addEventListener("DOMContentLoaded", () => {
+        let userMenuOpen = false;
 
-            let userMenuOpen = false;
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            userMenuOpen = !userMenuOpen;
+            dropdown.style.display = userMenuOpen ? 'block' : 'none';
+        }
 
-            window.toggleUserMenu = function () {
-                const dropdown = document.getElementById('userDropdown');
-                userMenuOpen = !userMenuOpen;
-                dropdown.style.display = userMenuOpen ? 'block' : 'none';
-            };
-
-            document.addEventListener('click', (e) => {
-                const userMenu = document.querySelector('.user-menu-container');
-                if (userMenu && !userMenu.contains(e.target) && userMenuOpen) {
-                    window.toggleUserMenu();
-                }
-            });
-
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', (e) => {
+            const userMenu = document.querySelector('.user-menu-container');
+            if (userMenu && !userMenu.contains(e.target) && userMenuOpen) {
+                toggleUserMenu();
+            }
         });
 
         // Función de logout
