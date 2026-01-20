@@ -559,28 +559,29 @@
 
         // User Menu
         document.addEventListener("DOMContentLoaded", function () {
-
             var userMenuOpen = false;
-
             const userMenuBtn = document.getElementById('userMenuBtn');
             const dropdown = document.getElementById('userDropdown');
             const userMenuContainer = document.querySelector('.user-menu-container');
-
-            if (!userMenuBtn || !dropdown) {
-                console.error("Botón o dropdown no encontrados");
-                return;
-            }
 
             function toggleUserMenu() {
                 userMenuOpen = !userMenuOpen;
                 dropdown.style.display = userMenuOpen ? 'block' : 'none';
             }
-
-            userMenuBtn.addEventListener('click', function (e) {
-                e.stopPropagation();
-                toggleUserMenu();
-            });
-
+            window.logout = function () {
+                if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('cart');
+                    window.location.href = '/';
+                }
+            };
+            if (userMenuBtn) {
+                userMenuBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    toggleUserMenu();
+                });
+            }
             document.addEventListener('click', function (e) {
                 if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
                     toggleUserMenu();
@@ -588,16 +589,6 @@
             });
 
         });
-        // Función de logout
-        function logout() {
-            if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                localStorage.removeItem('cart'); // Opcional: limpiar carrito
-                window.location.href = '/';
-            }
-        }
-
         // Actualizar info de usuario al cargar
         window.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
