@@ -27,26 +27,34 @@
                     <span id="cartCount" class="cart-count" style="display: none;">0</span>
                 </button>
                 <div class="user-menu-container">
-                    <button class="icon-btn" id="userMenuBtn">
-                        <i class="fas fa-user"></i>
-                    </button>
-                    <div class="user-dropdown" id="userDropdown" style="display: none;">
-                        <div class="user-info" id="userInfo">
-                            <i class="fas fa-user-circle"></i>
-                            <span id="userName">Usuario</span>
+                    <div id="userDropdown" class="user-dropdown" style="display:none">
+
+                        <!-- CUANDO HAY USUARIO -->
+                        <div id="userLogged">
+                            <div class="user-header">
+                                <i class="fas fa-user-circle"></i>
+                                <span id="userName">Usuario</span>
+                            </div>
+
+                            <a href="/mis-pedidos.html">
+                                <i class="fas fa-box"></i> Mis Pedidos
+                            </a>
+
+                            <button onclick="logout()" class="logout-btn">
+                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                            </button>
                         </div>
-                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
-                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
-                        </a>
-                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
-                            <i class="fas fa-cog"></i> Panel Admin
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <button onclick="logout()" class="dropdown-item logout-btn">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </button>
+
+                        <!-- CUANDO NO HAY USUARIO -->
+                        <div id="userGuest" style="display:none">
+                            <a href="/login.html">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                            </a>
+                        </div>
+
                     </div>
                 </div>
+
             </div>
         </div>
     </header>
