@@ -184,6 +184,167 @@ body {
     border-radius: 20px;
   }
 }
+/* ===================== RESPONSIVE ===================== */
+
+/* -------- LAPTOP / TABLET GRANDE -------- */
+@media (max-width: 1200px) {
+  .main-banner {
+    height: 650px;
+  }
+
+  .content h1 {
+    font-size: 32px;
+  }
+
+  .content p {
+    font-size: 18px;
+  }
+
+  .machine-box {
+    width: 420px;
+    left: 58%;
+  }
+
+  .oval-mask,
+  .oval-line {
+    width: 750px;
+    height: 700px;
+  }
+}
+
+/* -------- TABLET -------- */
+@media (max-width: 992px) {
+  header {
+    padding: 1rem 4%;
+  }
+
+  nav {
+    gap: 1.5rem;
+  }
+
+  .main-banner {
+    height: 600px;
+  }
+
+  .brown-side {
+    width: 100%;
+    padding-left: 40px;
+  }
+
+  .content {
+    max-width: 520px;
+  }
+
+  .content h1 {
+    font-size: 28px;
+  }
+
+  .content p {
+    font-size: 16px;
+  }
+
+  .machine-box {
+    width: 360px;
+    left: 62%;
+  }
+
+  .oval-mask,
+  .oval-line {
+    width: 620px;
+    height: 580px;
+    right: 18%;
+  }
+
+  .tags-side {
+    right: 20px;
+  }
+
+  .tag {
+    width: 120px;
+    font-size: 10px;
+  }
+}
+
+/* -------- MOBILE -------- */
+@media (max-width: 768px) {
+  header {
+    position: relative;
+  }
+
+  nav {
+    display: none; /* menú hamburguesa recomendado */
+  }
+
+  .header-icons .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .main-banner {
+    height: auto;
+    flex-direction: column;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .brown-side {
+    position: relative;
+    width: 100%;
+    padding: 60px 25px;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .content h1 {
+    font-size: 26px;
+  }
+
+  .content p {
+    font-size: 15px;
+  }
+
+  .btn-cta {
+    font-size: 12px;
+    padding: 12px 26px;
+  }
+
+  /* Se eliminan óvalo y línea */
+  .oval-mask,
+  .oval-line {
+    display: none;
+  }
+
+  /* Máquina centrada debajo */
+  .machine-box {
+    position: relative;
+    width: 300px;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin: 30px auto 0;
+  }
+
+  /* Tags horizontales */
+  .tags-side {
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
+    margin: 25px auto;
+    right: auto;
+  }
+
+  .tag {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 10px;
+    border-radius: 20px;
+  }
+}
 
 /* PRODUCTOS DESTACADOS - DISEÑO MEJORADO */
 .productos-section {
@@ -1359,3 +1520,21 @@ body {
   line-height: 1.5;
 }
 
+@media (max-width: 600px) {
+  .contacto-card {
+    padding: 25px 15px;
+  }
+
+  .contacto-card i {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .contacto-card h4 {
+    font-size: 14px;
+  }
+
+  .contacto-card p {
+    font-size: 13px;
+  }
+}
