@@ -530,7 +530,7 @@ nav a:hover {
   position: absolute;
   width: 300px;
   height: 300px;
-  background: linear-gradient(135deg, var(--beige-light), transparent);
+  background: linear-gradient(135deg, #3d5a3c, transparent);
   border-radius: 50%;
   top: -150px;
   right: -150px;
@@ -546,7 +546,7 @@ nav a:hover {
 .service-number {
   font-size: 5rem;
   font-weight: 900;
-  color: var(--beige-light);
+  color: #3d5a3c;
   opacity: 0.3;
   position: absolute;
   top: 1rem;
