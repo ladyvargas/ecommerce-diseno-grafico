@@ -557,35 +557,36 @@
             }
         }
 
-
-        // Form submit
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('¡Mensaje enviado! Nos pondremos en contacto pronto.');
-            e.target.reset();
-        });
-
         // User Menu
-        var userMenuOpen = false;
+        document.addEventListener("DOMContentLoaded", function () {
 
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const dropdown = document.getElementById('userDropdown');
-        const userMenuContainer = document.querySelector('.user-menu-container');
+            var userMenuOpen = false;
 
-        function toggleUserMenu() {
-            userMenuOpen = !userMenuOpen;
-            dropdown.style.display = userMenuOpen ? 'block' : 'none';
-        }
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const dropdown = document.getElementById('userDropdown');
+            const userMenuContainer = document.querySelector('.user-menu-container');
 
-        userMenuBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            toggleUserMenu();
-        });
-
-        document.addEventListener('click', function (e) {
-            if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
-                toggleUserMenu();
+            if (!userMenuBtn || !dropdown) {
+                console.error("Botón o dropdown no encontrados");
+                return;
             }
+
+            function toggleUserMenu() {
+                userMenuOpen = !userMenuOpen;
+                dropdown.style.display = userMenuOpen ? 'block' : 'none';
+            }
+
+            userMenuBtn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                toggleUserMenu();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
+                    toggleUserMenu();
+                }
+            });
+
         });
         // Función de logout
         function logout() {
