@@ -11,10 +11,10 @@ function loadCommonFooter() {
                 <img src="/img/logo.png" alt="CNC CAMPAS" class="footer-logo">
                 <p>Fabricación digital profesional con la más alta tecnología. Convirtiendo tus ideas en realidad.</p>
                 <div class="footer-social">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.facebook.com/p/Cnccampas-61557170055468/"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/cnccampas/"><i class="fab fa-instagram"></i></a>
                     <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.tiktok.com/@cnccampas7"><i class="fab fa-tiktok"></i></a>
                 </div>
             </div>
 
@@ -46,7 +46,7 @@ function loadCommonFooter() {
                 <ul class="footer-contact">
                     <li><i class="fas fa-map-marker-alt"></i> Esmeraldas, Ecuador</li>
                     <li><i class="fas fa-phone"></i> +593 XX XXX XXXX</li>
-                    <li><i class="fas fa-envelope"></i> info@cnccampas.com</li>
+                    <li><i class="fas fa-envelope"></i> cnccampas@gmail.com</li>
                     <li><i class="fas fa-clock"></i> Lun - Vie: 8:00 AM - 6:00 PM</li>
                 </ul>
             </div>

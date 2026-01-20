@@ -2768,7 +2768,7 @@ function loadAjustes() {
                     </div>
                     <div class="form-group">
                         <label>Email de Contacto</label>
-                        <input type="email" class="form-control" value="info@cnccampas.com" id="storeEmail">
+                        <input type="email" class="form-control" value="cnccampas@gmail.com" id="storeEmail">
                     </div>
                     <div class="form-group">
                         <label>Teléfono</label>
