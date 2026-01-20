@@ -572,20 +572,23 @@
         });
 
         // User Menu
-        let userMenuOpen = false;
+        document.addEventListener("DOMContentLoaded", () => {
 
-        function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
-            userMenuOpen = !userMenuOpen;
-            dropdown.style.display = userMenuOpen ? 'block' : 'none';
-        }
+            let userMenuOpen = false;
 
-        // Cerrar menú al hacer click fuera
-        document.addEventListener('click', (e) => {
-            const userMenu = document.querySelector('.user-menu-container');
-            if (userMenu && !userMenu.contains(e.target) && userMenuOpen) {
-                toggleUserMenu();
-            }
+            window.toggleUserMenu = function () {
+                const dropdown = document.getElementById('userDropdown');
+                userMenuOpen = !userMenuOpen;
+                dropdown.style.display = userMenuOpen ? 'block' : 'none';
+            };
+
+            document.addEventListener('click', (e) => {
+                const userMenu = document.querySelector('.user-menu-container');
+                if (userMenu && !userMenu.contains(e.target) && userMenuOpen) {
+                    window.toggleUserMenu();
+                }
+            });
+
         });
 
         // Función de logout
