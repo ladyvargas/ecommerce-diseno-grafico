@@ -1,184 +1,188 @@
-/* ==========================================================================
-   ESTILOS BASE (Mantenidos de tu código)
-   ========================================================================== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
   --brown-primary: #6b4423;
   --brown-dark: #4a2f1a;
   --beige: #d4a574;
   --beige-light: #e8c9a0;
+  --green: #3d5a3c;
+  --green-dark: #2a3f29;
   --white: #ffffff;
-  --bg-crema: #f7f3f1;
-  --gradient: radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%);
+  --gray: #f5f5f5;
+  --gray-dark: #2c2c2c;
+  --orange: #ff6b35;
+  --red: #c1121f;
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
 }
 
-/* ==========================================================================
-   HERO SECTION RESPONSIVE
-   ========================================================================== */
-.main-banner {
-  min-height: 720px;
-  background-color: var(--bg-crema);
-  position: relative;
-  display: flex;
-  overflow: hidden;
-  width: 100%;
-}
+/* ===================== RESPONSIVE ===================== */
 
-.brown-side {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 70%;
-  height: 100%;
-  background: var(--gradient);
-  display: flex;
-  align-items: center;
-  padding-left: 5%;
-  z-index: 1;
-  transition: all 0.5s ease;
-}
-
-.content {
-  max-width: 600px;
-  color: white;
-  z-index: 10;
-  padding: 20px;
-}
-
-.content h1 {
-  font-size: clamp(28px, 5vw, 42px); /* Tamaño fluido */
-  font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 20px;
-}
-
-.content p {
-  font-size: clamp(16px, 2vw, 20px);
-  line-height: 1.5;
-  margin-bottom: 30px;
-  opacity: 0.9;
-}
-
-/* ÓVALOS RESPONSIVOS */
-.oval-mask {
-  position: absolute;
-  right: 20%;
-  top: 50%;
-  transform: translate(50%, -50%);
-  width: 100vh; /* Se adapta al alto de la pantalla */
-  height: 120vh;
-  background-color: var(--bg-crema);
-  border-radius: 50%;
-  z-index: 2;
-  transition: all 0.5s ease;
-}
-
-.oval-line {
-  position: absolute;
-  right: 20.5%;
-  top: 50%;
-  transform: translate(50%, -50%);
-  width: 100.5vh;
-  height: 120.5vh;
-  border-left: 15px solid rgba(0, 0, 0, 0.1); /* Sombra suavizada */
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.machine-box {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  width: 40%;
-  min-width: 300px;
-  transition: all 0.5s ease;
-}
-
-.machine-box img {
-  width: 100%;
-  filter: drop-shadow(15px 25px 20px rgba(0, 0, 0, 0.35));
-}
-
-.tags-side {
-  position: absolute;
-  right: 30px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
-  z-index: 15;
-}
-
-/* ==========================================================================
-   MEDIA QUERIES (ADAPTACIÓN)
-   ========================================================================== */
-
-/* Tablet (1024px) */
-@media (max-width: 1024px) {
-  .brown-side { width: 80%; }
-  .oval-mask, .oval-line { right: 10%; }
-  .machine-box { left: 45%; width: 45%; }
-  .tags-side { display: none; } /* Ocultamos tags laterales en tablet para ganar espacio */
-}
-
-/* Móvil Grande / Tablet vertical (768px) */
-@media (max-width: 768px) {
+/* -------- LAPTOP / TABLET GRANDE -------- */
+@media (max-width: 1200px) {
   .main-banner {
-    flex-direction: column;
+    height: 650px;
+  }
+
+  .content h1 {
+    font-size: 32px;
+  }
+
+  .content p {
+    font-size: 18px;
+  }
+
+  .machine-box {
+    width: 420px;
+    left: 58%;
+  }
+
+  .oval-mask,
+  .oval-line {
+    width: 750px;
+    height: 700px;
+  }
+}
+
+/* -------- TABLET -------- */
+@media (max-width: 992px) {
+  header {
+    padding: 1rem 4%;
+  }
+
+  nav {
+    gap: 1.5rem;
+  }
+
+  .main-banner {
+    height: 600px;
+  }
+
+  .brown-side {
+    width: 100%;
+    padding-left: 40px;
+  }
+
+  .content {
+    max-width: 520px;
+  }
+
+  .content h1 {
+    font-size: 28px;
+  }
+
+  .content p {
+    font-size: 16px;
+  }
+
+  .machine-box {
+    width: 360px;
+    left: 62%;
+  }
+
+  .oval-mask,
+  .oval-line {
+    width: 620px;
+    height: 580px;
+    right: 18%;
+  }
+
+  .tags-side {
+    right: 20px;
+  }
+
+  .tag {
+    width: 120px;
+    font-size: 10px;
+  }
+}
+
+/* -------- MOBILE -------- */
+@media (max-width: 768px) {
+  header {
+    position: relative;
+  }
+
+  nav {
+    display: none; /* menú hamburguesa recomendado */
+  }
+
+  .header-icons .icon-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .main-banner {
     height: auto;
-    min-height: 100vh;
+    flex-direction: column;
+    box-shadow: none;
+    border-radius: 0;
   }
 
   .brown-side {
     position: relative;
     width: 100%;
-    height: auto;
-    padding: 100px 5% 150px 5%;
-    clip-path: ellipse(120% 100% at 50% 0%); /* Curva inferior en móvil */
-    text-align: center;
+    padding: 60px 25px;
     justify-content: center;
+    text-align: center;
   }
 
-  .content { max-width: 100%; }
+  .content {
+    max-width: 100%;
+  }
 
-  .oval-mask, .oval-line { display: none; } /* Quitamos óvalo lateral */
+  .content h1 {
+    font-size: 26px;
+  }
 
+  .content p {
+    font-size: 15px;
+  }
+
+  .btn-cta {
+    font-size: 12px;
+    padding: 12px 26px;
+  }
+
+  /* Se eliminan óvalo y línea */
+  .oval-mask,
+  .oval-line {
+    display: none;
+  }
+
+  /* Máquina centrada debajo */
   .machine-box {
     position: relative;
-    left: 0;
-    top: 0;
+    width: 300px;
+    left: auto;
+    top: auto;
     transform: none;
-    width: 80%;
-    margin: -100px auto 50px auto; /* Sube un poco para entrar en la curva */
+    margin: 30px auto 0;
   }
 
+  /* Tags horizontales */
   .tags-side {
     position: relative;
-    right: 0;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
-    padding: 20px;
-    height: auto;
+    gap: 8px;
+    margin: 25px auto;
+    right: auto;
   }
 
-  .tag { width: auto; min-width: 120px; }
-}
-
-/* Móvil pequeño (480px) */
-@media (max-width: 480px) {
-  .brown-side { padding: 80px 5% 120px 5%; }
-  .content h1 { font-size: 24px; }
-  .machine-box { width: 95%; margin-top: -80px; }
+  .tag {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 10px;
+    border-radius: 20px;
+  }
 }
 
 /* PRODUCTOS DESTACADOS - DISEÑO MEJORADO */
