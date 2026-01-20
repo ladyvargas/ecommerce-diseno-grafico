@@ -42,7 +42,7 @@
                             <i class="fas fa-cog"></i> Panel Admin
                         </a>
                         <div class="dropdown-divider"></div>
-                        <button onclick="logout()" class="dropdown-item logout-btn">
+                        <button onclick="logout()" class="dropdown-item logout-btn" id="logoutBtn">
                             <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                         </button>
                         <div id="userGuest" style="display:none;">
@@ -589,6 +589,7 @@
 
                 if (user) {
                     userInfo.style.display = 'flex';
+                    logoutBtn.style.display = 'flex';
                     userGuest.style.display = 'none';
 
                     userName.textContent = user.nombre || 'Usuario';
@@ -596,6 +597,7 @@
                 } else {
                     userInfo.style.display = 'none';
                     adminLink.style.display = 'none';
+                    logoutBtn.style.display = 'none';
                     userGuest.style.display = 'block';
                 }
             }
