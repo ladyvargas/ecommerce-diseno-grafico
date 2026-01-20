@@ -1340,3 +1340,63 @@ nav a:hover {
   min-width: 18px;
   text-align: center;
 }
+
+.contacto-section {
+  background: #EFE8DB;
+  padding: 80px 20px;
+}
+
+.contacto-container {
+  max-width: 1100px;
+  margin: auto;
+  text-align: center;
+}
+
+.contacto-title {
+  font-size: 32px;
+  color: #5A3A28;
+  margin-bottom: 10px;
+}
+
+.contacto-subtitle {
+  font-size: 15px;
+  color: #6b6b6b;
+  margin-bottom: 50px;
+}
+
+.contacto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+}
+
+.contacto-card {
+  background: #ffffff;
+  padding: 35px 20px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.contacto-card:hover {
+  transform: translateY(-8px);
+}
+
+.contacto-card i {
+  font-size: 30px;
+  color: #7A9A2E;
+  margin-bottom: 15px;
+}
+
+.contacto-card h4 {
+  font-size: 16px;
+  color: #5A3A28;
+  margin-bottom: 5px;
+}
+
+.contacto-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
