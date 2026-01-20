@@ -27,34 +27,31 @@
                     <span id="cartCount" class="cart-count" style="display: none;">0</span>
                 </button>
                 <div class="user-menu-container">
-                    <div id="userDropdown" class="user-dropdown" style="display:none">
-
-                        <!-- CUANDO HAY USUARIO -->
-                        <div id="userLogged">
-                            <div class="user-header">
-                                <i class="fas fa-user-circle"></i>
-                                <span id="userName">Usuario</span>
-                            </div>
-
-                            <a href="/mis-pedidos.html">
-                                <i class="fas fa-box"></i> Mis Pedidos
-                            </a>
-
-                            <button onclick="logout()" class="logout-btn">
-                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                            </button>
+                    <button class="icon-btn" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown" style="display: none;">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">Usuario</span>
                         </div>
-
-                        <!-- CUANDO NO HAY USUARIO -->
-                        <div id="userGuest" style="display:none">
-                            <a href="/login.html">
+                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        </a>
+                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
+                            <i class="fas fa-cog"></i> Panel Admin
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="logout()" class="dropdown-item logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                        <div id="userGuest" style="display:none;">
+                            <a href="/pages/login.html" class="dropdown-item">
                                 <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                             </a>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </header>
@@ -567,34 +564,72 @@
 
         // User Menu
         document.addEventListener("DOMContentLoaded", function () {
+
+            // Estado menú
             var userMenuOpen = false;
+
             const userMenuBtn = document.getElementById('userMenuBtn');
             const dropdown = document.getElementById('userDropdown');
             const userMenuContainer = document.querySelector('.user-menu-container');
+
+            // Elementos de sesión
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const adminLink = document.getElementById('adminLink');
+            const userGuest = document.getElementById('userGuest');
 
             function toggleUserMenu() {
                 userMenuOpen = !userMenuOpen;
                 dropdown.style.display = userMenuOpen ? 'block' : 'none';
             }
+
+            // 👉 CONTROLAR ESTADO DE SESIÓN
+            function updateUserMenu() {
+                const user = JSON.parse(localStorage.getItem('user'));
+
+                if (user) {
+                    userInfo.style.display = 'flex';
+                    userGuest.style.display = 'none';
+
+                    userName.textContent = user.nombre || 'Usuario';
+                    adminLink.style.display = user.role === 'admin' ? 'flex' : 'none';
+                } else {
+                    userInfo.style.display = 'none';
+                    adminLink.style.display = 'none';
+                    userGuest.style.display = 'block';
+                }
+            }
+
+            // LOGOUT
             window.logout = function () {
                 if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     localStorage.removeItem('cart');
-                    window.location.href = '/';
+
+                    updateUserMenu();     // 🔥 CLAVE
+                    toggleUserMenu();     // cerrar menú
+                    window.location.href = '/pages/login.html';
                 }
             };
+
+            // Click botón usuario
             if (userMenuBtn) {
                 userMenuBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
                     toggleUserMenu();
                 });
             }
+
+            // Click fuera
             document.addEventListener('click', function (e) {
                 if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
                     toggleUserMenu();
                 }
             });
+
+            // Ejecutar al cargar
+            updateUserMenu();
 
         });
         // Actualizar info de usuario al cargar
