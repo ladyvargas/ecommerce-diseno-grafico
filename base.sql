@@ -13,11 +13,11 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
--- Volcando estructura de base de datos para cnc_campas
-CREATE DATABASE IF NOT EXISTS `cnc_campas` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
-USE `cnc_campas`;
+-- Volcando estructura de base de datos para railway
+CREATE DATABASE IF NOT EXISTS `railway` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci */;
+USE `railway`;
 
--- Volcando estructura para tabla cnc_campas.categories
+-- Volcando estructura para tabla railway.categories
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.categories: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla railway.categories: ~6 rows (aproximadamente)
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id`, `name`, `slug`, `icon`, `color`, `created_at`) VALUES
 	(1, 'Mecanizado CNC', 'mecanizado-cnc', 'fa-cog', '#6B4423', '2026-01-11 09:19:02'),
@@ -41,7 +41,7 @@ INSERT INTO `categories` (`id`, `name`, `slug`, `icon`, `color`, `created_at`) V
 	(6, 'Publicidad y Rotulación', 'publicidad-rotulacion', 'fa-image', '#ec4899', '2026-01-11 09:19:02');
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.coupons
+-- Volcando estructura para tabla railway.coupons
 CREATE TABLE IF NOT EXISTS `coupons` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `coupons` (
   UNIQUE KEY `code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.coupons: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla railway.coupons: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `coupons` DISABLE KEYS */;
 INSERT INTO `coupons` (`id`, `code`, `description`, `discount_type`, `discount_value`, `min_purchase`, `max_uses`, `used_count`, `expires_at`, `active`, `created_at`, `updated_at`) VALUES
 	(1, 'BIENVENIDO10', 'Cupón de bienvenida - 10% de descuento', 'percentage', 10.00, 50.00, 100, 0, '2026-02-10 20:09:58', 1, '2026-01-11 20:09:58', '2026-01-11 20:09:58'),
@@ -67,7 +67,7 @@ INSERT INTO `coupons` (`id`, `code`, `description`, `discount_type`, `discount_v
 	(3, 'VERANO2026', 'Promoción de verano - 15% descuento', 'percentage', 15.00, 100.00, NULL, 0, '2026-04-11 20:09:58', 1, '2026-01-11 20:09:58', '2026-01-11 20:09:58');
 /*!40000 ALTER TABLE `coupons` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.gallery
+-- Volcando estructura para tabla railway.gallery
 CREATE TABLE IF NOT EXISTS `gallery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   KEY `idx_order` (`order_index`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.gallery: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla railway.gallery: ~6 rows (aproximadamente)
 /*!40000 ALTER TABLE `gallery` DISABLE KEYS */;
 INSERT INTO `gallery` (`id`, `title`, `description`, `image`, `category`, `active`, `order_index`, `created_at`, `updated_at`) VALUES
 	(1, 'Letras Corpóreas 3D', 'Corte CNC en acrílico con iluminación LED. Instalación en fachada comercial.', 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=600&h=400&fit=crop', 'CNC', 1, 1, '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
@@ -94,7 +94,7 @@ INSERT INTO `gallery` (`id`, `title`, `description`, `image`, `category`, `activ
 	(6, 'Letrero LED Iluminado', 'Señalética luminosa de bajo consumo. Instalación en local comercial.', 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=600&h=400&fit=crop', 'LED', 1, 6, '2026-01-11 09:19:02', '2026-01-11 09:19:02');
 /*!40000 ALTER TABLE `gallery` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.orders
+-- Volcando estructura para tabla railway.orders
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   KEY `idx_created_at` (`created_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.orders: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla railway.orders: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
 INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_email`, `customer_phone`, `notes`, `status`, `payment_status`, `payment_method`, `subtotal`, `tax`, `total`, `coupon_code`, `discount`, `created_at`, `updated_at`) VALUES
 	(1, NULL, 'Administrador', 'admin@designshop.com', '+593968526332', NULL, 'pending', 'pending', 'transfer', 59.98, 7.20, 67.18, NULL, 0.00, '2026-01-11 09:19:09', '2026-01-11 09:19:09'),
@@ -133,7 +133,7 @@ INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_email`, `custo
 	(9, NULL, 'Administrador', 'admin@designshop.com', '0968526332', NULL, 'completed', 'paid', 'transfer', 45.00, 5.40, 50.40, NULL, 0.00, '2026-01-11 21:18:46', '2026-01-11 21:57:13');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.order_items
+-- Volcando estructura para tabla railway.order_items
 CREATE TABLE IF NOT EXISTS `order_items` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `order_id` int(11) NOT NULL,
@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.order_items: ~13 rows (aproximadamente)
+-- Volcando datos para la tabla railway.order_items: ~13 rows (aproximadamente)
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
 INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `quantity`, `price`) VALUES
 	(1, 1, 3, NULL, 1, 19.99),
@@ -165,7 +165,7 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_id`, `product_name`, `quan
 	(14, 9, 1, NULL, 1, 45.00);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.products
+-- Volcando estructura para tabla railway.products
 CREATE TABLE IF NOT EXISTS `products` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -189,24 +189,24 @@ CREATE TABLE IF NOT EXISTS `products` (
   KEY `idx_active` (`active`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.products: ~12 rows (aproximadamente)
+-- Volcando datos para la tabla railway.products: ~12 rows (aproximadamente)
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `sale_price`, `category`, `image`, `featured`, `trending`, `active`, `stock`, `downloads`, `rating`, `file_format`, `created_at`, `updated_at`) VALUES
-	(1, 'Letrero Corpóreo CNC', 'Letrero corpóreo en MDF cortado con precisión CNC. Acabado profesional para interiores y exteriores. Incluye diseño personalizado según sus necesidades.', 45.00, NULL, 'Mecanizado CNC', '/uploads/1768185320502-665522706.jpg', 1, 1, 1, 1, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-11 21:35:20'),
+	(1, 'Letrero Corpóreo CNC', 'Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para\npiezas personalizadas, producción en serie  y acabados limpios con alta exactitud.\nPrecisión y calidad en cada corte', 45.00, NULL, 'Mecanizado CNC', '/uploads/1768875123468-563330462.png', 1, 1, 1, 1, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 21:12:03'),
 	(2, 'Display Publicitario CNC', 'Display de exhibición cortado en acrílico con router CNC. Diseño personalizable según necesidades. Ideal para promociones y exhibiciones.', 65.00, NULL, 'Mecanizado CNC', '/uploads/1768185330995-892728871.png', 1, 0, 1, 30, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-11 21:35:31'),
-	(3, 'Grabado Láser en Madera', 'Grabado láser de alta precisión en madera maciza. Ideal para placas conmemorativas, señalética y regalos personalizados. Acabado profesional.', 25.00, 19.99, 'Corte y Grabado Láser', 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80', 1, 1, 1, 100, 0, 5.00, 'Madera', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
+	(3, 'CORTE Y GRABADO LASER PROFESIONAL', 'Cortamos y grabamos con láser de alta precisión, logrando detalles finos, bordes limpios y resultados exactos. Ideal para madera, acrílico y otros materiales,  tanto en piezas únicas como en producción\nen serie.  Precisión total para llevar tus ideas al siguiente nivel.', 25.00, NULL, 'Corte y Grabado Láser', '/uploads/1768872885866-680053875.png', 1, 1, 1, 100, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 20:34:45'),
 	(4, 'Corte Láser Acrílico', 'Corte láser de precisión en acrílico de 3mm. Bordes pulidos y acabado profesional. Múltiples colores disponibles.', 35.00, NULL, 'Corte y Grabado Láser', 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80', 0, 0, 1, 75, 0, 5.00, 'Acrílico 3mm', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
-	(5, 'Impresión UV sobre Madera', 'Impresión UV directa sobre madera con colores vibrantes y alta resolución. Alta durabilidad para exteriores. Resistente a rayos UV.', 55.00, 49.99, 'Impresión UV', 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&q=80', 1, 1, 1, 40, 0, 5.00, 'Madera/MDF', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
+	(5, 'SERVICIO DE IMPRESION UV DTF', 'Que no pares de crear, nuestra impresora de alta calidad, imprime sobre una amplia variedad de materiales como madera, acrilico, vidrio, metal,\nPVC y más.\nEsta tecnología permite colores intensos, alta durabilidad y secado instantáneo, ideal para productos personalizados, señaleticas, regalos  corporativos y puezas decorativas.', 55.00, NULL, 'Impresión UV', '/uploads/1768875184339-899806244.png', 1, 1, 1, 40, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 21:13:04'),
 	(6, 'Impresión UV Acrílico', 'Impresión UV sobre acrílico transparente. Efecto flotante y alta calidad de imagen. Perfecto para decoración moderna.', 70.00, NULL, 'Impresión UV', '/uploads/1768188151844-105780410.jpg', 1, 0, 1, 25, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-11 22:22:31'),
-	(7, 'Prototipo Funcional 3D', 'Impresión 3D de prototipos funcionales en PLA. Alta precisión y acabado limpio. Ideal para pruebas y desarrollo de productos.', 40.00, NULL, 'Prototipos e Impresión 3D', '/uploads/1768185364161-207705079.jpg', 1, 1, 1, 60, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-11 21:36:04'),
+	(7, 'IMPRESION PROFESIONAL 3D', 'Realizamos impresión 3D personalizada para la creación de piezas únicas, prototipos, repuestos, accesorios y objetos decorativos.\nTransformamos tus ideas en modelos físicos con precisión, rapidez y adaptados a tus necesidades funcionales o estéticas', 40.00, NULL, 'Prototipos e Impresión 3D', '/uploads/1768875274478-596987597.png', 1, 1, 1, 60, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 21:14:34'),
 	(8, 'Figura Decorativa 3D', 'Figuras decorativas impresas en 3D. Material resistente y múltiples acabados disponibles. Personalización completa.', 30.00, NULL, 'Prototipos e Impresión 3D', 'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80', 0, 0, 1, 80, 0, 5.00, 'PLA', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
-	(9, 'Letrero LED Personalizado', 'Letrero LED luminoso con bajo consumo energético. Ideal para negocios, eventos y decoración. Incluye fuente de alimentación.', 120.00, 99.99, 'Letreros y Señalética', 'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=800&q=80', 1, 1, 1, 15, 0, 5.00, 'LED/Acrílico', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
+	(9, 'GRABADO LASER DE FIBRA', 'Precisión sobre materiales industriales, ideal para marcaje permanente, logotipos, códigos, numeración, plaas, herramientas y productos personalizados de\nalta resistencia.', 120.00, NULL, 'Letreros y Señalética', '/uploads/1768875422200-307740949.png', 1, 1, 1, 15, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 21:17:02'),
 	(10, 'Señalética Corporativa', 'Señalética profesional para empresas. Incluye diseño gráfico y fabricación. Materiales de alta calidad y durabilidad.', 85.00, NULL, 'Letreros y Señalética', 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=800&q=80', 0, 0, 1, 20, 0, 5.00, 'PVC/Acrílico', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
-	(11, 'Lona Publicitaria Gran Formato', 'Impresión en lona de alta calidad con tintas eco-solventes. Resistente a intemperie con ojales reforzados. Ideal para exteriores.', 95.00, 79.99, 'Publicidad y Rotulación', 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80', 1, 1, 1, 35, 0, 5.00, 'Lona', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),
+	(11, 'PLOTTER DE IMPRESIÓN', 'Gran formato hasta 1.80 metros, ideal para banner, vinilos, adhesivos, gigantografías, rotulación  comercial y meterial publicitario. Colores vivos, alta \nresolución y acabados profesionales para destacar tu marca de forma porfesional.', 95.00, NULL, 'Publicidad y Rotulación', '/uploads/1768875477652-155628555.png', 1, 1, 1, 35, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-19 21:17:57'),
 	(12, 'Vinilo Decorativo', 'Vinilo adhesivo de alta adherencia para aplicaciones en vitrinas, paredes y vehículos. Múltiples colores y acabados.', 45.00, NULL, 'Publicidad y Rotulación', '/uploads/1768188114393-294796897.jpg', 1, 0, 1, 90, 0, 5.00, '', '2026-01-11 09:19:02', '2026-01-11 22:21:54');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.promotions
+-- Volcando estructura para tabla railway.promotions
 CREATE TABLE IF NOT EXISTS `promotions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -224,14 +224,14 @@ CREATE TABLE IF NOT EXISTS `promotions` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.promotions: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla railway.promotions: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `promotions` DISABLE KEYS */;
 INSERT INTO `promotions` (`id`, `name`, `description`, `discount_type`, `discount_value`, `applies_to`, `product_ids`, `category_ids`, `start_date`, `end_date`, `active`, `created_at`, `updated_at`) VALUES
 	(2, 'Oferta de Temporada', 'Descuento especial en productos seleccionados', 'percentage', 20.00, 'products', NULL, NULL, '2026-01-11 20:09:58', '2026-01-26 20:09:58', 1, '2026-01-11 20:09:58', '2026-01-11 20:09:58'),
 	(3, 'Black Friday 2026', 'Gran descuento en categorías específicas', 'percentage', 25.00, 'categories', NULL, NULL, '2026-03-12 20:09:58', '2026-03-17 20:09:58', 0, '2026-01-11 20:09:58', '2026-01-11 20:09:58');
 /*!40000 ALTER TABLE `promotions` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.reviews
+-- Volcando estructura para tabla railway.reviews
 CREATE TABLE IF NOT EXISTS `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL,
@@ -246,11 +246,11 @@ CREATE TABLE IF NOT EXISTS `reviews` (
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.reviews: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla railway.reviews: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `reviews` DISABLE KEYS */;
 /*!40000 ALTER TABLE `reviews` ENABLE KEYS */;
 
--- Volcando estructura para tabla cnc_campas.users
+-- Volcando estructura para tabla railway.users
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -263,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Volcando datos para la tabla cnc_campas.users: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla railway.users: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
 	(2, 'Cliente Demo', 'usuario@test.com', '$2a$10$rS7kGJGvYXxQZQXOJQXOJu5kGJGvYXxQZQXOJQXOJu5kGJGvYXxQZQ', 'user', '2026-01-11 09:19:02', '2026-01-11 09:19:02'),

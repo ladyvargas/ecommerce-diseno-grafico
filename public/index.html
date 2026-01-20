@@ -378,7 +378,10 @@
         // CARGAR IMÁGENES DESDE LA BASE DE DATOS
         async function loadMachineImages() {
             try {
-                const API_URL = 'http://localhost:3000/api';
+                const API_URL =
+                    window.location.hostname === 'localhost'
+                        ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
+                        : 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
                 const response = await fetch(`${API_URL}/products`);
                 const products = await response.json();
 
