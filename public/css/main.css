@@ -1356,12 +1356,14 @@ nav a:hover {
   font-size: 32px;
   color: #5A3A28;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .contacto-subtitle {
   font-size: 15px;
   color: #6b6b6b;
   margin-bottom: 50px;
+  text-align: center;
 }
 
 .contacto-grid {

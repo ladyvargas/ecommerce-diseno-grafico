@@ -27,7 +27,7 @@
                     <span id="cartCount" class="cart-count" style="display: none;">0</span>
                 </button>
                 <div class="user-menu-container">
-                    <button class="icon-btn" onclick="toggleUserMenu()" id="userMenuBtn">
+                    <button class="icon-btn" id="userMenuBtn">
                         <i class="fas fa-user"></i>
                     </button>
                     <div class="user-dropdown" id="userDropdown" style="display: none;">
@@ -566,22 +566,27 @@
         });
 
         // User Menu
-        let userMenuOpen = false;
+        var userMenuOpen = false;
+
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const dropdown = document.getElementById('userDropdown');
+        const userMenuContainer = document.querySelector('.user-menu-container');
 
         function toggleUserMenu() {
-            const dropdown = document.getElementById('userDropdown');
             userMenuOpen = !userMenuOpen;
             dropdown.style.display = userMenuOpen ? 'block' : 'none';
         }
 
-        // Cerrar menú al hacer click fuera
-        document.addEventListener('click', (e) => {
-            const userMenu = document.querySelector('.user-menu-container');
-            if (userMenu && !userMenu.contains(e.target) && userMenuOpen) {
+        userMenuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            toggleUserMenu();
+        });
+
+        document.addEventListener('click', function (e) {
+            if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
                 toggleUserMenu();
             }
         });
-
         // Función de logout
         function logout() {
             if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
