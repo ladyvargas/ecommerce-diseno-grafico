@@ -1608,13 +1608,14 @@ function previewProductImage(input) {
         reader.onload = function(e) {
             document.getElementById('imagePreview').src = e.target.result;
             document.getElementById('imagePreviewContainer').style.display = 'block';
-            // Limpiar el campo de URL si hay un archivo
             document.getElementById('productImage').value = '';
+            validateImageInput?.();
+
         };
-        
         reader.readAsDataURL(input.files[0]);
     }
 }
+
 
 function clearImagePreview() {
     document.getElementById('productImageFile').value = '';
@@ -3027,3 +3028,47 @@ function confirmReset() {
         }
     }
 }
+
+// ========================================
+// VALIDACIÓN IMAGEN (ARCHIVO O URL)
+// ========================================
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const fileInput = document.getElementById('productImageFile');
+    const urlInput  = document.getElementById('productImage');
+
+    // Botón submit del formulario
+    const form = document.getElementById('productForm');
+    if (!form) return;
+
+    const saveBtn = form.querySelector('button[type="submit"]');
+
+    function isValidImageUrl(url) {
+        return /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(url);
+    }
+
+    function validateImageInput() {
+        const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
+        const hasUrl  = urlInput && isValidImageUrl(urlInput.value.trim());
+
+        saveBtn.disabled = !(hasFile || hasUrl);
+    }
+
+    // Archivo seleccionado
+    if (fileInput) {
+        fileInput.addEventListener('change', validateImageInput);
+    }
+
+    // URL escrita o pegada
+    if (urlInput) {
+        urlInput.addEventListener('input', validateImageInput);
+        urlInput.addEventListener('paste', () => {
+            setTimeout(validateImageInput, 100);
+        });
+    }
+
+    // Validar al abrir el modal (edición)
+    setTimeout(validateImageInput, 200);
+});
+
