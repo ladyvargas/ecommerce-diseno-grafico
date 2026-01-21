@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicio - CNC CAMPAS Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/css/main-service.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        body>header:first-child {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Toast Container -->
+    <div id="toastContainer" style="position: fixed; top: 100px; right: 20px; z-index: 10000;"></div>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-container">
+            <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            <nav>
+                <a href="/">Inicio</a>
+                <a href="/pages/productos.html">Tienda Virtual</a>
+                <a href="/pages/services.html">Servicios</a>
+                <a href="/pages/about.html">Sobre Nosotros</a>
+                <a href="#contacto">Contacto</a>
+
+            </nav>
+            <div class="header-icons">
+                <button class="icon-btn" onclick="window.location.href='/cart'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count" style="display: none;">0</span>
+                </button>
+                <div class="user-menu-container">
+                    <button class="icon-btn" onclick="toggleUserMenu()" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+                    <div class="user-dropdown" id="userDropdown" style="display: none;">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">Usuario</span>
+                        </div>
+                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        </a>
+                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
+                            <i class="fas fa-cog"></i> Panel Admin
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="logout()" class="dropdown-item logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="height: 80px;"></div>
+
+    <!-- Header -->
+    <div class="catalog-header">
+        <div class="container">
+            <h1>Todos los Servicios</h1>
+            <p>Soluciones personalizadas según tus necesidades</p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <!-- Filters -->
+            <div class="filters-container">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label><i class="fas fa-search"></i> Buscar</label>
+                        <input type="text" id="searchInput" placeholder="Buscar productos...">
+                    </div>
+
+
+                    <div class="filter-group">
+                        <label><i class="fas fa-sort"></i> Ordenar por</label>
+                        <select id="sortBy">
+                            <option value="name">Nombre</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group" style="display: flex; align-items: flex-end;">
+                        <button class="btn btn-primary" onclick="applyFilters()" style="width: 100%;">
+                            <i class="fas fa-filter"></i> Aplicar Filtros
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Header -->
+            <div class="results-header">
+                <div>
+                    <h2>Resultados</h2>
+                    <p style="color: #64748b;" id="resultsCount">0 productos encontrados</p>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="productsGrid" class="products-grid"></div>
+            <!-- PAGINACIÓN -->
+            <div id="pagination" class="pagination"></div>
+        </div>
+    </main>
+
+
+    <script>
+        // Variables globales
+        let allProducts = [];
+        let filteredProducts = [];
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let serviceRequests = JSON.parse(localStorage.getItem('serviceRequests')) || [];
+        const WHATSAPP_NUMBER = '593968526332';
+
+        const API_URL =
+            window.location.hostname === 'localhost'
+                ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
+                : 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+
+        function requestService(service) {
+            const exists = serviceRequests.find(s => s.id === service.id);
+            if (!exists) {
+                serviceRequests.push({
+                    id: service.id,
+                    name: service.name,
+                    price: service.price
+                });
+                localStorage.setItem('serviceRequests', JSON.stringify(serviceRequests));
+            }
+
+            alert(`✅ ${service.name} agregado a solicitudes`);
+        }
+
+        function requestServiceWhatsApp(service) {
+            const message = `
+                Hola 👋
+                Estoy interesado en el servicio:
+
+                🔧 *${service.name}*
+
+                📝 ${service.description}
+
+                ¿Podrían brindarme una cotización?
+                `.trim();
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+
+        // Función para actualizar badge del carrito
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            if (badge) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                badge.textContent = totalItems;
+                if (totalItems > 0) {
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        // Función para toggle del carrito
+        function toggleCart() {
+            // Redirige al carrito para revisar
+            window.location.href = '/cart';
+        }
+
+
+        // Cargar productos al iniciar
+        async function loadAllProducts() {
+            try {
+                const response = await fetch('/api/products');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                allProducts = await response.json();
+                allProducts = allProducts.filter(
+                    p => p.category && p.category.toLowerCase() === 'servicios'
+                );
+                filteredProducts = allProducts;
+                renderProducts();
+            } catch (error) {
+                const grid = document.getElementById('productsGrid');
+                grid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #ef4444; margin-bottom: 1rem;"></i>
+                        <h3 style="color: #1e293b; margin-bottom: 1rem;">Error al cargar productos</h3>
+                        <p style="color: #64748b; margin-bottom: 2rem;">${error.message}</p>
+                        <button class="btn btn-primary" onclick="loadAllProducts()">
+                            <i class="fas fa-sync"></i> Reintentar
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+
+            filteredProducts = allProducts.filter(service => {
+                return (
+                    service.name.toLowerCase().includes(search) ||
+                    (service.description && service.description.toLowerCase().includes(search))
+                );
+            });
+
+            filteredProducts.sort((a, b) =>
+                a.name.localeCompare(b.name)
+            );
+
+            currentPage = 1;
+            renderProducts();
+        }
+
+        let currentPage = 1;
+        const ITEMS_PER_PAGE = 9;
+
+        // Renderizar productos
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const count = document.getElementById('resultsCount');
+            const pagination = document.getElementById('pagination');
+
+            `${filteredProducts.length} servicio${filteredProducts.length !== 1 ? 's' : ''} disponible${filteredProducts.length !== 1 ? 's' : ''}`
+
+            if (filteredProducts.length === 0) {
+                grid.innerHTML = `
+            <div style="text-align: center; padding: 4rem; grid-column: 1/-1;">
+                <i class="fas fa-search" style="font-size: 4rem; color: #cbd5e1;"></i>
+                <h3>No se encontraron productos</h3>
+            </div>
+        `;
+                pagination.innerHTML = '';
+                return;
+            }
+
+            const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
+            const start = (currentPage - 1) * ITEMS_PER_PAGE;
+            const pageItems = filteredProducts.slice(start, start + ITEMS_PER_PAGE);
+
+            grid.innerHTML = pageItems.map(service => `
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="${service.image}" alt="${service.name}">
+                    </div>
+
+                    <div class="service-content">
+                        <h3 class="service-title">${service.name}</h3>
+                        <p class="service-description">${service.description}</p>
+
+                        <div class="service-actions">
+                            <button class="service-btn primary"
+                                onclick="window.location.href='/pages/product.html?id=${service.id}'">
+                                Ver servicio
+                            </button>
+                            <button class="service-btn secondary"
+                                onclick='requestServiceWhatsApp(${JSON.stringify(service)})'>
+                                Solicitar cotización
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+
+
+            renderPagination(totalPages);
+        }
+        function renderPagination(total) {
+            const pag = document.getElementById('pagination');
+            let html = `
+        <button class="page-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changePage(${currentPage - 1})">‹</button>
+    `;
+
+            for (let i = 1; i <= total; i++) {
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">${i}</button>`;
+            }
+
+            html += `
+        <button class="page-btn" ${currentPage === total ? 'disabled' : ''} onclick="changePage(${currentPage + 1})">›</button>
+    `;
+
+            pag.innerHTML = html;
+        }
+
+        function changePage(p) {
+            currentPage = p;
+            renderProducts();
+        }
+
+
+        // Cambiar vista
+        function setView(view) {
+            currentView = view;
+            document.getElementById('gridViewBtn').classList.toggle('active', view === 'grid');
+            document.getElementById('listViewBtn').classList.toggle('active', view === 'list');
+            renderProducts();
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+        // Toggle del menú de usuario
+        function toggleUserMenu() {
+            const menu = document.getElementById('userMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Cerrar menú al hacer click fuera
+        document.addEventListener('click', function (event) {
+            const menu = document.getElementById('userMenu');
+            const userMenuBtns = document.querySelectorAll('[onclick="toggleUserMenu()"]');
+            let clickedButton = false;
+            userMenuBtns.forEach(btn => {
+                if (btn.contains(event.target)) clickedButton = true;
+            });
+            if (menu && !menu.contains(event.target) && !clickedButton) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Iniciar
+        loadAllProducts();
+        updateCartBadge();
+    </script>
+
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/common-header.js"></script>
+    <script src="/js/apply-colors.js"></script>
+    <script src="/js/common-footer.js"></script>
+</body>
+
+</html>

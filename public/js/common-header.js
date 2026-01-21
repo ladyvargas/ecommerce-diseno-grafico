@@ -10,7 +10,7 @@ function loadCommonHeader() {
                 <img src="/img/logo.png" alt="CNC CAMPAS" class="logo" onclick="window.location.href='/'">
                 <nav>
                     <a href="/" data-page="home">Inicio</a>
-                    <a href="/pages/productos.html" data-page="productos">Productos</a>
+                    <a href="/pages/productos.html" data-page="productos">Tienda Virtual</a>
                     <a href="/pages/about.html" data-page="about">Sobre Nosotros</a>
                     <a href="/#contacto" data-page="contacto">Contacto</a>
                 </nav>

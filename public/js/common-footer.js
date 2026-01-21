@@ -34,7 +34,8 @@ function loadCommonFooter() {
                 <h3>Enlaces</h3>
                 <ul>
                     <li><a href="/">Inicio</a></li>
-                    <li><a href="/pages/productos.html">Productos</a></li>
+                    <li><a href="/pages/productos.html">Tienda Virtual</a>
+                <a href="/pages/services.html">Servicios</a></li>
                     <li><a href="/pages/about.html">Sobre Nosotros</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                     <li><a href="/pages/admin-pro.html">Admin</a></li>

@@ -13,7 +13,7 @@ function createHeader() {
             
             <nav class="nav" style="display: flex; gap: 2rem;">
                 <a href="/" class="nav-link" style="color: #1e293b; font-weight: 500; text-decoration: none; transition: color 0.3s;">Inicio</a>
-                <a href="/pages/productos.html" class="nav-link" style="color: #1e293b; font-weight: 500; text-decoration: none; transition: color 0.3s;">Productos</a>
+                <a href="/pages/productos.html" class="nav-link" style="color: #1e293b; font-weight: 500; text-decoration: none; transition: color 0.3s;">Tienda Virtual</a>
                 <a href="/pages/about.html" class="nav-link" style="color: #1e293b; font-weight: 500; text-decoration: none; transition: color 0.3s;">Sobre Nosotros</a>
                 <a href="/#contacto" class="nav-link" style="color: #1e293b; font-weight: 500; text-decoration: none; transition: color 0.3s;">Contacto</a>
             </nav>

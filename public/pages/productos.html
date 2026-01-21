@@ -168,7 +168,8 @@
             <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
             <nav>
                 <a href="/">Inicio</a>
-                <a href="/pages/productos.html">Productos</a>
+                <a href="/pages/productos.html">Tienda Virtual</a>
+                <a href="/pages/services.html">Servicios</a>
                 <a href="/pages/about.html">Sobre Nosotros</a>
                 <a href="#contacto">Contacto</a>
 
@@ -300,7 +301,7 @@
         let allProducts = [];
         let filteredProducts = [];
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const API_URL = 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+        const API_URL = 'http://localhost:3000/api';
 
         // Función para actualizar badge del carrito
         function updateCartBadge() {
@@ -390,6 +391,9 @@
                 }
 
                 allProducts = await response.json();
+                allProducts = allProducts.filter(
+                    p => p.category && p.category.toLowerCase() !== 'servicios'
+                );
                 console.log(`✅ ${allProducts.length} productos cargados`);
                 console.log('Productos:', allProducts);
 
