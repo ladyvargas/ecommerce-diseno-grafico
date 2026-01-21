@@ -419,9 +419,8 @@
 
                 products.forEach(product => {
                     if (!product.category || !product.image) return;
-
-                    const normalizedCategory = normalizeText(product.category);
-                    const machineKey = categoryMap[normalizedCategory];
+                    const normalizedName = normalizeText(product.name);
+                    const machineKey = categoryMap[normalizedName];
 
                     if (!machineKey || !machines[machineKey]) return;
 
@@ -451,7 +450,8 @@
             // Texto e imagen
             document.getElementById('heroTitle').textContent = machine.title;
             document.getElementById('heroDescription').textContent = machine.description;
-            document.getElementById('machineImage').src = machine.image;
+            document.getElementById('machineImage').src =
+                machine.image || 'https://via.placeholder.com/800x500?text=Servicio';
 
             // 🎨 CAMBIO DE COLORES (CLAVE)
             const banner = document.querySelector('.main-banner');
