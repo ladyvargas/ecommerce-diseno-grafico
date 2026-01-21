@@ -13,6 +13,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
+console.log(
+  'Uploads path:',
+  path.join(__dirname, 'uploads')
+);
 
 // Importar configuración de base de datos
 const { pool, initializeDatabase, seedDatabase } = require('./src/config/database');

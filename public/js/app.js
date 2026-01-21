@@ -1,6 +1,4 @@
 // API Base URL
-import path from 'path';
-import { fileURLToPath } from 'url';
 const API_URL =
   window.location.hostname === 'localhost'
     ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
@@ -11,10 +9,6 @@ let currentUser = null;
 let currentToken = null;
 let allProducts = [];
 let cart = { items: [], total: 0, count: 0 };
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
