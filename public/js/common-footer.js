@@ -37,7 +37,6 @@ function loadCommonFooter() {
                     <li><a href="/pages/productos.html">Tienda Virtual</a>
                 <a href="/pages/services.html">Servicios</a></li>
                     <li><a href="/pages/about.html">Sobre Nosotros</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
                     <li><a href="/pages/admin-pro.html">Admin</a></li>
                 </ul>
             </div>
@@ -46,7 +45,7 @@ function loadCommonFooter() {
                 <h3>Contacto</h3>
                 <ul class="footer-contact">
                     <li><i class="fas fa-map-marker-alt"></i> Esmeraldas, Ecuador</li>
-                    <li><i class="fas fa-phone"></i> +593 XX XXX XXXX</li>
+                    <li><i class="fas fa-phone"></i> +593 964083585</li>
                     <li><i class="fas fa-envelope"></i> cnccampas@gmail.com</li>
                     <li><i class="fas fa-clock"></i> Lun - Vie: 8:00 AM - 6:00 PM</li>
                 </ul>

@@ -298,7 +298,7 @@
                     // Configurar botón de WhatsApp
                     const whatsappBtn = document.getElementById('whatsappBtn');
                     const message = `Hola! Realicé una transferencia para el pedido #${order.id} por un monto de $${parseFloat(order.total).toFixed(2)}. Adjunto el comprobante.`;
-                    const whatsappNumber = '593968526332'; // Número de CNC CAMPAS
+                    const whatsappNumber = '593964083585'; // Número de CNC CAMPAS
                     whatsappBtn.onclick = () => {
                         window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
                     };

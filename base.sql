@@ -123,10 +123,10 @@ CREATE TABLE IF NOT EXISTS `orders` (
 -- Volcando datos para la tabla cnc_campas.orders: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
 INSERT INTO `orders` (`id`, `user_id`, `customer_name`, `customer_email`, `customer_phone`, `notes`, `status`, `payment_status`, `payment_method`, `subtotal`, `tax`, `total`, `coupon_code`, `discount`, `created_at`, `updated_at`) VALUES
-	(1, NULL, 'Administrador', 'admin@designshop.com', '+593968526332', NULL, 'pending', 'pending', 'transfer', 59.98, 7.20, 67.18, NULL, 0.00, '2026-01-11 09:19:09', '2026-01-11 09:19:09'),
-	(2, NULL, 'Administrador', 'admin@designshop.com', '+593968526332', NULL, 'pending', 'pending', 'transfer', 104.99, 12.60, 117.59, NULL, 0.00, '2026-01-11 09:19:55', '2026-01-11 09:19:55'),
-	(3, NULL, 'Administrador', 'admin@designshop.com', '+593968526332', NULL, 'pending', 'pending', 'transfer', 39.99, 4.80, 44.79, NULL, 0.00, '2026-01-11 09:26:48', '2026-01-11 09:26:48'),
-	(4, NULL, 'Administrador', 'admin@designshop.com', '+593968526332', NULL, 'pending', 'pending', 'transfer', 39.99, 4.80, 44.79, NULL, 0.00, '2026-01-11 09:32:34', '2026-01-11 09:32:34'),
+	(1, NULL, 'Administrador', 'admin@designshop.com', '+593964083585', NULL, 'pending', 'pending', 'transfer', 59.98, 7.20, 67.18, NULL, 0.00, '2026-01-11 09:19:09', '2026-01-11 09:19:09'),
+	(2, NULL, 'Administrador', 'admin@designshop.com', '+593964083585', NULL, 'pending', 'pending', 'transfer', 104.99, 12.60, 117.59, NULL, 0.00, '2026-01-11 09:19:55', '2026-01-11 09:19:55'),
+	(3, NULL, 'Administrador', 'admin@designshop.com', '+593964083585', NULL, 'pending', 'pending', 'transfer', 39.99, 4.80, 44.79, NULL, 0.00, '2026-01-11 09:26:48', '2026-01-11 09:26:48'),
+	(4, NULL, 'Administrador', 'admin@designshop.com', '+593964083585', NULL, 'pending', 'pending', 'transfer', 39.99, 4.80, 44.79, NULL, 0.00, '2026-01-11 09:32:34', '2026-01-11 09:32:34'),
 	(5, NULL, 'Administrador', 'admin@designshop.com', '0968526332', NULL, 'pending', 'pending', 'transfer', 104.99, 12.60, 117.59, NULL, 0.00, '2026-01-11 09:37:52', '2026-01-11 09:37:52'),
 	(6, NULL, 'Test Diagnóstico', 'diagnostico@test.com', '+593991234567', 'Pedido creado desde SQL', 'completed', 'paid', 'transfer', 100.00, 12.00, 112.00, NULL, 0.00, '2026-01-11 09:44:02', '2026-01-11 21:59:43'),
 	(7, NULL, 'Administrador', 'admin@cnccampas.com', '0968526332', NULL, 'pending', 'pending', 'transfer', 39.99, 4.80, 44.79, NULL, 0.00, '2026-01-11 10:04:05', '2026-01-11 10:04:05'),
