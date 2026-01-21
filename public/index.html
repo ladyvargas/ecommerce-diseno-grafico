@@ -297,11 +297,11 @@
 
     <script>
         // Datos de máquinas - SE CARGARÁN DINÁMICAMENTE
-        let machines = {
+        const machines = {
             'router-cnc': {
                 title: 'CORTE Y DESBASTE CNC ROUTER PROFESIONAL',
-                description: 'Corte y grabado láser de alta precisión en múltiples materiales. Ideal para diseños detallados, señalética personalizada y productos de alta calidad. Tecnología de última generación.',
-                image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&q=80',
+                description: 'Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para piezas personalizadas, producción en serie y acabados limpios con alta exactitud.',
+                image: '/uploads/1768875123468-563330462.png',
                 class: 'router-cnc',
                 colors: {
                     primary: '#6b4423',
@@ -310,58 +310,76 @@
                     gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
                 }
             },
+
             'grabador-laser': {
-                title: 'GRABADOR Y CORTADORA LÁSER DE PRECISIÓN',
-                description: 'Corte y grabado láser de alta precisión en múltiples materiales. Ideal para diseños detallados, señalética personalizada y productos de alta calidad. Tecnología de última generación.',
-                image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&q=80',
+                title: 'CORTE Y GRABADO LÁSER PROFESIONAL',
+                description: 'Cortamos y grabamos con láser de alta precisión, logrando detalles finos y bordes limpios en múltiples materiales.',
+                image: '/uploads/1768872885866-680053875.png',
                 class: 'grabador-laser',
                 colors: {
-                    primary: '#666',
-                    primaryDark: '#666',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #666 0%, #ccc 100%)'
+                    primary: '#4b5563',
+                    primaryDark: '#1f2933',
+                    accent: '#fbbf24',
+                    gradient: 'radial-gradient(circle at 15% 25%, #6b7280 0%, #374151 100%)'
                 }
             },
+
             'impresora-uv': {
-                title: 'IMPRESORA UV DE ALTA RESOLUCIÓN',
-                description: 'Impresión UV directa sobre cualquier superficie sólida. Colores vibrantes y durabilidad excepcional en madera, acrílico, metal, vidrio y más. Calidad profesional garantizada.',
-                image: 'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=800&q=80',
-                class: 'impresora-3d',
+                title: 'IMPRESIÓN UV DTF DE ALTA CALIDAD',
+                description: 'Impresión UV directa sobre una amplia variedad de materiales como madera, acrílico, vidrio, metal y PVC.',
+                image: '/uploads/1768875184339-899806244.png',
+                class: 'impresora-uv',
                 colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
+                    primary: '#065f46',
+                    primaryDark: '#064e3b',
+                    accent: '#34d399',
+                    gradient: 'radial-gradient(circle at 15% 25%, #059669 0%, #065f46 100%)'
                 }
             },
+
             'impresora-3d': {
-                title: 'IMPRESIÓN 3D PROFESIONAL - PROTOTIPOS Y PIEZAS',
-                description: 'Impresión 3D de alta resolución para prototipos funcionales y piezas personalizadas. Múltiples materiales disponibles con acabados profesionales. Precisión en cada capa.',
-                image: 'https://images.unsplash.com/photo-1614025767867-c072ca0cdc18?w=800&q=80',
+                title: 'IMPRESIÓN 3D PROFESIONAL',
+                description: 'Realizamos impresión 3D personalizada para prototipos, piezas técnicas, repuestos y objetos decorativos.',
+                image: '/uploads/1768875274478-596987597.png',
                 class: 'impresora-3d',
                 colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
+                    primary: '#7c3aed',
+                    primaryDark: '#5b21b6',
+                    accent: '#c4b5fd',
+                    gradient: 'radial-gradient(circle at 15% 25%, #8b5cf6 0%, #6d28d9 100%)'
                 }
             },
+
+            'laser-fibra': {
+                title: 'GRABADO LÁSER DE FIBRA INDUSTRIAL',
+                description: 'Grabado de alta precisión sobre materiales industriales, ideal para marcaje permanente, placas, herramientas y piezas técnicas.',
+                image: '/uploads/1768875422200-307740949.png',
+                class: 'laser-fibra',
+                colors: {
+                    primary: '#1f2937',
+                    primaryDark: '#111827',
+                    accent: '#9ca3af',
+                    gradient: 'radial-gradient(circle at 15% 25%, #374151 0%, #111827 100%)'
+                }
+            },
+
             'plotter-corte': {
-                title: 'PLOTTER DE CORTE GIGANTOGRAFÍAS',
-                description: 'Plotter de corte profesional para vinilo, papel y gigantografías. Ideal para señalética, rotulación y trabajos publicitarios de gran formato. Cortes limpios y precisos.',
-                image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=800&q=80',
+                title: 'PLOTTER DE IMPRESIÓN GRAN FORMATO',
+                description: 'Impresión profesional hasta 1.80 metros, ideal para banners, vinilos, gigantografías y rotulación comercial.',
+                image: '/uploads/1768875477652-155628555.png',
                 class: 'plotter-corte',
                 colors: {
-                    primary: '#243977',
-                    primaryDark: '#243977',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
+                    primary: '#1d4ed8',
+                    primaryDark: '#1e40af',
+                    accent: '#93c5fd',
+                    gradient: 'radial-gradient(circle at 15% 25%, #3b82f6 0%, #1e3a8a 100%)'
                 }
             },
+
             'sublimacion': {
-                title: 'SUBLIMACIÓN PROFESIONAL TEXTIL',
-                description: 'Servicio de sublimación en textiles y objetos personalizados. Colores intensos y permanentes en telas, tazas, mouse pads y más. Calidad duradera.',
-                image: 'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&q=80',
+                title: 'SUBLIMACIÓN PROFESIONAL',
+                description: 'Servicio de sublimación profesional en textiles y productos promocionales. Colores intensos y permanentes en camisetas, tazas, gorras, mouse pads y artículos personalizados.',
+                image: '/uploads/sublimacion-profesional.png',
                 class: 'sublimacion',
                 colors: {
                     primary: '#6b4423',
@@ -370,8 +388,8 @@
                     gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
                 }
             }
-        };
 
+        };
 
         let currentMachine = 'router-cnc';
         let autoplayInterval;
@@ -384,12 +402,13 @@
                 .trim();
         }
         const categoryMap = {
-            'mecanizado cnc': 'router-cnc',
-            'corte y grabado laser': 'grabador-laser',
-            'impresion uv': 'impresora-uv',
-            'prototipos e impresion 3d': 'impresora-3d',
-            'letreros y senaletica': 'plotter-corte',
-            'publicidad y rotulacion': 'sublimacion'
+            'Letrero Corpóreo CNC': 'router-cnc',
+            'CORTE Y GRABADO LASER PROFESIONAL': 'grabador-laser',
+            'SERVICIO DE IMPRESION UV DTF': 'impresora-uv',
+            'IMPRESION PROFESIONAL 3D': 'impresora-3d',
+            'GRABADO LASER DE FIBRA': 'laser-fibra',
+            'PLOTTER DE IMPRESIÓN': 'plotter-corte',
+            'SUBLIMACIÓN PROFESIONAL': 'sublimacion'
         };
 
 
@@ -475,12 +494,12 @@
                 const products = await response.json();
 
                 const featured = products
-                .filter(p =>
-                    p.featured &&
-                    p.category &&
-                    p.category.toLowerCase() !== 'servicios'
-                )
-                .slice(0, 6);
+                    .filter(p =>
+                        p.featured &&
+                        p.category &&
+                        p.category.toLowerCase() !== 'servicios'
+                    )
+                    .slice(0, 6);
 
                 console.log('Productos destacados cargados:', featured);
                 const grid = document.getElementById('productosGrid');

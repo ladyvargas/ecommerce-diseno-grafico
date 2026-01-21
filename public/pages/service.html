@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Producto - CNC CAMPAS Pro</title>
+    <title>Servicio - CNC CAMPAS</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,11 +90,10 @@
         }
 
         .product-category {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--brown-dark);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #6b4423;
         }
 
         .product-title {
@@ -159,8 +158,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
-            color: white;
+            background: linear-gradient(135deg, #25D366, #1ebe57);
         }
 
         .btn-primary:hover {
@@ -202,9 +200,9 @@
         <div class="breadcrumb">
             <a href="/">Inicio</a>
             <span>/</span>
-            <a href="/#productos">Tienda Virtual</a>
+            <a href="/pages/services.html">Servicios</a>
             <span>/</span>
-            <span id="productBreadcrumb">Producto</span>
+            <span id="productBreadcrumb">Services</span>
         </div>
 
         <div class="product-grid" id="productContainer">
@@ -214,8 +212,9 @@
             </div>
         </div>
     </div>
-c:\laragon\www\ecommerce-diseno-grafico\public\pages\service.html
+
     <script>
+        const WHATSAPP_NUMBER = '593968526332'; // sin +
         const API_URL =
             window.location.hostname === 'localhost'
                 ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
@@ -224,6 +223,22 @@ c:\laragon\www\ecommerce-diseno-grafico\public\pages\service.html
         const urlParams = new URLSearchParams(window.location.search);
         const productId = parseInt(urlParams.get('id'));
         let currentProduct = null;
+
+        function requestServiceWhatsApp(service) {
+            const message = `
+            Hola 👋
+            Estoy interesado en el servicio:
+
+            🔧 *${service.name}*
+
+            📝 ${service.description}
+
+            ¿Podrían brindarme una cotización?
+                `.trim();
+
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
 
         async function loadProduct() {
             try {
@@ -249,53 +264,55 @@ c:\laragon\www\ecommerce-diseno-grafico\public\pages\service.html
 
                 document.getElementById('productContainer').innerHTML = `
                     <div>
-                        <img src="${currentProduct.image}" alt="${currentProduct.name}" class="product-image">
+                        <img src="${currentProduct.image}" 
+                            alt="${currentProduct.name}" 
+                            class="product-image">
                     </div>
-                    
+
                     <div class="product-info">
-                        <div class="product-category">${currentProduct.category || 'Servicios'}</div>
+                        <div class="product-category">Servicio Profesional</div>
+
                         <h1 class="product-title">${currentProduct.name}</h1>
-                        
-                        <div class="product-rating">
-                            <span class="stars">${'★'.repeat(Math.floor(currentProduct.rating || 5))}${'☆'.repeat(5 - Math.floor(currentProduct.rating || 5))}</span>
-                            <span style="color: var(--gray-600);">(${currentProduct.downloads || 0} descargas)</span>
-                        </div>
-                        
-                        <div class="product-price">$${finalPrice.toFixed(2)}</div>
-                        
-                        <p class="product-description">${currentProduct.description}</p>
-                        
+
+                        <p class="product-description">
+                            ${currentProduct.description}
+                        </p>
+
                         <div class="product-features">
                             <div class="feature-item">
                                 <i class="fas fa-check-circle"></i>
-                                <span>Licencia comercial incluida</span>
+                                <span>Atención personalizada</span>
                             </div>
                             <div class="feature-item">
                                 <i class="fas fa-check-circle"></i>
-                                <span>Archivos editables: ${currentProduct.file_format || 'Personalizado'}</span>
+                                <span>Trabajo profesional y garantizado</span>
                             </div>
                             <div class="feature-item">
                                 <i class="fas fa-check-circle"></i>
-                                <span>Actualizaciones gratuitas</span>
+                                <span>Asesoría técnica especializada</span>
                             </div>
                             <div class="feature-item">
                                 <i class="fas fa-check-circle"></i>
-                                <span>Soporte premium 24/7</span>
+                                <span>Cotización sin compromiso</span>
                             </div>
                         </div>
-                        
+
                         <div class="actions">
-                            <button class="btn btn-primary" onclick="addToCart()">
-                                <i class="fas fa-shopping-cart"></i>
-                                Agregar al Carrito
+                            <button class="btn btn-primary"
+                                onclick='requestServiceWhatsApp(currentProduct)'>
+                                <i class="fab fa-whatsapp"></i>
+                                Solicitar cotización
                             </button>
-                            <button class="btn btn-outline" onclick="window.location.href='/pages/productos.html'">
+
+                            <button class="btn btn-outline"
+                                onclick="window.location.href='/pages/services.html'">
                                 <i class="fas fa-arrow-left"></i>
-                                Volver
+                                Volver a servicios
                             </button>
                         </div>
                     </div>
                 `;
+
             } catch (error) {
                 document.getElementById('productContainer').innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 4rem;">

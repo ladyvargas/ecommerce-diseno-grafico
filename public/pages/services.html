@@ -101,14 +101,6 @@
                 </div>
             </div>
 
-            <!-- Results Header -->
-            <div class="results-header">
-                <div>
-                    <h2>Resultados</h2>
-                    <p style="color: #64748b;" id="resultsCount">0 productos encontrados</p>
-                </div>
-            </div>
-
             <!-- Products Grid -->
             <div id="productsGrid" class="products-grid"></div>
             <!-- PAGINACIÓN -->
@@ -193,6 +185,7 @@
                 allProducts = allProducts.filter(
                     p => p.category && p.category.toLowerCase() === 'servicios'
                 );
+                console.log(allProducts);
                 filteredProducts = allProducts;
                 renderProducts();
             } catch (error) {
@@ -267,7 +260,7 @@
 
                         <div class="service-actions">
                             <button class="service-btn primary"
-                                onclick="window.location.href='/pages/product.html?id=${service.id}'">
+                                onclick="window.location.href='/pages/service.html?id=${service.id}'">
                                 Ver servicio
                             </button>
                             <button class="service-btn secondary"

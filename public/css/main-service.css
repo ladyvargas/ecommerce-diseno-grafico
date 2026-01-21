@@ -1,4 +1,9 @@
 /* ===== CARD DE SERVICIO ===== */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
 .service-card {
   background: #ffffff;
   border-radius: 24px;
@@ -79,7 +84,6 @@
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  padding-inline: 2rem;
 }
 .catalog-header {
   background: linear-gradient(135deg, #d4a574 0%, #6b4423 100%);
