@@ -726,67 +726,82 @@ function validateProductImage() {
   return false;
 }
 
+function getValue(id, defaultValue = "") {
+  const el = document.getElementById(id);
+  return el ? el.value : defaultValue;
+}
+
+function getChecked(id, defaultValue = false) {
+  const el = document.getElementById(id);
+  return el ? el.checked : defaultValue;
+}
+
 async function handleProductSubmit(e) {
   e.preventDefault();
 
-  const id = document.getElementById("productId").value;
+  const id = getValue("productId");
   const imageFile = document.getElementById("productImageFile")?.files[0];
-  const imageUrlInput = document.getElementById("productImage").value.trim();
+  const imageUrlInput = getValue("productImage").trim();
 
-  if (!imageFile && !imageUrlInput) {
+  // ✅ Validación imagen SOLO si es producto nuevo
+  if (!id && !imageFile && !imageUrlInput) {
     showToast(
       "Debes subir una imagen o ingresar una URL válida",
       "warning",
-      "Imagen requerida",
+      "Imagen requerida"
     );
     return;
   }
+
   let imageUrl = imageUrlInput;
 
-  // Si hay un archivo, subirlo primero
+  // 📤 Subir imagen si hay archivo
   if (imageFile) {
     try {
       const uploadFormData = new FormData();
       uploadFormData.append("image", imageFile);
+
       const uploadResponse = await fetch(`${API_URL}/upload/product`, {
         method: "POST",
         body: uploadFormData,
       });
-      if (uploadResponse.ok) {
-        const uploadData = await uploadResponse.json();
-        imageUrl = uploadData.imageUrl;
-        showToast("Imagen subida exitosamente", "success", "Éxito");
-      } else {
-        throw new Error("Error al subir imagen");
+
+      if (!uploadResponse.ok) {
+        throw new Error("Upload failed");
       }
+
+      const uploadData = await uploadResponse.json();
+      imageUrl = uploadData.imageUrl;
+
+      showToast("Imagen subida exitosamente", "success", "Éxito");
     } catch (error) {
       showToast(
         "Error al subir la imagen. Se usará la imagen existente.",
         "warning",
-        "Advertencia",
+        "Advertencia"
       );
     }
   }
 
+  // ✅ FORM DATA SEGURO
   const formData = {
-    name: document.getElementById("productName").value,
-    category: document.getElementById("productCategory").value,
-    price: parseFloat(document.getElementById("productPrice").value),
-    salePrice: document.getElementById("productSalePrice").value
-      ? parseFloat(document.getElementById("productSalePrice").value)
+    name: getValue("productName"),
+    category: getValue("productCategory"),
+    price: parseFloat(getValue("productPrice", 0)),
+    salePrice: getValue("productSalePrice")
+      ? parseFloat(getValue("productSalePrice"))
       : null,
-    stock: parseInt(document.getElementById("productStock").value) || 0,
-    lowStockThreshold:
-      parseInt(document.getElementById("productLowStockThreshold").value) || 10,
-    active: document.getElementById("productActive").checked,
-    shortDescription: document.getElementById("productShortDesc").value,
-    description: document.getElementById("productDescription").value,
-    image: imageUrl, // 👈 aquí está la clave
-    fileFormat: document.getElementById("productFileFormat").value,
-    fileSize: document.getElementById("productFileSize").value,
-    featured: document.getElementById("productFeatured").checked,
-    trending: document.getElementById("productTrending").checked,
-    bestseller: document.getElementById("productBestseller").checked,
+    stock: parseInt(getValue("productStock", 0)),
+    lowStockThreshold: parseInt(getValue("productLowStockThreshold", 10)),
+    active: getChecked("productActive"),
+    shortDescription: getValue("productShortDesc"),
+    description: getValue("productDescription"),
+    image: imageUrl,
+    fileFormat: getValue("productFileFormat"),
+    fileSize: getValue("productFileSize"),
+    featured: getChecked("productFeatured"),
+    trending: getChecked("productTrending"),
+    bestseller: getChecked("productBestseller"),
   };
 
   try {
@@ -802,24 +817,26 @@ async function handleProductSubmit(e) {
       body: JSON.stringify(formData),
     });
 
-    if (response.ok) {
-      showToast(
-        id
-          ? "Producto actualizado exitosamente"
-          : "Producto creado exitosamente",
-        "success",
-        "Éxito",
-      );
-      closeModal("productModal");
-      await loadProducts();
-      await loadDashboardData();
-    } else {
-      throw new Error("Error al guardar");
+    if (!response.ok) {
+      throw new Error("Save failed");
     }
+
+    showToast(
+      id ? "Producto actualizado exitosamente" : "Producto creado exitosamente",
+      "success",
+      "Éxito"
+    );
+
+    closeModal("productModal");
+    await loadProducts();
+    await loadDashboardData();
+
   } catch (error) {
+    console.error("❌ Error al guardar:", error);
     showToast("Error al guardar el producto", "error", "Error");
   }
 }
+
 
 // ========================================
 // PEDIDOS
