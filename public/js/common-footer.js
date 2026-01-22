@@ -74,3 +74,22 @@ if (document.readyState === 'loading') {
 } else {
     loadCommonFooter();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const hamburger = document.getElementById('hamburgerBtn');
+    const nav = document.getElementById('mainNav');
+
+    if (!hamburger || !nav) return;
+
+    hamburger.addEventListener('click', () => {
+        nav.classList.toggle('active');
+    });
+
+    // Cerrar menú al hacer click en un link
+    nav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            nav.classList.remove('active');
+        });
+    });
+});
+
