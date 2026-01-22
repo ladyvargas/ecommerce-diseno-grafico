@@ -79,17 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburgerBtn');
     const nav = document.getElementById('mainNav');
 
-    if (!hamburger || !nav) return;
-
     hamburger.addEventListener('click', () => {
         nav.classList.toggle('active');
+        hamburger.classList.toggle('active');
     });
 
-    // Cerrar menú al hacer click en un link
-    nav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
+    nav.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('click', () => {
             nav.classList.remove('active');
+            hamburger.classList.remove('active');
         });
     });
 });
+
 
