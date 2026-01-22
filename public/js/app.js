@@ -652,7 +652,6 @@ async function handleProductFormSubmit(e) {
             },
             body: JSON.stringify(productData)
         });
-console.log(response);
         if (response.ok) {
             closeModal('productFormModal');
             showToast(productId ? 'Producto actualizado' : 'Producto creado', 'success');

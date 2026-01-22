@@ -614,38 +614,47 @@ function filterProducts() {
 function openProductModal(product = null) {
   const modal = document.getElementById("productModal");
   const title = document.getElementById("productModalTitle");
+  const form  = document.getElementById("productForm");
+
+  function setValue(id, value = "") {
+    const el = document.getElementById(id);
+    if (el) el.value = value;
+  }
+
+  function setChecked(id, value = false) {
+    const el = document.getElementById(id);
+    if (el) el.checked = value;
+  }
 
   if (product) {
     title.textContent = "Editar Producto";
-    document.getElementById("productId").value = product.id;
-    document.getElementById("productName").value = product.name;
-    document.getElementById("productCategory").value = product.category;
-    document.getElementById("productPrice").value = product.price;
-    document.getElementById("productSalePrice").value = product.salePrice || "";
-    document.getElementById("productStock").value = product.stock || 0;
-    document.getElementById("productLowStockThreshold").value =
-      product.lowStockThreshold || 10;
-    document.getElementById("productActive").checked = product.active !== false;
-    document.getElementById("productShortDesc").value =
-      product.shortDescription || "";
-    document.getElementById("productDescription").value = product.description;
-    document.getElementById("productImage").value = product.image;
-    document.getElementById("productFileFormat").value =
-      product.fileFormat || "";
-    document.getElementById("productFileSize").value = product.fileSize || "";
-    document.getElementById("productFeatured").checked =
-      product.featured || false;
-    document.getElementById("productTrending").checked =
-      product.trending || false;
-    document.getElementById("productBestseller").checked =
-      product.bestseller || false;
+
+    setValue("productId", product.id);
+    setValue("productName", product.name);
+    setValue("productDescription", product.description);
+    setValue("productPrice", product.price);
+    setValue("productSalePrice", product.salePrice ?? "");
+    setValue("productCategory", product.category);
+    setValue("productStock", product.stock ?? 0);
+    setValue("productLowStockThreshold", product.lowStockThreshold ?? 10);
+    setValue("productShortDesc", product.shortDescription ?? "");
+    setValue("productFileFormat", product.fileFormat ?? "");
+    setValue("productFileSize", product.fileSize ?? "");
+    setValue("productImage", product.image ?? "");
+
+    setChecked("productActive", product.active !== false);
+    setChecked("productFeatured", product.featured);
+    setChecked("productTrending", product.trending);
+    setChecked("productBestseller", product.bestseller);
+
   } else {
     title.textContent = "Agregar Nuevo Producto";
-    document.getElementById("productForm").reset();
-    document.getElementById("productId").value = "";
-    document.getElementById("productStock").value = 100;
-    document.getElementById("productLowStockThreshold").value = 10;
-    document.getElementById("productActive").checked = true;
+    if (form) form.reset();
+
+    setValue("productId", "");
+    setValue("productStock", 100);
+    setValue("productLowStockThreshold", 10);
+    setChecked("productActive", true);
   }
 
   modal.classList.add("show");
@@ -654,12 +663,36 @@ function openProductModal(product = null) {
 async function editProduct(id) {
   try {
     const response = await fetch(`${API_URL}/products/${id}`);
+
+    if (!response.ok) {
+      throw new Error("Producto no encontrado");
+    }
+
     const product = await response.json();
-    openProductModal(product);
+
+    const normalizedProduct = {
+      id: product.id,
+      name: product.name || "",
+      description: product.description || "",
+      price: product.price ? parseFloat(product.price) : 0,
+      salePrice: product.sale_price ? parseFloat(product.sale_price) : null,
+      category: product.category || "",
+      image: product.image || "",
+      fileFormat: product.file_format || "",
+      stock: product.stock ?? 0,
+      active: product.active === 1,
+      featured: product.featured === 1,
+      trending: product.trending === 1
+    };
+
+    openProductModal(normalizedProduct);
+
   } catch (error) {
+    console.error("❌ Error editProduct:", error);
     showToast("Error al cargar el producto", "error", "Error");
   }
 }
+
 
 async function deleteProduct(id) {
   if (!confirm("¿Estás seguro de eliminar este producto?")) return;
