@@ -3285,6 +3285,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setTimeout(validateImageInput, 200);
 });
+function isValidImage(value) {
+  if (!value) return false;
+
+  // URL absoluta
+  if (/^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(value)) {
+    return true;
+  }
+
+  // URL relativa (uploads)
+  if (/^\/uploads\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(value)) {
+    return true;
+  }
+
+  return false;
+}
+
 function validateImageInput() {
   const fileInput = document.getElementById("productImageFile");
   const urlInput = document.getElementById("productImage");
@@ -3294,7 +3310,6 @@ function validateImageInput() {
   const saveBtn = form.querySelector('button[type="submit"]');
 
   const hasFile = fileInput && fileInput.files && fileInput.files.length > 0;
-  const hasUrl = urlInput && isValidImageUrl(urlInput.value.trim());
-
+  const hasUrl = urlInput && isValidImage(urlInput.value.trim());
   saveBtn.disabled = !(hasFile || hasUrl);
 }
