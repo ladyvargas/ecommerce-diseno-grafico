@@ -685,15 +685,11 @@ async function deleteProduct(id) {
 function validateProductImage() {
   const imageFile = document.getElementById("productImageFile")?.files[0];
   const imageUrl = document.getElementById("productImage").value.trim();
-
-  // Caso 1: archivo seleccionado
+ console.log("Validando imagen:", { imageFile, imageUrl });
   if (imageFile) return true;
-
-  // Caso 2: URL válida
   if (imageUrl && /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(imageUrl)) {
     return true;
   }
-
   return false;
 }
 
