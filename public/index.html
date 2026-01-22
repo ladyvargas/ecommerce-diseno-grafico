@@ -462,35 +462,46 @@
             }
         }
 
+        function getFullImageUrl(image) {
+        if (!image) return null;
 
-        // Cambiar máquina
-        function changeMachine(machineKey) {
-            const machine = machines[machineKey];
-            if (!machine) return;
+        // Si ya es URL completa (http o https), usarla tal cual
+        if (image.startsWith('http://') || image.startsWith('https://')) {
+            return image;
+        }
 
-            currentMachine = machineKey;
+        // Si es ruta relativa, completar con el backend
+        return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
+        }
 
-            // Texto e imagen
-            document.getElementById('heroTitle').textContent = machine.title;
-            document.getElementById('heroDescription').textContent = machine.description;
-            document.getElementById('machineImage').src =
-                machine.image || 'https://via.placeholder.com/800x500?text=Servicio';
+                // Cambiar máquina
+                function changeMachine(machineKey) {
+        const machine = machines[machineKey];
+        if (!machine) return;
 
-            // 🎨 CAMBIO DE COLORES (CLAVE)
-            const banner = document.querySelector('.main-banner');
+        currentMachine = machineKey;
 
-            banner.style.setProperty('--primary', machine.colors.primary);
-            banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
-            banner.style.setProperty('--accent', machine.colors.accent);
-            banner.style.setProperty('--gradient', machine.colors.gradient);
+        document.getElementById('heroTitle').textContent = machine.title;
+        document.getElementById('heroDescription').textContent = machine.description;
 
-            // Botones activos
-            document.querySelectorAll('.tag').forEach(btn => {
-                btn.classList.toggle(
-                    'active',
-                    btn.dataset.machine === machineKey
-                );
-            });
+        const imageUrl = getFullImageUrl(machine.image);
+
+        document.getElementById('machineImage').src =
+            imageUrl || 'https://via.placeholder.com/800x500?text=Servicio';
+
+        // 🎨 Colores
+        const banner = document.querySelector('.main-banner');
+        banner.style.setProperty('--primary', machine.colors.primary);
+        banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
+        banner.style.setProperty('--accent', machine.colors.accent);
+        banner.style.setProperty('--gradient', machine.colors.gradient);
+
+        document.querySelectorAll('.tag').forEach(btn => {
+            btn.classList.toggle(
+            'active',
+            btn.dataset.machine === machineKey
+            );
+        });
         }
 
         // Autoplay
