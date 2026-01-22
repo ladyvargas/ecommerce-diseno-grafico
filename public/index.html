@@ -484,7 +484,6 @@
             return null;
         }
 
-
         // Cambiar máquina
         function changeMachine(machineKey) {
             const machine = machines[machineKey];
@@ -498,11 +497,18 @@
             const imgEl = document.getElementById('machineImage');
             const imageUrl = resolveImage(machine.image);
 
-            imgEl.src = imageUrl || '/img/placeholder-service.png';
+            // ⛔ evitar loops infinitos
+            imgEl.onerror = null;
 
-            imgEl.onerror = () => {
-                imgEl.src = '/img/placeholder-service.png';
-            };
+            if (imageUrl) {
+                imgEl.onerror = () => {
+                    imgEl.onerror = null;
+                    imgEl.src = 'https://via.placeholder.com/800x500?text=Servicio';
+                };
+                imgEl.src = imageUrl;
+            } else {
+                imgEl.src = 'https://via.placeholder.com/800x500?text=Servicio';
+            }
 
             // 🎨 Colores
             const banner = document.querySelector('.main-banner');
@@ -515,6 +521,7 @@
                 btn.classList.toggle('active', btn.dataset.machine === machineKey);
             });
         }
+
 
         // Autoplay
         function startAutoplay() {
