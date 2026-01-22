@@ -463,45 +463,57 @@
         }
 
         function getFullImageUrl(image) {
-        if (!image) return null;
+            if (!image) return null;
 
-        // Si ya es URL completa (http o https), usarla tal cual
-        if (image.startsWith('http://') || image.startsWith('https://')) {
-            return image;
+            // Si ya es URL completa (http o https), usarla tal cual
+            if (image.startsWith('http://') || image.startsWith('https://')) {
+                return image;
+            }
+
+            // Si es ruta relativa, completar con el backend
+            return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
+        }
+        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
+
+        function resolveImage(image) {
+            if (!image || typeof image !== 'string') return null;
+            if (image.startsWith('http')) return image;
+            if (image.startsWith('/uploads')) {
+                return API_BASE + image;
+            }
+            return null;
         }
 
-        // Si es ruta relativa, completar con el backend
-        return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
-        }
 
-                // Cambiar máquina
-                function changeMachine(machineKey) {
-        const machine = machines[machineKey];
-        if (!machine) return;
+        // Cambiar máquina
+        function changeMachine(machineKey) {
+            const machine = machines[machineKey];
+            if (!machine) return;
 
-        currentMachine = machineKey;
+            currentMachine = machineKey;
 
-        document.getElementById('heroTitle').textContent = machine.title;
-        document.getElementById('heroDescription').textContent = machine.description;
+            document.getElementById('heroTitle').textContent = machine.title || '';
+            document.getElementById('heroDescription').textContent = machine.description || '';
 
-        const imageUrl = getFullImageUrl(machine.image);
+            const imgEl = document.getElementById('machineImage');
+            const imageUrl = resolveImage(machine.image);
 
-        document.getElementById('machineImage').src =
-            imageUrl || 'https://via.placeholder.com/800x500?text=Servicio';
+            imgEl.src = imageUrl || '/img/placeholder-service.png';
 
-        // 🎨 Colores
-        const banner = document.querySelector('.main-banner');
-        banner.style.setProperty('--primary', machine.colors.primary);
-        banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
-        banner.style.setProperty('--accent', machine.colors.accent);
-        banner.style.setProperty('--gradient', machine.colors.gradient);
+            imgEl.onerror = () => {
+                imgEl.src = '/img/placeholder-service.png';
+            };
 
-        document.querySelectorAll('.tag').forEach(btn => {
-            btn.classList.toggle(
-            'active',
-            btn.dataset.machine === machineKey
-            );
-        });
+            // 🎨 Colores
+            const banner = document.querySelector('.main-banner');
+            banner.style.setProperty('--primary', machine.colors.primary);
+            banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
+            banner.style.setProperty('--accent', machine.colors.accent);
+            banner.style.setProperty('--gradient', machine.colors.gradient);
+
+            document.querySelectorAll('.tag').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.machine === machineKey);
+            });
         }
 
         // Autoplay
