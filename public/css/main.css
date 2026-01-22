@@ -1608,12 +1608,6 @@ nav a:hover {
   display: block;
 }
 
-@media (max-width: 768px) {
-  .mobile-user-menu {
-    display: flex;
-  }
-}
-
 /* MOBILE MENU */
 @media (max-width: 768px) {
   .hamburger {
@@ -1635,6 +1629,10 @@ nav a:hover {
   }
 
   nav.active {
+    display: flex;
+  }
+
+  .mobile-user-menu {
     display: flex;
   }
 }

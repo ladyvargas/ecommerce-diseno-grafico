@@ -35,40 +35,50 @@
             </nav>
 
             <div class="header-icons">
-                <button class="icon-btn" onclick="window.location.href='/cart'">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cartCount" class="cart-count" style="display: none;">0</span>
-                </button>
+
+                <!-- HAMBURGER -->
                 <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                <div class="user-menu-container desktop-only"></div>
-                    <div class="user-menu-container">
-                        <button class="icon-btn" id="userMenuBtn">
-                            <i class="fas fa-user"></i>
+
+                <!-- CARRITO -->
+                <button class="icon-btn" onclick="window.location.href='/cart'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count" style="display: none;">0</span>
+                </button>
+
+                <!-- USUARIO SOLO DESKTOP -->
+                <div class="user-menu-container desktop-only">
+                    <button class="icon-btn" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+
+                    <div class="user-dropdown" id="userDropdown" style="display: none;">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">Usuario</span>
+                        </div>
+
+                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        </a>
+
+                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
+                            <i class="fas fa-cog"></i> Panel Admin
+                        </a>
+
+                        <div class="dropdown-divider"></div>
+
+                        <button onclick="logout()" class="dropdown-item logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                         </button>
-                        <div class="user-dropdown" id="userDropdown" style="display: none;">
-                            <div class="user-info" id="userInfo">
-                                <i class="fas fa-user-circle"></i>
-                                <span id="userName">Usuario</span>
-                            </div>
-                            <a href="/pages/mis-pedidos.html" class="dropdown-item">
-                                <i class="fas fa-shopping-bag"></i> Mis Pedidos
+
+                        <div id="userGuest" style="display:none;">
+                            <a href="/pages/login.html" class="dropdown-item">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                             </a>
-                            <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
-                                <i class="fas fa-cog"></i> Panel Admin
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <button onclick="logout()" class="dropdown-item logout-btn" id="logoutBtn">
-                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                            </button>
-                            <div id="userGuest" style="display:none;">
-                                <a href="/pages/login.html" class="dropdown-item">
-                                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
-                                </a>
-                            </div>
                         </div>
                     </div>
                 </div>
