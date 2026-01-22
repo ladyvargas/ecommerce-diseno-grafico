@@ -655,27 +655,8 @@ async function editProduct(id) {
   try {
     const response = await fetch(`${API_URL}/products/${id}`);
     const product = await response.json();
-    const normalizedProduct = {
-      id: product.id,
-      name: product.name,
-      category: product.category,
-      price: parseFloat(product.price),
-      salePrice: product.sale_price ? parseFloat(product.sale_price) : null,
-      stock: product.stock,
-      image: product.image,
-      description: product.description,
-      shortDescription: product.short_description || "",
-      fileFormat: product.file_format || "",
-      fileSize: product.file_size || "",
-      active: product.active === 1,
-      featured: product.featured === 1,
-      trending: product.trending === 1,
-      bestseller: product.bestseller === 1,
-    };
-
-    openProductModal(normalizedProduct);
+    openProductModal(product);
   } catch (error) {
-    console.error("❌ Error editProduct:", error);
     showToast("Error al cargar el producto", "error", "Error");
   }
 }
@@ -704,7 +685,7 @@ async function deleteProduct(id) {
 function validateProductImage() {
   const imageFile = document.getElementById("productImageFile")?.files[0];
   const imageUrl = document.getElementById("productImage").value.trim();
-  console.log("Validando imagen:", { imageFile, imageUrl });
+ console.log("Validando imagen:", { imageFile, imageUrl });
   if (imageFile) return true;
   if (imageUrl && /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(imageUrl)) {
     return true;
