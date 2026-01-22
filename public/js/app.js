@@ -619,22 +619,31 @@ async function deleteProduct(productId) {
 
 async function handleProductFormSubmit(e) {
     e.preventDefault();
-    
+
     const productId = document.getElementById('productId').value;
+    const imageInput = document.getElementById('productImage').value;
+
     const productData = {
         name: document.getElementById('productName').value,
         description: document.getElementById('productDescription').value,
         price: parseFloat(document.getElementById('productPrice').value),
         category: document.getElementById('productCategory').value,
-        image: document.getElementById('productImage').value,
         fileFormat: document.getElementById('productFormat').value,
         featured: document.getElementById('productFeatured').checked
     };
-    
+
+    // 👉 SOLO enviar imagen si el usuario puso una nueva
+    if (imageInput && imageInput.trim() !== "") {
+        productData.image = imageInput.trim();
+    }
+
     try {
-        const url = productId ? `${API_URL}/products/${productId}` : `${API_URL}/products`;
+        const url = productId
+            ? `${API_URL}/products/${productId}`
+            : `${API_URL}/products`;
+
         const method = productId ? 'PUT' : 'POST';
-        
+
         const response = await fetch(url, {
             method,
             headers: {
@@ -643,7 +652,7 @@ async function handleProductFormSubmit(e) {
             },
             body: JSON.stringify(productData)
         });
-        
+
         if (response.ok) {
             closeModal('productFormModal');
             showToast(productId ? 'Producto actualizado' : 'Producto creado', 'success');
