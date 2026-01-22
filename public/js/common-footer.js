@@ -74,10 +74,11 @@ if (document.readyState === 'loading') {
 } else {
     loadCommonFooter();
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     const hamburger = document.getElementById('hamburgerBtn');
     const nav = document.getElementById('mainNav');
+
+    if (!hamburger || !nav) return;
 
     hamburger.addEventListener('click', () => {
         nav.classList.toggle('active');
@@ -91,5 +92,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
 
 
