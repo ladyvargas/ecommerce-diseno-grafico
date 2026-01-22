@@ -1595,7 +1595,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-console.log('✅ Sistema de logout cargado');
+console.log('✅ Sistema de logout cargado'); 
 
 // ========================================
 // FUNCIONES PARA UPLOAD DE IMÁGENES
