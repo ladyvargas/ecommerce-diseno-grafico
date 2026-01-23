@@ -35,6 +35,16 @@ const { pool, initializeDatabase, seedDatabase } = require('./src/config/databas
 })();
 
 // NO usar global.db - TODO está en MySQL ahora
+const fs = require('fs');
+
+console.log(
+  'Existe uploads?:',
+  fs.existsSync(path.join(__dirname, 'uploads'))
+);
+console.log(
+  'Archivos:',
+  fs.readdirSync(path.join(__dirname, 'uploads'), { withFileTypes: true })
+);
 
 // Routes API
 app.use('/api/auth', require('./src/routes/auth'));
