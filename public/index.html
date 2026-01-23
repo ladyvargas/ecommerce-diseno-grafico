@@ -466,12 +466,16 @@
 
         function resolveImage(image) {
             if (!image || typeof image !== 'string') return null;
-            if (image.startsWith('http')) return image;
-            if (image.startsWith('/uploads')) {
-                return API_BASE + image;
+            if (image.startsWith('http://') || image.startsWith('https://')) {
+                return image;
             }
+            if (image.includes('uploads')) {
+                return API_BASE + (image.startsWith('/') ? image : '/' + image);
+            }
+
             return null;
         }
+
 
         // Cambiar máquina
         function changeMachine(machineKey) {
