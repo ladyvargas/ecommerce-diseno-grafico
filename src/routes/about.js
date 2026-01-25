@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
 /**
  * PUT /api/about (admin)
  */
-router.put('/', auth.verifyToken, auth.isAdmin, async (req, res) => {
+router.put('/', auth.auth, auth.adminAuth, async (req, res) => {
   try {
     await ensureAboutRow();
 
@@ -91,7 +91,7 @@ router.put('/', auth.verifyToken, auth.isAdmin, async (req, res) => {
 /**
  * POST /api/about/team (admin)
  */
-router.post('/team', auth.verifyToken, auth.isAdmin, async (req, res) => {
+router.post('/team', auth.auth, auth.adminAuth, async (req, res) => {
   try {
     const { name, role, bio, icon_class, sort_order, active } = req.body;
 
@@ -111,7 +111,7 @@ router.post('/team', auth.verifyToken, auth.isAdmin, async (req, res) => {
 /**
  * PUT /api/about/team/:id (admin)
  */
-router.put('/team/:id', auth.verifyToken, auth.isAdmin, async (req, res) => {
+router.put('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, role, bio, icon_class, sort_order, active } = req.body;
@@ -138,7 +138,7 @@ router.put('/team/:id', auth.verifyToken, auth.isAdmin, async (req, res) => {
 /**
  * DELETE /api/about/team/:id (admin)
  */
-router.delete('/team/:id', auth.verifyToken, auth.isAdmin, async (req, res) => {
+router.delete('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('DELETE FROM about_team WHERE id=?', [id]);
