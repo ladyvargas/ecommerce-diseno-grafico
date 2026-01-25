@@ -3470,8 +3470,7 @@ async function saveAboutAdmin(e) {
     const resp = await fetch(`${API_URL}/about`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(payload),
     });
