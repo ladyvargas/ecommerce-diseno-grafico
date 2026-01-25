@@ -4,7 +4,11 @@
 
 const API_URL =
   "https://ecommerce-diseno-grafico-production.up.railway.app/api";
-let currentToken = localStorage.getItem('token') || localStorage.getItem('adminToken') || localStorage.getItem('authToken') || null;
+let currentToken =
+  localStorage.getItem("token") ||
+  localStorage.getItem("adminToken") ||
+  localStorage.getItem("authToken") ||
+  null;
 let currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
 // Estado Global
@@ -618,7 +622,7 @@ function filterProducts() {
 function openProductModal(product = null) {
   const modal = document.getElementById("productModal");
   const title = document.getElementById("productModalTitle");
-  const form  = document.getElementById("productForm");
+  const form = document.getElementById("productForm");
 
   function setValue(id, value = "") {
     const el = document.getElementById(id);
@@ -650,7 +654,6 @@ function openProductModal(product = null) {
     setChecked("productFeatured", product.featured);
     setChecked("productTrending", product.trending);
     setChecked("productBestseller", product.bestseller);
-
   } else {
     title.textContent = "Agregar Nuevo Producto";
     if (form) form.reset();
@@ -686,17 +689,15 @@ async function editProduct(id) {
       stock: product.stock ?? 0,
       active: product.active === 1,
       featured: product.featured === 1,
-      trending: product.trending === 1
+      trending: product.trending === 1,
     };
 
     openProductModal(normalizedProduct);
-
   } catch (error) {
     console.error("❌ Error editProduct:", error);
     showToast("Error al cargar el producto", "error", "Error");
   }
 }
-
 
 async function deleteProduct(id) {
   if (!confirm("¿Estás seguro de eliminar este producto?")) return;
@@ -722,7 +723,7 @@ async function deleteProduct(id) {
 function validateProductImage() {
   const imageFile = document.getElementById("productImageFile")?.files[0];
   const imageUrl = document.getElementById("productImage").value.trim();
- console.log("Validando imagen:", { imageFile, imageUrl });
+  console.log("Validando imagen:", { imageFile, imageUrl });
   if (imageFile) return true;
   if (imageUrl && /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(imageUrl)) {
     return true;
@@ -752,7 +753,7 @@ async function handleProductSubmit(e) {
     showToast(
       "Debes subir una imagen o ingresar una URL válida",
       "warning",
-      "Imagen requerida"
+      "Imagen requerida",
     );
     return;
   }
@@ -782,7 +783,7 @@ async function handleProductSubmit(e) {
       showToast(
         "Error al subir la imagen. Se usará la imagen existente.",
         "warning",
-        "Advertencia"
+        "Advertencia",
       );
     }
   }
@@ -828,19 +829,17 @@ async function handleProductSubmit(e) {
     showToast(
       id ? "Producto actualizado exitosamente" : "Producto creado exitosamente",
       "success",
-      "Éxito"
+      "Éxito",
     );
 
     closeModal("productModal");
     await loadProducts();
     await loadDashboardData();
-
   } catch (error) {
     console.error("❌ Error al guardar:", error);
     showToast("Error al guardar el producto", "error", "Error");
   }
 }
-
 
 // ========================================
 // PEDIDOS
@@ -1756,7 +1755,7 @@ loadSectionData = function (section) {
       break;
     case "newsletter":
     case "ajustes":
-      loadAjustes();
+      loadSettings();
       break;
     default:
       if (originalLoadSectionData) {
@@ -3341,7 +3340,6 @@ function confirmReset() {
   }
 }
 
-
 // ========================================
 // SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
 // ========================================
@@ -3419,8 +3417,10 @@ async function loadAboutAdmin() {
     const data = await res.json();
 
     document.getElementById("aboutHeroTitle").value = data.hero_title || "";
-    document.getElementById("aboutHistoriaTitle").value = data.historia_title || "";
-    document.getElementById("aboutHistoriaHtml").value = data.historia_html || "";
+    document.getElementById("aboutHistoriaTitle").value =
+      data.historia_title || "";
+    document.getElementById("aboutHistoriaHtml").value =
+      data.historia_html || "";
     document.getElementById("aboutMisionTitle").value = data.mision_title || "";
     document.getElementById("aboutMisionText").value = data.mision_text || "";
     document.getElementById("aboutVisionTitle").value = data.vision_title || "";
@@ -3435,7 +3435,9 @@ async function loadAboutAdmin() {
     showToast("Error al cargar About", "error", "Error");
   }
 
-  document.getElementById("aboutForm").addEventListener("submit", saveAboutAdmin);
+  document
+    .getElementById("aboutForm")
+    .addEventListener("submit", saveAboutAdmin);
 }
 
 async function saveAboutAdmin(e) {
@@ -3488,7 +3490,9 @@ function renderAboutTeam() {
 
   container.innerHTML = `
     <div style="display:grid; gap:1rem;">
-      ${members.map(m => `
+      ${members
+        .map(
+          (m) => `
         <div style="border:1px solid #e2e8f0; padding:1rem; border-radius:12px; display:flex; justify-content:space-between; gap:1rem;">
           <div>
             <div style="font-weight:700;">${m.name}</div>
@@ -3500,13 +3504,16 @@ function renderAboutTeam() {
             <button class="btn btn-sm btn-danger" onclick="deleteTeamMember(${m.id})"><i class="fas fa-trash"></i></button>
           </div>
         </div>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </div>
   `;
 }
 
-function openTeamMemberModal(id=null){
-  const member = (window._aboutTeam || []).find(x => String(x.id)===String(id)) || null;
+function openTeamMemberModal(id = null) {
+  const member =
+    (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
 
   const modal = document.createElement("div");
   modal.className = "modal show";
@@ -3541,48 +3548,48 @@ function openTeamMemberModal(id=null){
   document.body.appendChild(modal);
 }
 
-async function saveTeamMember(id=null){
+async function saveTeamMember(id = null) {
   const name = document.getElementById("tmName").value.trim();
   const role = document.getElementById("tmRole").value.trim();
   const bio = document.getElementById("tmBio").value.trim();
 
-  if(!name || !role){
+  if (!name || !role) {
     showToast("Nombre y rol son obligatorios", "warning", "Aviso");
     return;
   }
 
-  try{
+  try {
     const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
     const method = id ? "PUT" : "POST";
 
-    const resp = await fetch(url,{
+    const resp = await fetch(url, {
       method,
       headers: getAuthHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ name, role, bio, active:1 })
+      body: JSON.stringify({ name, role, bio, active: 1 }),
     });
 
-    if(!resp.ok) throw new Error("Error guardando miembro");
+    if (!resp.ok) throw new Error("Error guardando miembro");
 
     document.querySelector(".modal")?.remove();
     await loadAboutAdmin();
     showToast("Miembro guardado", "success", "Éxito");
-  }catch(e){
+  } catch (e) {
     console.error(e);
     showToast("No se pudo guardar miembro", "error", "Error");
   }
 }
 
-async function deleteTeamMember(id){
-  if(!confirm("¿Eliminar este miembro?")) return;
-  try{
-    const resp = await fetch(`${API_URL}/about/team/${id}`,{
-      method:"DELETE",
-      headers: getAuthHeaders()
+async function deleteTeamMember(id) {
+  if (!confirm("¿Eliminar este miembro?")) return;
+  try {
+    const resp = await fetch(`${API_URL}/about/team/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
     });
-    if(!resp.ok) throw new Error("Error eliminando miembro");
+    if (!resp.ok) throw new Error("Error eliminando miembro");
     await loadAboutAdmin();
     showToast("Miembro eliminado", "success", "Éxito");
-  }catch(e){
+  } catch (e) {
     console.error(e);
     showToast("No se pudo eliminar miembro", "error", "Error");
   }
@@ -3598,7 +3605,6 @@ window.saveTeamMember = saveTeamMember;
 
 window.deleteTeamMember = deleteTeamMember;
 
-
 // ========================================
 // AUTH HELPERS (About / Categories / etc.)
 // ========================================
@@ -3611,7 +3617,199 @@ function getAuthHeaders(extra = {}) {
 
   return {
     ...extra,
-    ...(token ? { Authorization: `Bearer ${token}` } : {})
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
   };
+}
+async function loadSettings() {
+  const container = document.getElementById("ajustes-section");
+  if (!container) return;
+
+  try {
+    const response = await fetch(`${API_URL}/settings`);
+    if (!response.ok) throw new Error("Error cargando settings");
+    
+    const currentSettings = await response.json();
+    console.log("✅ Settings cargados:", currentSettings);
+    
+    container.innerHTML = `
+      <div class="filters-bar">
+        <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
+      </div>
+      
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <!-- Información de la Tienda -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-store"></i> Información de la Tienda</h3>
+          </div>
+          <div class="modal-body">
+            <form id="storeInfoForm">
+              <div class="form-group">
+                <label>Nombre de la Tienda</label>
+                <input type="text" id="storeName" value="${currentSettings.store_name || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Email de Contacto</label>
+                <input type="email" id="storeEmail" value="${currentSettings.store_email || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Teléfono</label>
+                <input type="tel" id="storePhone" value="${currentSettings.store_phone || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Dirección</label>
+                <input type="text" id="storeAddress" value="${currentSettings.store_address || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Ciudad</label>
+                <input type="text" id="storeCity" value="${currentSettings.store_city || ''}" />
+              </div>
+              <div class="form-group">
+                <label>Horario</label>
+                <input type="text" id="storeSchedule" value="${currentSettings.store_schedule || ''}" placeholder="Lun – Vie 8:00 AM – 6:00 PM" />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Redes Sociales -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-share-alt"></i> Redes Sociales</h3>
+          </div>
+          <div class="modal-body">
+            <form id="socialMediaForm">
+              <div class="form-group">
+                <label><i class="fab fa-facebook"></i> Facebook</label>
+                <input type="url" id="facebookUrl" value="${currentSettings.facebook_url || ''}" placeholder="https://facebook.com/..." />
+              </div>
+              <div class="form-group">
+                <label><i class="fab fa-instagram"></i> Instagram</label>
+                <input type="url" id="instagramUrl" value="${currentSettings.instagram_url || ''}" placeholder="https://instagram.com/..." />
+              </div>
+              <div class="form-group">
+                <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
+                <input type="url" id="whatsappUrl" value="${currentSettings.whatsapp_url || ''}" placeholder="https://wa.me/..." />
+              </div>
+              <div class="form-group">
+                <label><i class="fab fa-tiktok"></i> TikTok</label>
+                <input type="url" id="tiktokUrl" value="${currentSettings.tiktok_url || ''}" placeholder="https://tiktok.com/@..." />
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Configuración de Impuestos -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-percentage"></i> Impuestos</h3>
+          </div>
+          <div class="modal-body">
+            <form id="taxForm">
+              <div class="form-group">
+                <label>IVA (%)</label>
+                <input type="number" id="ivaPercent" value="${currentSettings.iva_percent || 12}" min="0" max="100" step="0.01" />
+                <small style="color: #6b7280; display: block; margin-top: 0.5rem;">Porcentaje de IVA aplicado a las compras</small>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Pie de Página -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-file-alt"></i> Pie de Página</h3>
+          </div>
+          <div class="modal-body">
+            <form id="footerForm">
+              <div class="form-group">
+                <label>Texto del Pie de Página</label>
+                <textarea id="footerText" rows="4" placeholder="Texto que aparece en el pie de página...">${currentSettings.footer_text || ''}</textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Event listeners
+    document.getElementById("storeInfoForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        store_name: document.getElementById("storeName").value,
+        store_email: document.getElementById("storeEmail").value,
+        store_phone: document.getElementById("storePhone").value,
+        store_address: document.getElementById("storeAddress").value,
+        store_city: document.getElementById("storeCity").value,
+        store_schedule: document.getElementById("storeSchedule").value,
+      };
+      await guardarSettings(payload);
+    });
+
+    document.getElementById("socialMediaForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        facebook_url: document.getElementById("facebookUrl").value,
+        instagram_url: document.getElementById("instagramUrl").value,
+        whatsapp_url: document.getElementById("whatsappUrl").value,
+        tiktok_url: document.getElementById("tiktokUrl").value,
+      };
+      await guardarSettings(payload);
+    });
+
+    document.getElementById("taxForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        iva_percent: parseFloat(document.getElementById("ivaPercent").value),
+      };
+      await guardarSettings(payload);
+    });
+
+    document.getElementById("footerForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        footer_text: document.getElementById("footerText").value,
+      };
+      await guardarSettings(payload);
+    });
+
+  } catch (error) {
+    console.error("❌ Error al cargar settings:", error);
+    showToast("Error al cargar configuración", "error", "Error");
+  }
+}
+
+async function guardarSettings(payload) {
+  try {
+    const response = await fetch(`${API_URL}/settings`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error("Error al guardar");
+
+    showToast("Configuración guardada exitosamente", "success", "Éxito");
+    await loadSettings();
+
+  } catch (error) {
+    console.error("Error al guardar settings:", error);
+    showToast("Error al guardar configuración", "error", "Error");
+  }
 }
 window.getAuthHeaders = getAuthHeaders;
