@@ -111,7 +111,7 @@ app.use('/api/upload', require('./src/routes/upload'));
 app.use('/api/coupons', require('./src/routes/coupons'));
 app.use('/api/promotions', require('./src/routes/promotions'));
 app.use('/api/settings', require('./src/routes/settings'));
-
+app.use('/api/export', require('./src/routes/export'));
 console.log('✅ APIs adicionales cargadas');
 
 app.listen(PORT, () => {
