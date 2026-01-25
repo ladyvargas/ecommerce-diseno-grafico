@@ -2,17 +2,9 @@
 // ADMIN PRO - JAVASCRIPT COMPLETO
 // ========================================
 
-const API_URL ="https://ecommerce-diseno-grafico-production.up.railway.app/api";
-let currentToken =
-  localStorage.getItem("token") ||
-  localStorage.getItem("authToken") ||
-  localStorage.getItem("adminToken") ||
-  localStorage.getItem("cnc_token") ||
-  null;
-
-if (!currentToken) {
-  console.warn("⚠️ No hay token en localStorage. No podrás guardar About.");
-}
+const API_URL =
+  "https://ecommerce-diseno-grafico-production.up.railway.app/api";
+let currentToken = localStorage.getItem('token') || localStorage.getItem('adminToken') || localStorage.getItem('authToken') || null;
 let currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
 // Estado Global
@@ -1262,8 +1254,7 @@ async function cancelOrder(orderId) {
 async function loadCategories() {
   try {
     const response = await fetch(`${API_URL}/categories`);
-    const json = await response.json();
-        state.categories = Array.isArray(json) ? json : (json.categories || []);
+    state.categories = await response.json();
 
     // Llenar select de categorías
     const select = document.getElementById("productCategory");
@@ -1289,7 +1280,6 @@ async function loadCategories() {
 }
 
 function renderCategories() {
-    if (!Array.isArray(state.categories)) state.categories = (state.categories && state.categories.categories) ? state.categories.categories : [];
   const container = document.getElementById("categoriasContainer");
   if (!container) return;
 
@@ -3425,11 +3415,7 @@ async function loadAboutAdmin() {
 
   try {
     const res = await fetch(`${API_URL}/about`);
-    if (!res.ok) {
-      const text = await res.text();
-      console.error("About response:", res.status, text);
-      throw new Error("No se pudo cargar About (revisa API /api/about)");
-    }
+    if (!res.ok) throw new Error("No se pudo cargar About");
     const data = await res.json();
 
     document.getElementById("aboutHeroTitle").value = data.hero_title || "";
@@ -3470,7 +3456,8 @@ async function saveAboutAdmin(e) {
     const resp = await fetch(`${API_URL}/about`, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(payload),
     });
@@ -3570,10 +3557,7 @@ async function saveTeamMember(id=null){
 
     const resp = await fetch(url,{
       method,
-      headers:{
-        "Content-Type":"application/json",
-        Authorization:`Bearer ${currentToken}`
-      },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify({ name, role, bio, active:1 })
     });
 
@@ -3593,7 +3577,7 @@ async function deleteTeamMember(id){
   try{
     const resp = await fetch(`${API_URL}/about/team/${id}`,{
       method:"DELETE",
-      headers:{ Authorization:`Bearer ${currentToken}` }
+      headers: getAuthHeaders()
     });
     if(!resp.ok) throw new Error("Error eliminando miembro");
     await loadAboutAdmin();
@@ -3613,3 +3597,21 @@ window.openTeamMemberModal = openTeamMemberModal;
 window.saveTeamMember = saveTeamMember;
 
 window.deleteTeamMember = deleteTeamMember;
+
+
+// ========================================
+// AUTH HELPERS (About / Categories / etc.)
+// ========================================
+function getAuthHeaders(extra = {}) {
+  const token =
+    localStorage.getItem("token") ||
+    localStorage.getItem("adminToken") ||
+    localStorage.getItem("authToken") ||
+    null;
+
+  return {
+    ...extra,
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
+  };
+}
+window.getAuthHeaders = getAuthHeaders;
