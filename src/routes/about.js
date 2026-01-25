@@ -43,7 +43,8 @@ router.get('/', async (req, res) => {
 /**
  * PUT /api/about (admin)
  */
-router.put('/', auth.auth, auth.adminAuth, async (req, res) => {
+// PUT /api/about (SIN AUTH)
+router.put('/', async (req, res) => {
   try {
     await ensureAboutRow();
 
@@ -88,10 +89,8 @@ router.put('/', auth.auth, auth.adminAuth, async (req, res) => {
   }
 });
 
-/**
- * POST /api/about/team (admin)
- */
-router.post('/team', auth.auth, auth.adminAuth, async (req, res) => {
+// POST /api/about/team (SIN AUTH)
+router.post('/team', async (req, res) => {
   try {
     const { name, role, bio, icon_class, sort_order, active } = req.body;
 
@@ -108,10 +107,8 @@ router.post('/team', auth.auth, auth.adminAuth, async (req, res) => {
   }
 });
 
-/**
- * PUT /api/about/team/:id (admin)
- */
-router.put('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
+// PUT /api/about/team/:id (SIN AUTH)
+router.put('/team/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, role, bio, icon_class, sort_order, active } = req.body;
@@ -135,10 +132,8 @@ router.put('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
   }
 });
 
-/**
- * DELETE /api/about/team/:id (admin)
- */
-router.delete('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
+// DELETE /api/about/team/:id (SIN AUTH)
+router.delete('/team/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('DELETE FROM about_team WHERE id=?', [id]);
@@ -148,5 +143,4 @@ router.delete('/team/:id', auth.auth, auth.adminAuth, async (req, res) => {
     res.status(500).json({ error: 'Error eliminando miembro' });
   }
 });
-
 module.exports = router;
