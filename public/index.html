@@ -8,62 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/main.css">
-    <style>
-        /* Variables de color - Combinación azul y café */
-        :root {
-            --color-blue: #1a4d7a;    /* Azul del logo */
-            --color-brown: #8b6f47;   /* Café de la paleta */
-            --color-blue-light: #2a6fa8;  /* Azul más claro */
-            --color-brown-light: #a89070; /* Café más claro */
-        }
-        
-        /* Botones con color azul */
-        .btn-cta, .btn-cta-alt, .ver-todos-btn, .producto-btn, 
-        .service-card-medium .service-link {
-            background-color: var(--color-blue) !important;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-cta:hover, .btn-cta-alt:hover, .ver-todos-btn:hover, 
-        .producto-btn:hover {
-            background-color: var(--color-blue-light) !important;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(26, 77, 122, 0.3);
-        }
-        
-        .service-card-medium:hover .service-link {
-            background-color: var(--color-blue-light) !important;
-            transform: translateX(5px);
-        }
-        
-        /* Centrar y escalar simétricamente imágenes de servicios */
-        .service-card-large {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .service-card-large img,
-        .machine-box img {
-            object-fit: contain !important;
-            object-position: center !important;
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* Animación alternancia de colores */
-        .service-card-large:nth-child(1) {
-            background: linear-gradient(135deg, rgba(26, 77, 122, 0.05), rgba(26, 77, 122, 0.1));
-        }
-        
-        .service-card-large:nth-child(2) {
-            background: linear-gradient(135deg, rgba(139, 111, 71, 0.05), rgba(139, 111, 71, 0.1));
-        }
-    </style>
 </head>
 
 <body>
@@ -142,7 +86,9 @@
         <div class="brown-side">
             <div class="content" id="heroContent">
                 <h1 id="heroTitle">CORTE Y DESBASTE CNC ROUTER PROFESIONAL</h1>
-                <p id="heroDescription">Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para piezas personalizadas, producción en serie y acabados limpios con alta exactitud. Precisión y calidad en cada corte.</p>
+                <p id="heroDescription">Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para
+                    piezas personalizadas, producción en serie y acabados limpios con alta exactitud. Precisión y
+                    calidad en cada corte.</p>
                 <button class="btn-cta" onclick="window.location.href='/pages/services.html'">
                     Contratar ahora
                 </button>
@@ -160,12 +106,12 @@
         <!-- SECCIÓN 3: BOTONES LATERALES -->
         <div class="tags-side" id="heroImage">
             <button class="tag active" data-machine="router-cnc">ROUTER CNC</button>
-            <button class="tag" data-machine="grabador-laser">CORTE LÁSER</button>
+            <button class="tag" data-machine="corte-laser">CORTE LÁSER</button>
             <button class="tag" data-machine="laser-fibra">LÁSER FIBRA</button>
             <button class="tag" data-machine="impresora-uv">IMPRESORA UV</button>
             <button class="tag" data-machine="impresora-3d">IMPRESORA 3D</button>
-            <button class="tag" data-machine="plotter-corte">PLOTTER</button>
-            <button class="tag" data-machine="sublimacion">SUBLIMACIÓN</button>
+            <button class="tag" data-machine="plotter">PLOTTER</button>
+            <button class="tag" data-machine="sublimacion">SUBLIMACION</button>
         </div>
     </section>
 
@@ -197,7 +143,8 @@
                         <i class="fas fa-cog"></i>
                     </div>
                     <h3>Router CNC Profesional</h3>
-                    <p>Corte y mecanizado CNC de alta precisión en madera, MDF, plywood, PVC y alucobond. Ideal para letras corpóreas, displays y piezas personalizadas con acabados perfectos.</p>
+                    <p>Corte y mecanizado CNC de alta precisión en madera, MDF, plywood, PVC y alucobond. Ideal para
+                        letras corpóreas, displays y piezas personalizadas con acabados perfectos.</p>
                     <div class="service-tags">
                         <span>Madera</span>
                         <span>MDF</span>
@@ -215,7 +162,8 @@
                         <i class="fas fa-cut"></i>
                     </div>
                     <h3>Corte y Grabado Láser</h3>
-                    <p>Corte y grabado láser de precisión en múltiples materiales. Perfecto para diseños detallados, señalética personalizada y productos de alta calidad con acabados excepcionales.</p>
+                    <p>Corte y grabado láser de precisión en múltiples materiales. Perfecto para diseños detallados,
+                        señalética personalizada y productos de alta calidad con acabados excepcionales.</p>
                     <div class="service-tags">
                         <span>Alta Precisión</span>
                         <span>Grabado</span>
@@ -265,22 +213,8 @@
                 <div class="service-icon-medium">
                     <i class="fas fa-lightbulb"></i>
                 </div>
-                <h3>Láser de Fibra</h3>
-                <p>Grabado de alta precisión sobre materiales industriales, ideal para marcaje permanente y placas.</p>
-                <div class="service-link">
-                    <i class="fas fa-arrow-right"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Nueva sección para Sublimación -->
-        <div class="services-grid-compact" style="margin-top: 2rem;">
-            <div class="service-card-medium">
-                <div class="service-icon-medium">
-                    <i class="fas fa-tint"></i>
-                </div>
-                <h3>Impresión por Sublimación</h3>
-                <p>Impresión de papelería mediante sublimación de alta calidad. Diseños a todo color con excelente definición, durabilidad y acabado profesional para uso comercial y promocional.</p>
+                <h3>Letreros LED</h3>
+                <p>Fabricación de letreros LED luminosos personalizados con bajo consumo y máxima visibilidad.</p>
                 <div class="service-link">
                     <i class="fas fa-arrow-right"></i>
                 </div>
@@ -294,7 +228,8 @@
         <div class="testimonios-container">
             <div class="testimonio-card">
                 <div class="testimonio-stars">★★★★★</div>
-                <p class="testimonio-text">"Excelente servicio y calidad en el corte CNC. Los acabados son impecables y la entrega fue puntual. Altamente recomendado."</p>
+                <p class="testimonio-text">"Excelente servicio y calidad en el corte CNC. Los acabados son impecables y
+                    la entrega fue puntual. Altamente recomendado."</p>
                 <div class="testimonio-author">
                     <strong>María González</strong>
                     <span>Empresa de Diseño Interior</span>
@@ -302,7 +237,8 @@
             </div>
             <div class="testimonio-card">
                 <div class="testimonio-stars">★★★★★</div>
-                <p class="testimonio-text">"El grabado láser quedó perfecto. Muy profesionales y atentos a los detalles. Sin duda volveré a trabajar con ellos."</p>
+                <p class="testimonio-text">"El grabado láser quedó perfecto. Muy profesionales y atentos a los detalles.
+                    Sin duda volveré a trabajar con ellos."</p>
                 <div class="testimonio-author">
                     <strong>Carlos Mendoza</strong>
                     <span>Tienda de Regalos Personalizados</span>
@@ -310,7 +246,8 @@
             </div>
             <div class="testimonio-card">
                 <div class="testimonio-stars">★★★★★</div>
-                <p class="testimonio-text">"Los letreros LED superaron nuestras expectativas. Excelente comunicación y asesoría durante todo el proyecto."</p>
+                <p class="testimonio-text">"Los letreros LED superaron nuestras expectativas. Excelente comunicación y
+                    asesoría durante todo el proyecto."</p>
                 <div class="testimonio-author">
                     <strong>Ana Ruiz</strong>
                     <span>Restaurante El Sabor</span>
@@ -360,25 +297,25 @@
             <div class="contacto-card">
                 <i class="fas fa-map-marker-alt"></i>
                 <h4>Ubicación</h4>
-                <p>Esmeraldas, Ecuador</p>
+                <p id="contactAddress">Cargando...</p>
             </div>
 
             <div class="contacto-card">
                 <i class="fas fa-phone"></i>
                 <h4>Teléfono</h4>
-                <p>+593 964083585</p>
+                <p id="contactPhone">Cargando...</p>
             </div>
 
             <div class="contacto-card">
                 <i class="fas fa-envelope"></i>
                 <h4>Email</h4>
-                <p>cnccampas@gmail.com</p>
+                <p id="contactEmail">Cargando...</p>
             </div>
 
             <div class="contacto-card">
                 <i class="fas fa-clock"></i>
                 <h4>Horario</h4>
-                <p>Lun – Vie<br>8:00 AM – 6:00 PM</p>
+                <p id="contactHours">Cargando...</p>
             </div>
         </div>
     </section>
@@ -386,88 +323,87 @@
 
     <script>
         // Datos de máquinas - SE CARGARÁN DINÁMICAMENTE
+        const BANNER_ORDER = ['router-cnc', 'corte-laser', 'laser-fibra', 'impresora-uv', 'impresora-3d', 'plotter', 'sublimacion'];
+
         const machines = {
             'router-cnc': {
                 title: 'CORTE Y DESBASTE CNC ROUTER PROFESIONAL',
-                description: 'Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para piezas personalizadas, producción en serie y acabados limpios con alta exactitud. Precisión y calidad en cada corte.',
+                description: 'Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para piezas personalizadas, producción en serie y acabados limpios con alta exactitud.',
                 class: 'router-cnc',
                 colors: {
-                    primary: '#1a4d7a',
-                    primaryDark: '#122d47',
-                    accent: '#2a6fa8',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2a6fa8 0%, #1a4d7a 100%)'
+                    primary: '#6b4423',
+                    primaryDark: '#1a1a1a',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
                 }
             },
-
-            'grabador-laser': {
+            'corte-laser': {
                 title: 'CORTE Y GRABADO LÁSER PROFESIONAL',
-                description: 'Cortamos y grabamos con láser de alta precisión, logrando detalles finos y bordes limpios en múltiples materiales. Perfectos para señalética, grabados personalizados y acabados excepcionales.',
+                description: 'Cortamos y grabamos con láser de alta precisión, logrando detalles finos y bordes limpios en múltiples materiales.',
                 class: 'grabador-laser',
                 colors: {
-                    primary: '#8b6f47',
-                    primaryDark: '#5a4730',
-                    accent: '#a89070',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a89070 0%, #8b6f47 100%)'
+                    primary: '#243977',
+                    primaryDark: '#243977',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
                 }
             },
-
+            'laser-fibra': {
+                title: 'GRABADO LÁSER DE FIBRA INDUSTRIAL',
+                description: 'Grabado de alta precisión sobre materiales industriales, ideal para marcaje permanente, placas, herramientas y piezas técnicas.',
+                class: 'laser-fibra',
+                colors: {
+                    primary: '#6b4423',
+                    primaryDark: '#1a1a1a',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
+                }
+            },
             'impresora-uv': {
                 title: 'IMPRESIÓN UV DTF DE ALTA CALIDAD',
-                description: 'Impresión UV directa sobre una amplia variedad de materiales como madera, acrílico, vidrio, metal y PVC. Colores intensos y resistentes que perduran.',
+                description: 'Impresión UV directa sobre una amplia variedad de materiales como madera, acrílico, vidrio, metal y PVC.',
                 class: 'impresora-uv',
                 colors: {
-                    primary: '#1a4d7a',
-                    primaryDark: '#122d47',
-                    accent: '#2a6fa8',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2a6fa8 0%, #1a4d7a 100%)'
+                    primary: '#243977',
+                    primaryDark: '#243977',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
                 }
             },
 
             'impresora-3d': {
                 title: 'IMPRESIÓN 3D PROFESIONAL',
-                description: 'Realizamos impresión 3D personalizada para prototipos, piezas técnicas, repuestos y objetos decorativos. Calidad superior en cada impresión.',
+                description: 'Realizamos impresión 3D personalizada para prototipos, piezas técnicas, repuestos y objetos decorativos.',
                 class: 'impresora-3d',
                 colors: {
-                    primary: '#8b6f47',
-                    primaryDark: '#5a4730',
-                    accent: '#a89070',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a89070 0%, #8b6f47 100%)'
+                    primary: '#6b4423',
+                    primaryDark: '#1a1a1a',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
                 }
             },
 
-            'laser-fibra': {
-                title: 'GRABADO LÁSER DE FIBRA INDUSTRIAL',
-                description: 'Grabado de alta precisión sobre materiales industriales, ideal para marcaje permanente, placas, herramientas y piezas técnicas. Resultados profesionales garantizados.',
-                class: 'laser-fibra',
-                colors: {
-                    primary: '#1a4d7a',
-                    primaryDark: '#122d47',
-                    accent: '#2a6fa8',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2a6fa8 0%, #1a4d7a 100%)'
-                }
-            },
-
-            'plotter-corte': {
+            'plotter': {
                 title: 'PLOTTER DE IMPRESIÓN GRAN FORMATO',
-                description: 'Impresión profesional hasta 1.80 metros, ideal para banners, vinilos, gigantografías y rotulación comercial. Acabados de alta calidad.',
+                description: 'Impresión profesional hasta 1.80 metros, ideal para banners, vinilos, gigantografías y rotulación comercial.',
                 class: 'plotter-corte',
                 colors: {
-                    primary: '#8b6f47',
-                    primaryDark: '#5a4730',
-                    accent: '#a89070',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a89070 0%, #8b6f47 100%)'
+                    primary: '#243977',
+                    primaryDark: '#243977',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
                 }
             },
 
             'sublimacion': {
-                title: 'IMPRESIÓN POR SUBLIMACIÓN PROFESIONAL',
-                description: 'Impresión de papelería mediante sublimación de alta calidad. Diseños a todo color con excelente definición, durabilidad y acabado profesional. Perfecto para uso comercial y promocional.',
+                title: 'SUBLIMACIÓN PROFESIONAL',
+                description: 'Servicio de sublimación profesional en textiles y productos promocionales. Colores intensos y permanentes en camisetas, tazas, gorras, mouse pads y artículos personalizados.',
                 class: 'sublimacion',
                 colors: {
-                    primary: '#1a4d7a',
-                    primaryDark: '#122d47',
-                    accent: '#2a6fa8',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2a6fa8 0%, #1a4d7a 100%)'
+                    primary: '#6b4423',
+                    primaryDark: '#1a1a1a',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
                 }
             }
         };
@@ -486,12 +422,12 @@
 
         const categoryMap = {
             'letrero-corporeo-cnc': 'router-cnc',
-            'corte-y-grabado-laser-profesional': 'grabador-laser',
+            'corte-y-grabado-laser-profesional': 'corte-laser',
             'servicio-de-impresion-uv-dtf': 'impresora-uv',
             'impresion-profesional-3d': 'impresora-3d',
             'grabado-laser-de-fibra': 'laser-fibra',
-            'plotter-de-impresion': 'plotter-corte',
-            'impresion-de-papeleria-por-sublimacion': 'sublimacion'
+            'plotter-de-impresion': 'plotter',
+            'sublimacion-profesional': 'sublimacion'
         };
 
         // CARGAR IMÁGENES DESDE LA BASE DE DATOS
@@ -507,15 +443,68 @@
                     const machineKey = categoryMap[normalizedName];
                     if (!machineKey || !machines[machineKey]) return;
                     machines[machineKey].image = product.image;
-                    console.log(`✓ Imagen aplicada a ${machineKey}:`, product.image);
+                    console.log(`✔ Imagen aplicada a ${machineKey}:`, product.image);
                 });
                 changeMachine(currentMachine);
             } catch (error) {
-                console.error('✗ Error cargando imágenes desde BD:', error);
+                console.error('❌ Error cargando imágenes desde BD:', error);
             }
         }
 
+
+        function getFullImageUrl(image) {
+            if (!image) return null;
+
+            // Si ya es URL completa (http o https), usarla tal cual
+            if (image.startsWith('http://') || image.startsWith('https://')) {
+                return image;
+            }
+
+            // Si es ruta relativa, completar con el backend
+            return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
+        }
         const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
+        async function loadContactInfo() {
+            // 1) Intentar desde localStorage (lo más directo con tu admin actual)
+            try {
+                const storeInfo = JSON.parse(localStorage.getItem('cncStoreInfo') || '{}');
+                if (storeInfo && (storeInfo.email || storeInfo.phone || storeInfo.address || storeInfo.hours)) {
+                    const addressEl = document.getElementById('contactAddress');
+                    const phoneEl = document.getElementById('contactPhone');
+                    const emailEl = document.getElementById('contactEmail');
+                    const hoursEl = document.getElementById('contactHours');
+
+                    if (addressEl) addressEl.textContent = storeInfo.address || '—';
+                    if (phoneEl) phoneEl.textContent = storeInfo.phone || '—';
+                    if (emailEl) emailEl.textContent = storeInfo.email || '—';
+                    if (hoursEl) hoursEl.innerHTML = (storeInfo.hours || '—').replace(/\n/g, '<br>');
+
+                    return; // ✅ Ya cargó
+                }
+            } catch (err) {
+                console.warn('No se pudo leer cncStoreInfo:', err);
+            }
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/settings`);
+                if (!res.ok) throw new Error('No settings endpoint');
+                const settings = await res.json();
+
+                const addressEl = document.getElementById('contactAddress');
+                const phoneEl = document.getElementById('contactPhone');
+                const emailEl = document.getElementById('contactEmail');
+                const hoursEl = document.getElementById('contactHours');
+
+                if (addressEl) addressEl.textContent = settings.address || '—';
+                if (phoneEl) phoneEl.textContent = settings.phone || '—';
+                if (emailEl) emailEl.textContent = settings.email || '—';
+                if (hoursEl) hoursEl.innerHTML = (settings.hours || '—').replace(/\n/g, '<br>');
+            } catch (err) {
+                // Si no hay endpoint, mantenemos contenido fijo / placeholders
+                console.log('Contacto dinámico: endpoint /api/settings no disponible, usando valores locales/default.');
+            }
+        }
+
 
         function resolveImage(image) {
             if (!image || typeof image !== 'string') return null;
@@ -525,8 +514,10 @@
             if (image.includes('uploads')) {
                 return API_BASE + (image.startsWith('/') ? image : '/' + image);
             }
+
             return null;
         }
+
 
         // Cambiar máquina
         function changeMachine(machineKey) {
@@ -563,24 +554,48 @@
             document.querySelectorAll('.tag').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.machine === machineKey);
             });
+            const img = document.getElementById("machineImage");
+
+            // limpiar estilos anteriores
+            img.style.width = "";
+            img.style.height = "";
+            img.style.maxWidth = "";
+            img.style.maxHeight = "";
+            img.style.objectFit = "contain";
+
+            // recalcular cuando cargue
+            img.onload = () => {
+                const w = img.naturalWidth;
+                const h = img.naturalHeight;
+
+                if (!w || !h) return;
+
+                img.style.height = "auto";
+                img.style.maxHeight = "420px";
+                img.style.display = "block";
+                img.style.margin = "0 auto";
+            };
+
         }
 
-        // Autoplay
+        // Autoplay (orden fijo)
         function startAutoplay() {
-            const machineKeys = Object.keys(machines);
-            let currentIndex = 0;
+            const machineKeys = (Array.isArray(BANNER_ORDER) ? BANNER_ORDER : Object.keys(machines))
+                .filter(k => machines[k]);
 
+            let currentIndex = machineKeys.indexOf(currentMachine);
+            if (currentIndex < 0) currentIndex = 0;
+
+            clearInterval(autoplayInterval);
             autoplayInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % machineKeys.length;
                 changeMachine(machineKeys[currentIndex]);
-            }, 5000); // Cambiar cada 5 segundos
+            }, 5000);
         }
 
         function resetAutoplay() {
-            clearInterval(autoplayInterval);
             startAutoplay();
         }
-
         // Cargar productos
         async function loadProducts() {
             try {
@@ -644,6 +659,43 @@
                         <p>No se pudieron cargar los productos. Intenta recargar la página.</p>
                     </div>
                 `;
+            }
+        }
+
+        // Cargar galería
+        async function loadGallery() {
+            try {
+                const response = await fetch('https://ecommerce-diseno-grafico-production.up.railway.app/api/products');
+                const products = await response.json();
+
+                // Tomar solo productos que tengan imagen
+                const galleryProducts = products
+                    .filter(p => p.image)
+                    .slice(0, 9); // máximo 9
+
+                const grid = document.getElementById('galeriaGrid');
+
+                if (!galleryProducts.length) {
+                    grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+          <p>No hay productos para mostrar</p>
+        </div>
+      `;
+                    return;
+                }
+
+                grid.innerHTML = galleryProducts.map(p => `
+      <div class="galeria-item">
+        <img src="${p.image}" alt="${p.name}">
+        <div class="galeria-overlay">
+          <h3>${p.name}</h3>
+          <p>${p.category}</p>
+        </div>
+      </div>
+    `).join('');
+
+            } catch (error) {
+                console.error('Error cargando galería dinámica:', error);
             }
         }
 
@@ -719,7 +771,6 @@
             updateUserMenu();
 
         });
-        
         // Actualizar info de usuario al cargar
         window.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -741,7 +792,6 @@
                 cartCount.textContent = cart.length;
                 cartCount.style.display = 'block';
             }
-            
             // LISTENERS DE BOTONES DEL BANNER
             document.querySelectorAll('.tag[data-machine]').forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -755,6 +805,7 @@
         window.addEventListener('load', async () => {
             await loadMachineImages(); // Cargar imágenes desde BD
             await loadProducts();      // Cargar productos
+            await loadContactInfo();
             startAutoplay();           // Iniciar carrusel
         });
 
