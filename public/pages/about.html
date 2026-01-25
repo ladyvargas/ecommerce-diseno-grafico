@@ -485,7 +485,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content" data-aos="fade-up">
-            <h1 class="hero-title" id="heroTitle">Cargando...</h1>
+            <h1 class="hero-title">Sobre CNC CAMPAS</h1>
         </div>
     </section>
     
@@ -493,21 +493,8 @@
     <div class="container">
         <!-- Nuestra Historia -->
         <section class="section" data-aos="fade-up">
-            <h2 class="section-title" id="historiaTitle">Nuestra Historia</h2>
-            <div class="section-content">
-                <p>
-                    <strong>CNC CAMPAS</strong> nacio en el 2018 con una vision clara: impactar y ser recordado en todos los aspectos del diseño grafico a nivel nacional e internacional, utilizando tecnologias de punta para brindar productos personalizados e innovadores. Y brindar acceso a recursos de diseño grafico profesional a emprendedores, pequeños negocios y grandes empresas a traves de nuestros servicios de alta calidad.
-                </p>
-                <p>
-                    Lo que empezo como un pequeño negocio de asistencia y mantenimiento tecnico, conocido anteriormente como CAMPAS NET, evolucionando hasta convertirse en una empresa lider en recursos creativos para diseñadores, pequeños y grandes negocios en America Latina.
-                </p>
-                <p>
-                    Nuestro equipo esta formado por profesionales en el area del diseño grafico, apasionados por el desarrollo de proyectos visuales, artisticos y variantes. Cada producto, articulo que ofrecemos es cuidadosamente estudiado para su desarrollo, seleccionando los mejores materiales, para cada condicion que tenga que enfrentar el producto final, para cumplir con los mas altos estandares de calidad profesional. 
-                </p>
-                <p>
-                    A lo largo de los años, hemos construido una comunidad, que confian en nuestros porductos y en el uso de neustros recursos para poder impulsar sus proyectos. Ofreciendo varidad de opciones para poder cumplir con todas las demandas visuales, y materiales de lo que quieren mostrar al mundo.
-                </p>
-            </div>
+            <h2 class="section-title">Nuestra Historia</h2>
+            <div class="section-content" id="historyContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div></div>
         </section>
         
         <!-- Nuestros Valores -->
@@ -518,64 +505,24 @@
                     <div class="value-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="value-title">MISION</h3>
-                    <p class="value-description">
-                        Diseñar y fabricar piezas personalizadas que conviertan ideas en realidad, utilizando maquinaria especializada y procesos creativos, con el compromiso de ser la primera opción cuando nuestros clientes piensan en crear algo diferente.
-                    </p>
+                    <h3 class="value-title" id="misionTitle">MISIÓN</h3>
+                    <p class="value-description" id="missionContent"><div class="loading" style="padding: 1rem;">Cargando...</div></p>
                 </div>
                 
                 <div class="value-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="value-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3 class="value-title">VISION</h3>
-                    <p class="value-description">
-                        Convertirnos en una marca creativa líder en todo el territorio nacional e internacional, capaz de materializar cualquier idea en objetos funcionales y artísticos, inspirando a personas y empresas a crear sin límites.
-                    </p>
+                    <h3 class="value-title" id="visionTitle">VISIÓN</h3>
+                    <p class="value-description" id="visionContent"><div class="loading" style="padding: 1rem;">Cargando...</div></p>
                 </div>
             </div>
         </section>
         
         <!-- Equipo -->
         <section class="section" data-aos="fade-up">
-            <h2 class="section-title" id="teamTitle">Nuestro Equipo</h2>
-            <div class="team-grid">
-                <div class="team-member" data-aos="fade-up" data-aos-delay="0">
-                    <div class="team-avatar">
-                        <i class="fas fa-user-tie"></i>
-                    </div>
-                    <h3 class="team-name">Carlos Campas</h3>
-                    <p class="team-role">CEO & Fundador</p>
-                    <p class="team-bio">
-                        Visionario del diseño con más de 15 años de experiencia en la industria creativa 
-                        y emprendimiento digital.
-                    </p>
-                </div>
-                
-                <div class="team-member" data-aos="fade-up" data-aos-delay="100">
-                    <div class="team-avatar">
-                        <i class="fas fa-paint-brush"></i>
-                    </div>
-                    <h3 class="team-name">María González</h3>
-                    <p class="team-role">Directora Creativa</p>
-                    <p class="team-bio">
-                        Diseñadora gráfica premiada, especialista en branding corporativo y diseño editorial 
-                        con portafolio internacional.
-                    </p>
-                </div>
-                
-                <div class="team-member" data-aos="fade-up" data-aos-delay="200">
-                    <div class="team-avatar">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3 class="team-name">Luis Ramírez</h3>
-                    <p class="team-role">Director de Tecnología</p>
-                    <p class="team-bio">
-                        Ingeniero de software experto en desarrollo web y UX, enfocado en crear 
-                        experiencias digitales excepcionales.
-                    </p>
-                </div>
-            </div>
+            <h2 class="section-title">Nuestro Equipo</h2>
+            <div class="team-grid" id="teamContainer"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando equipo...</div></div>
         </section>
         
         <!-- CTA -->
@@ -599,6 +546,70 @@
             once: true,
             offset: 100
         });
+
+        const API_URL = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
+
+        async function loadAboutFromAPI() {
+            try {
+                const res = await fetch(`${API_URL}/about`, { cache: "no-store" });
+                if (!res.ok) {
+                    const text = await res.text();
+                    console.error("API ABOUT ERROR:", res.status, text);
+                    throw new Error("No se pudo cargar About desde API");
+                }
+                const data = await res.json();
+
+                // HERO
+                const heroTitle = document.getElementById("heroTitle");
+                if (heroTitle) heroTitle.textContent = data.hero_title || "Sobre CNC CAMPAS";
+
+                // TITULOS
+                const historiaTitle = document.getElementById("historiaTitle");
+                if (historiaTitle) historiaTitle.textContent = data.historia_title || "Nuestra Historia";
+
+                const misionTitle = document.getElementById("misionTitle");
+                if (misionTitle) misionTitle.textContent = data.mision_title || "MISIÓN";
+
+                const visionTitle = document.getElementById("visionTitle");
+                if (visionTitle) visionTitle.textContent = data.vision_title || "VISIÓN";
+
+                const teamTitle = document.getElementById("teamTitle");
+                if (teamTitle) teamTitle.textContent = data.team_title || "Nuestro Equipo";
+
+                // HISTORIA
+                const historyDiv = document.getElementById("historyContent");
+                historyDiv.innerHTML = data.historia_html || "<p style='color:#999'>Sin historia configurada</p>";
+
+                // MISION / VISION
+                document.getElementById("missionContent").innerHTML = data.mision_text || "<p style='color:#999'>Sin misión configurada</p>";
+                document.getElementById("visionContent").innerHTML = data.vision_text || "<p style='color:#999'>Sin visión configurada</p>";
+
+                // EQUIPO
+                const teamContainer = document.getElementById("teamContainer");
+                const team = data.team || [];
+                if (team.length > 0) {
+                    teamContainer.innerHTML = team.map(member => `
+                        <div class="team-member" data-aos="fade-up">
+                            <div class="team-avatar">
+                                <i class="fas ${member.icon_class || 'fa-user'}"></i>
+                            </div>
+                            <h3 class="team-name">${member.name}</h3>
+                            <p class="team-role">${member.role}</p>
+                            <p class="team-bio">${member.bio || ''}</p>
+                        </div>
+                    `).join('');
+                } else {
+                    teamContainer.innerHTML = `<p style="color:#999; text-align:center; padding:2rem; grid-column:1/-1;">No hay miembros del equipo configurados</p>`;
+                }
+
+            } catch (err) {
+                console.error("Error cargando About:", err);
+                document.getElementById("historyContent").innerHTML =
+                    `<p style="color:red;text-align:center;padding:2rem;">Error cargando About desde API</p>`;
+            }
+        }
+
+        loadAboutFromAPI();
     </script>
     
     <!-- ✨ SCRIPTS ESTANDARIZADOS -->
