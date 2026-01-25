@@ -1755,6 +1755,8 @@ loadSectionData = function (section) {
       break;
     case "newsletter":
     case "ajustes":
+      setTimeout(loadLegalDocsIntoEditors, 200);
+
       loadSettings();
       break;
     default:
@@ -3813,3 +3815,101 @@ async function guardarSettings(payload) {
   }
 }
 window.getAuthHeaders = getAuthHeaders;
+
+
+// ============================================================
+// DOCUMENTOS LEGALES (Ajustes) - Quill Editor
+// Guarda en tabla settings:
+// - privacy_policy_html
+// - terms_conditions_html
+// ============================================================
+
+let quillPrivacy = null;
+let quillTerms = null;
+
+function initLegalEditors() {
+  if (quillPrivacy && quillTerms) return;
+  if (typeof Quill === "undefined") {
+    console.error("❌ Quill no cargó. Revisa que el CDN esté en admin-pro.html");
+    return;
+  }
+
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["blockquote"],
+    ["link"],
+    ["clean"],
+  ];
+
+  const privacyEl = document.getElementById("privacyEditor");
+  const termsEl = document.getElementById("termsEditor");
+  if (!privacyEl || !termsEl) return;
+
+  quillPrivacy = new Quill("#privacyEditor", {
+    theme: "snow",
+    modules: { toolbar: toolbarOptions },
+  });
+
+  quillTerms = new Quill("#termsEditor", {
+    theme: "snow",
+    modules: { toolbar: toolbarOptions },
+  });
+}
+
+async function loadLegalDocsIntoEditors() {
+  try {
+    initLegalEditors();
+    if (!quillPrivacy || !quillTerms) return;
+
+    const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error || "No se pudo cargar settings");
+
+    quillPrivacy.root.innerHTML =
+      data.privacy_policy_html ||
+      "<h2>Política de Privacidad</h2><p>Escribe aquí el contenido...</p>";
+
+    quillTerms.root.innerHTML =
+      data.terms_conditions_html ||
+      "<h2>Términos y Condiciones</h2><p>Escribe aquí el contenido...</p>";
+  } catch (err) {
+    console.error("❌ loadLegalDocsIntoEditors:", err);
+    showToast("Error cargando documentos legales", "error", "Error");
+  }
+}
+
+async function saveLegalDocs() {
+  try {
+    initLegalEditors();
+    if (!quillPrivacy || !quillTerms) {
+      showToast("Editor no inicializado", "warning", "Aviso");
+      return;
+    }
+
+    const payload = {
+      privacy_policy_html: quillPrivacy.root.innerHTML,
+      terms_conditions_html: quillTerms.root.innerHTML,
+    };
+
+    const res = await fetch(`${API_URL}/settings`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data?.error || "Error guardando documentos");
+
+    showToast("Documentos legales guardados ✅", "success", "Éxito");
+  } catch (err) {
+    console.error("❌ saveLegalDocs:", err);
+    showToast(err.message || "Error guardando documentos legales", "error", "Error");
+  }
+}

@@ -889,6 +889,9 @@
             .form-grid { grid-template-columns: 1fr; }
         }
     </style>
+
+    <!-- ✅ Quill WYSIWYG -->
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 </head>
 <body>
     <div class="admin-layout">
@@ -1269,7 +1272,33 @@
                 </div>
                 <div id="ajustes-section" class="content-section">
                     <!-- Contenido generado por JS -->
+                
+        <!-- =============================== -->
+        <!-- DOCUMENTOS LEGALES (WYSIWYG) -->
+        <!-- =============================== -->
+        <div class="card" style="margin-top: 2rem;">
+            <div class="card-header">
+                <h3 class="card-title"><i class="fas fa-file-contract"></i> Documentos Legales</h3>
+                <div class="card-actions">
+                    <button class="btn btn-primary btn-sm" onclick="saveLegalDocs()">
+                        <i class="fas fa-save"></i> Guardar
+                    </button>
                 </div>
+            </div>
+
+            <div class="form-group full">
+                <label><strong>Política de Privacidad</strong></label>
+                <div id="privacyEditor" style="height:260px;background:white;"></div>
+                <small style="color:var(--gray);">Página pública: /pages/politica-privacidad.html</small>
+            </div>
+
+            <div class="form-group full" style="margin-top:1.5rem;">
+                <label><strong>Términos y Condiciones</strong></label>
+                <div id="termsEditor" style="height:260px;background:white;"></div>
+                <small style="color:var(--gray);">Página pública: /pages/terminos-condiciones.html</small>
+            </div>
+        </div>
+</div>
             </div>
         </div>
     </div>
@@ -1402,5 +1431,8 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/admin-pro.js"></script>
+
+    <!-- ✅ Quill WYSIWYG -->
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 </body>
 </html>
