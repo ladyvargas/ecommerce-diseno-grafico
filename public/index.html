@@ -463,7 +463,7 @@
             // Si es ruta relativa, completar con el backend
             return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
         }
-        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';    
+        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
 
         function resolveImage(image) {
             if (!image || typeof image !== 'string') return null;
@@ -764,7 +764,6 @@
         window.addEventListener('load', async () => {
             await loadMachineImages(); // Cargar imágenes desde BD
             await loadProducts();      // Cargar productos
-            await loadContactInfo();
             startAutoplay();           // Iniciar carrusel
         });
 
@@ -782,6 +781,7 @@
             try {
                 const res = await fetch(`${API_URL}/settings`);
                 const settings = await res.json();
+
                 // Llenar los datos del contacto
                 document.getElementById("contactAddress").textContent = settings.store_address || "Cargando...";
                 document.getElementById("contactPhone").textContent = settings.store_phone || "Cargando...";

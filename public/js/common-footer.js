@@ -1,3 +1,4 @@
+const API_URL = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
 
 async function loadCommonFooter() {
   try {
