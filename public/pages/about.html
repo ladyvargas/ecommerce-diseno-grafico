@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
     <link rel="stylesheet" href="/css/footer.css">
-    <link rel="stylesheet" href="/css/common.css">
     <style>
         * {
             margin: 0;
@@ -433,6 +432,14 @@
             opacity: 0.8;
         }
     </style>
+    
+    <!-- ✨ ESTANDARIZACIÓN CNC CAMPAS -->
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        header.header {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER -->
@@ -478,7 +485,7 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content" data-aos="fade-up">
-            <h1 class="hero-title">Sobre CNC CAMPAS</h1>
+            <h1 class="hero-title" id="heroTitle">Cargando...</h1>
         </div>
     </section>
     
@@ -486,22 +493,34 @@
     <div class="container">
         <!-- Nuestra Historia -->
         <section class="section" data-aos="fade-up">
-            <h2 class="section-title">Nuestra Historia</h2>
-            <div class="section-content" id="historyContent">
-                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+            <h2 class="section-title" id="historiaTitle">Nuestra Historia</h2>
+            <div class="section-content">
+                <p>
+                    <strong>CNC CAMPAS</strong> nacio en el 2018 con una vision clara: impactar y ser recordado en todos los aspectos del diseño grafico a nivel nacional e internacional, utilizando tecnologias de punta para brindar productos personalizados e innovadores. Y brindar acceso a recursos de diseño grafico profesional a emprendedores, pequeños negocios y grandes empresas a traves de nuestros servicios de alta calidad.
+                </p>
+                <p>
+                    Lo que empezo como un pequeño negocio de asistencia y mantenimiento tecnico, conocido anteriormente como CAMPAS NET, evolucionando hasta convertirse en una empresa lider en recursos creativos para diseñadores, pequeños y grandes negocios en America Latina.
+                </p>
+                <p>
+                    Nuestro equipo esta formado por profesionales en el area del diseño grafico, apasionados por el desarrollo de proyectos visuales, artisticos y variantes. Cada producto, articulo que ofrecemos es cuidadosamente estudiado para su desarrollo, seleccionando los mejores materiales, para cada condicion que tenga que enfrentar el producto final, para cumplir con los mas altos estandares de calidad profesional. 
+                </p>
+                <p>
+                    A lo largo de los años, hemos construido una comunidad, que confian en nuestros porductos y en el uso de neustros recursos para poder impulsar sus proyectos. Ofreciendo varidad de opciones para poder cumplir con todas las demandas visuales, y materiales de lo que quieren mostrar al mundo.
+                </p>
             </div>
         </section>
         
         <!-- Nuestros Valores -->
         <section class="section" data-aos="fade-up">
             <div class="values-grid">
+                
                 <div class="value-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="value-icon">
                         <i class="fas fa-rocket"></i>
                     </div>
-                    <h3 class="value-title">MISIÓN</h3>
-                    <p class="value-description" id="missionContent">
-                        <div class="loading" style="padding: 1rem;">Cargando...</div>
+                    <h3 class="value-title">MISION</h3>
+                    <p class="value-description">
+                        Diseñar y fabricar piezas personalizadas que conviertan ideas en realidad, utilizando maquinaria especializada y procesos creativos, con el compromiso de ser la primera opción cuando nuestros clientes piensan en crear algo diferente.
                     </p>
                 </div>
                 
@@ -509,9 +528,9 @@
                     <div class="value-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <h3 class="value-title">VISIÓN</h3>
-                    <p class="value-description" id="visionContent">
-                        <div class="loading" style="padding: 1rem;">Cargando...</div>
+                    <h3 class="value-title">VISION</h3>
+                    <p class="value-description">
+                        Convertirnos en una marca creativa líder en todo el territorio nacional e internacional, capaz de materializar cualquier idea en objetos funcionales y artísticos, inspirando a personas y empresas a crear sin límites.
                     </p>
                 </div>
             </div>
@@ -519,16 +538,50 @@
         
         <!-- Equipo -->
         <section class="section" data-aos="fade-up">
-            <h2 class="section-title">Nuestro Equipo</h2>
-            <div class="team-grid" id="teamContainer">
-                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando equipo...</div>
+            <h2 class="section-title" id="teamTitle">Nuestro Equipo</h2>
+            <div class="team-grid">
+                <div class="team-member" data-aos="fade-up" data-aos-delay="0">
+                    <div class="team-avatar">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3 class="team-name">Carlos Campas</h3>
+                    <p class="team-role">CEO & Fundador</p>
+                    <p class="team-bio">
+                        Visionario del diseño con más de 15 años de experiencia en la industria creativa 
+                        y emprendimiento digital.
+                    </p>
+                </div>
+                
+                <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                    <div class="team-avatar">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <h3 class="team-name">María González</h3>
+                    <p class="team-role">Directora Creativa</p>
+                    <p class="team-bio">
+                        Diseñadora gráfica premiada, especialista en branding corporativo y diseño editorial 
+                        con portafolio internacional.
+                    </p>
+                </div>
+                
+                <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                    <div class="team-avatar">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="team-name">Luis Ramírez</h3>
+                    <p class="team-role">Director de Tecnología</p>
+                    <p class="team-bio">
+                        Ingeniero de software experto en desarrollo web y UX, enfocado en crear 
+                        experiencias digitales excepcionales.
+                    </p>
+                </div>
             </div>
         </section>
         
         <!-- CTA -->
         <div class="cta-section" data-aos="fade-up">
             <h2 class="cta-title">¿Listo para Crear Algo Increíble?</h2>
-            <p style="font-size: 1.5rem; margin-bottom: 2.5rem; opacity: 0.95;">
+            <p class="cta-description">
                 Únete a miles de diseñadores que confían en CNC CAMPAS para sus proyectos
             </p>
             <a href="/" class="btn btn-white">
@@ -540,69 +593,15 @@
     
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Inicializar AOS
         AOS.init({
             duration: 800,
             easing: 'ease-out-cubic',
             once: true,
             offset: 100
         });
-        
-        // Cargar contenido dinámico
-        function loadDynamicContent() {
-            const contentPages = JSON.parse(localStorage.getItem('cncContentPages') || '{}');
-            const teamMembers = JSON.parse(localStorage.getItem('cncTeamMembers') || '[]');
-            
-            // Cargar Historia
-            const historyDiv = document.getElementById('historyContent');
-            if (contentPages.history) {
-                historyDiv.innerHTML = contentPages.history.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('');
-            } else {
-                historyDiv.innerHTML = `<p style="color: #999; text-align: center; padding: 2rem;">No hay contenido configurado</p>`;
-            }
-            
-            // Cargar Misión y Visión
-            const missionDiv = document.getElementById('missionContent');
-            const visionDiv = document.getElementById('visionContent');
-            
-            if (contentPages.mission) {
-                missionDiv.innerHTML = contentPages.mission;
-            } else {
-                missionDiv.innerHTML = '<p style="color: #999;">No hay contenido configurado</p>';
-            }
-            
-            if (contentPages.vision) {
-                visionDiv.innerHTML = contentPages.vision;
-            } else {
-                visionDiv.innerHTML = '<p style="color: #999;">No hay contenido configurado</p>';
-            }
-            
-            // Cargar Equipo
-            const teamContainer = document.getElementById('teamContainer');
-            if (teamMembers.length > 0) {
-                teamContainer.innerHTML = teamMembers.map(member => `
-                    <div class="team-member" data-aos="fade-up">
-                        <div class="team-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <h3 class="team-name">${member.name}</h3>
-                        <p class="team-role">${member.role}</p>
-                        <p class="team-bio">${member.bio || ''}</p>
-                    </div>
-                `).join('');
-            } else {
-                teamContainer.innerHTML = '<p style="color: #999; text-align: center; padding: 2rem; grid-column: 1 / -1;">No hay miembros del equipo configurados</p>';
-            }
-        }
-        
-        // Cargar al iniciar
-        loadDynamicContent();
-        
-        // Recargar cuando cambia el contenido en el admin
-        window.addEventListener('storage', loadDynamicContent);
     </script>
     
-    <!-- SCRIPTS ESTANDARIZADOS -->
+    <!-- ✨ SCRIPTS ESTANDARIZADOS -->
     <script src="/js/common-header.js"></script>
     <script src="/js/apply-colors.js"></script>
     <script src="/js/common-footer.js"></script>
