@@ -63,8 +63,8 @@ async function loadCommonFooter() {
       <div class="footer-bottom">
         <p>&copy; 2026 ${storeName}. Todos los derechos reservados.</p>
         <div class="footer-links">
-          <a href="#">Política de Privacidad</a>
-          <a href="#">Términos y Condiciones</a>
+            <a href="/pages/politica-privacidad.html">Política de Privacidad</a>
+            <a href="/pages/terminos-condiciones.html">Términos y Condiciones</a>
         </div>
       </div>
     </footer>

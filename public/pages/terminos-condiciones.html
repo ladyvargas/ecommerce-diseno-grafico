@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Términos y Condiciones - CNC CAMPAS</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/footer.css">
+
+
+    <style>
+      body{font-family:'Plus Jakarta Sans',sans-serif;background:#fff;color:#111827;}
+      .page-hero{
+        margin-top:80px;
+        padding:4rem 2rem;
+        background:linear-gradient(135deg,#e8d9a0,#e8c9a0);
+        color:#111827;
+        text-align:center;
+      }
+      .page-hero h1{font-family:'Space Grotesk',sans-serif;font-size:3rem;font-weight:800;margin:0;}
+      .container{max-width:1100px;margin:0 auto;padding:3rem 1.5rem;}
+      .doc{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:2rem;box-shadow:0 10px 30px rgba(0,0,0,.05);}
+      .doc h2{font-family:'Space Grotesk',sans-serif;font-size:1.6rem;margin-top:2rem;}
+      .doc p,.doc li{color:#374151;line-height:1.8;font-size:1.05rem;}
+      .doc ul{padding-left:1.2rem;}
+      .loading{padding:1rem;color:#6b7280;text-align:center;}
+      .doc-meta{display:flex;gap:1rem;flex-wrap:wrap;margin:.5rem 0 1.5rem;color:#6b7280;font-size:.95rem;}
+      .badge{background:#f3f4f6;border:1px solid #e5e7eb;border-radius:999px;padding:.25rem .75rem;}
+    </style>
+
+</head>
+<body>
+  <script src="/js/common-header.js"></script>
+
+  <section class="page-hero">
+    <h1 id="docTitle">Términos y Condiciones</h1>
+  </section>
+
+  <div class="container">
+    <div class="doc">
+      <div class="doc-meta">
+        <span class="badge"><i class="fa-regular fa-file-lines"></i> Documento legal</span>
+        <span class="badge"><i class="fa-regular fa-clock"></i> Última actualización: <span id="docUpdatedAt">—</span></span>
+      </div>
+
+      <div id="docContent">
+        <div class="loading"><i class="fas fa-spinner fa-spin"></i> Cargando...</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = "https://ecommerce-diseno-grafico-production.up.railway.app";
+
+    async function loadLegalDoc() {
+      const contentEl = document.getElementById("docContent");
+      const updatedEl = document.getElementById("docUpdatedAt");
+      const titleEl = document.getElementById("docTitle");
+
+      try {
+        const res = await fetch(`${API_BASE}/api/legal/terms`, { cache: "no-store" });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error((data && data.error) || "Error cargando documento");
+
+        if (data.title) titleEl.textContent = data.title;
+        contentEl.innerHTML = data.content_html || "<p>No hay contenido configurado.</p>";
+
+        if (data.updated_at) {
+          const d = new Date(data.updated_at);
+          updatedEl.textContent = d.toLocaleString("es-EC");
+        } else {
+          updatedEl.textContent = "—";
+        }
+      } catch (err) {
+        console.error(err);
+        contentEl.innerHTML = `<p style="color:#ef4444;text-align:center;">No se pudo cargar el documento.</p>`;
+      }
+    }
+
+    loadLegalDoc();
+  </script>
+
+  <script src="/js/common-footer.js"></script>
+</body>
+</html>
