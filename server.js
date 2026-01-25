@@ -51,6 +51,7 @@ app.use('/api/products', require('./src/routes/products'));
 app.use('/api/cart', require('./src/routes/cart'));
 app.use('/api/orders', require('./src/routes/orders'));
 app.use('/api/categories', require('./src/routes/categories'));
+app.use('/api/about', require('./src/routes/about'));
 app.use('/api/reviews', require('./src/routes/reviews'));
 app.use('/api/dashboard', require('./src/routes/dashboard'));
 app.use('/api/stats', require('./src/routes/stats'));

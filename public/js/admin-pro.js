@@ -174,6 +174,7 @@ function navigateToSection(section) {
     inventario: "Inventario",
     promociones: "Promociones",
     cupones: "Cupones de Descuento",
+    about: "Somos Nosotros",
     newsletter: "Newsletter",
     ajustes: "Ajustes del Sistema",
   };
@@ -199,6 +200,9 @@ async function loadSectionData(section) {
       break;
     case "categorias":
       renderCategories();
+      break;
+    case "about":
+      await loadAboutAdmin();
       break;
   }
 }
@@ -1250,7 +1254,8 @@ async function cancelOrder(orderId) {
 async function loadCategories() {
   try {
     const response = await fetch(`${API_URL}/categories`);
-    state.categories = await response.json();
+    const json = await response.json();
+        state.categories = Array.isArray(json) ? json : (json.categories || []);
 
     // Llenar select de categorías
     const select = document.getElementById("productCategory");
@@ -1276,6 +1281,7 @@ async function loadCategories() {
 }
 
 function renderCategories() {
+    if (!Array.isArray(state.categories)) state.categories = (state.categories && state.categories.categories) ? state.categories.categories : [];
   const container = document.getElementById("categoriasContainer");
   if (!container) return;
 
@@ -3336,3 +3342,269 @@ function confirmReset() {
     }
   }
 }
+
+
+// ========================================
+// SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
+// ========================================
+
+async function loadAboutAdmin() {
+  const container = document.getElementById("about-section");
+  if (!container) return;
+
+  container.innerHTML = `
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Editar Somos Nosotros</h3>
+      </div>
+      <div style="padding: 1.5rem;">
+        <form id="aboutForm">
+          <div class="form-group">
+            <label>Título principal</label>
+            <input id="aboutHeroTitle" type="text" placeholder="Sobre Nosotros" />
+          </div>
+
+          <div class="form-group">
+            <label>Título Historia</label>
+            <input id="aboutHistoriaTitle" type="text" placeholder="Nuestra Historia" />
+          </div>
+
+          <div class="form-group">
+            <label>Historia (HTML)</label>
+            <textarea id="aboutHistoriaHtml" rows="7" placeholder="<p>...</p>"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Título Misión</label>
+            <input id="aboutMisionTitle" type="text" placeholder="MISION" />
+          </div>
+          <div class="form-group">
+            <label>Texto Misión</label>
+            <textarea id="aboutMisionText" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Título Visión</label>
+            <input id="aboutVisionTitle" type="text" placeholder="VISION" />
+          </div>
+          <div class="form-group">
+            <label>Texto Visión</label>
+            <textarea id="aboutVisionText" rows="3"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Título Equipo</label>
+            <input id="aboutTeamTitle" type="text" placeholder="Nuestro Equipo" />
+          </div>
+
+          <button class="btn btn-primary" type="submit" style="width:100%;">
+            <i class="fas fa-save"></i> Guardar cambios
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 1.5rem;">
+      <div class="card-header">
+        <h3 class="card-title">Equipo</h3>
+        <button class="btn btn-success btn-sm" onclick="openTeamMemberModal()">
+          <i class="fas fa-plus"></i> Agregar Miembro
+        </button>
+      </div>
+      <div id="aboutTeamMembersContainer" style="padding:1.5rem;"></div>
+    </div>
+  `;
+
+  try {
+    const res = await fetch(`${API_URL}/about`, {
+      headers: currentToken ? { Authorization: `Bearer ${currentToken}` } : {}
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("About response:", res.status, text);
+      throw new Error("No se pudo cargar About (revisa API /api/about)");
+    }
+    const data = await res.json();
+
+    document.getElementById("aboutHeroTitle").value = data.hero_title || "";
+    document.getElementById("aboutHistoriaTitle").value = data.historia_title || "";
+    document.getElementById("aboutHistoriaHtml").value = data.historia_html || "";
+    document.getElementById("aboutMisionTitle").value = data.mision_title || "";
+    document.getElementById("aboutMisionText").value = data.mision_text || "";
+    document.getElementById("aboutVisionTitle").value = data.vision_title || "";
+    document.getElementById("aboutVisionText").value = data.vision_text || "";
+    document.getElementById("aboutTeamTitle").value = data.team_title || "";
+
+    // render team
+    window._aboutTeam = data.team || [];
+    renderAboutTeam();
+  } catch (e) {
+    console.error(e);
+    showToast("Error al cargar About", "error", "Error");
+  }
+
+  document.getElementById("aboutForm").addEventListener("submit", saveAboutAdmin);
+}
+
+async function saveAboutAdmin(e) {
+  e.preventDefault();
+
+  const payload = {
+    hero_title: document.getElementById("aboutHeroTitle").value.trim(),
+    historia_title: document.getElementById("aboutHistoriaTitle").value.trim(),
+    historia_html: document.getElementById("aboutHistoriaHtml").value.trim(),
+    mision_title: document.getElementById("aboutMisionTitle").value.trim(),
+    mision_text: document.getElementById("aboutMisionText").value.trim(),
+    vision_title: document.getElementById("aboutVisionTitle").value.trim(),
+    vision_text: document.getElementById("aboutVisionText").value.trim(),
+    team_title: document.getElementById("aboutTeamTitle").value.trim(),
+  };
+
+  try {
+    const resp = await fetch(`${API_URL}/about`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) throw new Error("Error guardando About");
+    showToast("About actualizado", "success", "Éxito");
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo guardar About", "error", "Error");
+  }
+}
+
+function renderAboutTeam() {
+  const container = document.getElementById("aboutTeamMembersContainer");
+  if (!container) return;
+
+  const members = window._aboutTeam || [];
+  if (members.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon"><i class="fas fa-users"></i></div>
+        <div class="empty-state-title">Sin miembros</div>
+        <div class="empty-state-desc">Agrega tu primer miembro</div>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="display:grid; gap:1rem;">
+      ${members.map(m => `
+        <div style="border:1px solid #e2e8f0; padding:1rem; border-radius:12px; display:flex; justify-content:space-between; gap:1rem;">
+          <div>
+            <div style="font-weight:700;">${m.name}</div>
+            <div style="color:#8b5cf6; font-weight:600;">${m.role}</div>
+            <div style="color:#64748b; font-size:.9rem;">${m.bio || ""}</div>
+          </div>
+          <div style="display:flex; gap:.5rem;">
+            <button class="btn btn-sm btn-primary" onclick="openTeamMemberModal(${m.id})"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-danger" onclick="deleteTeamMember(${m.id})"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function openTeamMemberModal(id=null){
+  const member = (window._aboutTeam || []).find(x => String(x.id)===String(id)) || null;
+
+  const modal = document.createElement("div");
+  modal.className = "modal show";
+  modal.innerHTML = `
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title">${member ? "Editar Miembro" : "Nuevo Miembro"}</h2>
+        <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nombre *</label>
+          <input id="tmName" type="text" value="${member?.name || ""}">
+        </div>
+        <div class="form-group">
+          <label>Rol *</label>
+          <input id="tmRole" type="text" value="${member?.role || ""}">
+        </div>
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea id="tmBio" rows="3">${member?.bio || ""}</textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="this.closest('.modal').remove()">Cancelar</button>
+        <button class="btn btn-primary" onclick="saveTeamMember(${member?.id || "null"})">
+          <i class="fas fa-save"></i> Guardar
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+}
+
+async function saveTeamMember(id=null){
+  const name = document.getElementById("tmName").value.trim();
+  const role = document.getElementById("tmRole").value.trim();
+  const bio = document.getElementById("tmBio").value.trim();
+
+  if(!name || !role){
+    showToast("Nombre y rol son obligatorios", "warning", "Aviso");
+    return;
+  }
+
+  try{
+    const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
+    const method = id ? "PUT" : "POST";
+
+    const resp = await fetch(url,{
+      method,
+      headers:{
+        "Content-Type":"application/json",
+        Authorization:`Bearer ${currentToken}`
+      },
+      body: JSON.stringify({ name, role, bio, active:1 })
+    });
+
+    if(!resp.ok) throw new Error("Error guardando miembro");
+
+    document.querySelector(".modal")?.remove();
+    await loadAboutAdmin();
+    showToast("Miembro guardado", "success", "Éxito");
+  }catch(e){
+    console.error(e);
+    showToast("No se pudo guardar miembro", "error", "Error");
+  }
+}
+
+async function deleteTeamMember(id){
+  if(!confirm("¿Eliminar este miembro?")) return;
+  try{
+    const resp = await fetch(`${API_URL}/about/team/${id}`,{
+      method:"DELETE",
+      headers:{ Authorization:`Bearer ${currentToken}` }
+    });
+    if(!resp.ok) throw new Error("Error eliminando miembro");
+    await loadAboutAdmin();
+    showToast("Miembro eliminado", "success", "Éxito");
+  }catch(e){
+    console.error(e);
+    showToast("No se pudo eliminar miembro", "error", "Error");
+  }
+}
+
+window.loadAboutAdmin = loadAboutAdmin;
+
+window.saveAboutAdmin = saveAboutAdmin;
+
+window.openTeamMemberModal = openTeamMemberModal;
+
+window.saveTeamMember = saveTeamMember;
+
+window.deleteTeamMember = deleteTeamMember;
