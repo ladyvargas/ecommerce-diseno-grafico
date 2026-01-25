@@ -443,7 +443,7 @@ function renderRecentOrders() {
         <div class="table-container">
             <table class="data-table">
                 <thead>
-                    <tr>
+                    <tr class="${order.status === "cancelled" ? "order-cancelled" : ""}">
                         <th>ID</th>
                         <th>Cliente</th>
                         <th>Email</th>
