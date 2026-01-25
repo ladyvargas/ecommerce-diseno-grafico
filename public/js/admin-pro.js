@@ -4,11 +4,7 @@
 
 const API_URL =
   "https://ecommerce-diseno-grafico-production.up.railway.app/api";
-let currentToken =
-  localStorage.getItem("token") ||
-  localStorage.getItem("adminToken") ||
-  localStorage.getItem("authToken") ||
-  null;
+let currentToken = localStorage.getItem('token') || localStorage.getItem('adminToken') || localStorage.getItem('authToken') || null;
 let currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
 // Estado Global
@@ -622,7 +618,7 @@ function filterProducts() {
 function openProductModal(product = null) {
   const modal = document.getElementById("productModal");
   const title = document.getElementById("productModalTitle");
-  const form = document.getElementById("productForm");
+  const form  = document.getElementById("productForm");
 
   function setValue(id, value = "") {
     const el = document.getElementById(id);
@@ -654,6 +650,7 @@ function openProductModal(product = null) {
     setChecked("productFeatured", product.featured);
     setChecked("productTrending", product.trending);
     setChecked("productBestseller", product.bestseller);
+
   } else {
     title.textContent = "Agregar Nuevo Producto";
     if (form) form.reset();
@@ -689,15 +686,17 @@ async function editProduct(id) {
       stock: product.stock ?? 0,
       active: product.active === 1,
       featured: product.featured === 1,
-      trending: product.trending === 1,
+      trending: product.trending === 1
     };
 
     openProductModal(normalizedProduct);
+
   } catch (error) {
     console.error("❌ Error editProduct:", error);
     showToast("Error al cargar el producto", "error", "Error");
   }
 }
+
 
 async function deleteProduct(id) {
   if (!confirm("¿Estás seguro de eliminar este producto?")) return;
@@ -723,7 +722,7 @@ async function deleteProduct(id) {
 function validateProductImage() {
   const imageFile = document.getElementById("productImageFile")?.files[0];
   const imageUrl = document.getElementById("productImage").value.trim();
-  console.log("Validando imagen:", { imageFile, imageUrl });
+ console.log("Validando imagen:", { imageFile, imageUrl });
   if (imageFile) return true;
   if (imageUrl && /^https?:\/\/.+\.(jpg|jpeg|png|webp|gif)$/i.test(imageUrl)) {
     return true;
@@ -753,7 +752,7 @@ async function handleProductSubmit(e) {
     showToast(
       "Debes subir una imagen o ingresar una URL válida",
       "warning",
-      "Imagen requerida",
+      "Imagen requerida"
     );
     return;
   }
@@ -783,7 +782,7 @@ async function handleProductSubmit(e) {
       showToast(
         "Error al subir la imagen. Se usará la imagen existente.",
         "warning",
-        "Advertencia",
+        "Advertencia"
       );
     }
   }
@@ -829,17 +828,19 @@ async function handleProductSubmit(e) {
     showToast(
       id ? "Producto actualizado exitosamente" : "Producto creado exitosamente",
       "success",
-      "Éxito",
+      "Éxito"
     );
 
     closeModal("productModal");
     await loadProducts();
     await loadDashboardData();
+
   } catch (error) {
     console.error("❌ Error al guardar:", error);
     showToast("Error al guardar el producto", "error", "Error");
   }
 }
+
 
 // ========================================
 // PEDIDOS
@@ -3255,102 +3256,6 @@ function loadAjustes() {
             </div>
         </div>
     `;
-  bindAjustesForm();
-  loadSettingsIntoForm();
-}
-// ========================================
-// AJUSTES (API /api/settings)
-// ========================================
-
-async function fetchSettings() {
-  try {
-    const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
-    if (!res.ok) throw new Error("No se pudo cargar settings");
-    return await res.json();
-  } catch (err) {
-    console.error("fetchSettings:", err);
-    return {};
-  }
-}
-
-async function loadSettingsIntoForm() {
-  const s = await fetchSettings();
-
-  // Inputs (ajusta IDs según tu HTML)
-  setValue("storeName", s.store_name || "CNC CAMPAS");
-  setValue("storeEmail", s.store_email || "");
-  setValue("storePhone", s.store_phone || "");
-  setValue("storeAddress", s.store_address || "");
-
-  setValue("contactLocation", s.contact_location || "Esmeraldas, Ecuador");
-  setValue("contactPhone", s.contact_phone || "");
-  setValue("contactEmail", s.contact_email || "");
-  setValue("contactHours", s.contact_hours || "");
-
-  setValue("facebookUrl", s.facebook_url || "");
-  setValue("instagramUrl", s.instagram_url || "");
-  setValue("tiktokUrl", s.tiktok_url || "");
-  setValue("whatsappUrl", s.whatsapp_url || "");
-
-  setValue("taxRate", s.tax_rate ?? 0);
-  setChecked("taxIncluded", !!s.tax_included);
-}
-
-async function saveSettings(e) {
-  if (e) e.preventDefault();
-
-  try {
-    const payload = {
-      store_name: getValue("storeName"),
-      store_email: getValue("storeEmail"),
-      store_phone: getValue("storePhone"),
-      store_address: getValue("storeAddress"),
-
-      contact_location: getValue("contactLocation"),
-      contact_phone: getValue("contactPhone"),
-      contact_email: getValue("contactEmail"),
-      contact_hours: getValue("contactHours"),
-
-      facebook_url: getValue("facebookUrl"),
-      instagram_url: getValue("instagramUrl"),
-      tiktok_url: getValue("tiktokUrl"),
-      whatsapp_url: getValue("whatsappUrl"),
-
-      tax_rate: parseFloat(getValue("taxRate", 0)),
-      tax_included: getChecked("taxIncluded"),
-    };
-
-    const response = await fetch(`${API_URL}/settings`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`, // si decides quitar auth en settings API, puedes borrar esto
-      },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      throw new Error(data.error || "Error guardando settings");
-    }
-
-    showToast("Ajustes guardados correctamente ✅", "success", "Éxito");
-  } catch (err) {
-    console.error("saveSettings:", err);
-    showToast(err.message || "Error guardando ajustes", "error", "Error");
-  }
-}
-
-function bindAjustesForm() {
-  const form = document.getElementById("ajustesForm");
-  if (!form) return;
-
-  // evitar doble bind
-  if (form.dataset.bound === "1") return;
-  form.dataset.bound = "1";
-
-  form.addEventListener("submit", saveSettings);
 }
 
 // Funciones de guardado de ajustes
@@ -3413,35 +3318,11 @@ function clearCache() {
   }
 }
 
-async function exportDatabase() {
-  try {
-    showToast("Exportando base de datos...", "info", "Procesando");
-
-    const response = await fetch(`${API_URL}/export/db`, {
-      headers: {
-        Authorization: `Bearer ${currentToken}`,
-      },
-    });
-
-    if (!response.ok) throw new Error("No se pudo exportar");
-
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `backup_${new Date().toISOString().slice(0, 10)}.json`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    window.URL.revokeObjectURL(url);
-
-    showToast("Base de datos exportada ✅", "success", "Éxito");
-  } catch (err) {
-    console.error(err);
-    showToast("Error exportando base de datos", "error", "Error");
-  }
+function exportDatabase() {
+  showToast("Exportando base de datos...", "info", "Procesando");
+  setTimeout(() => {
+    showToast("Base de datos exportada", "success", "Éxito");
+  }, 2000);
 }
 
 function confirmReset() {
@@ -3459,6 +3340,7 @@ function confirmReset() {
     }
   }
 }
+
 
 // ========================================
 // SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
@@ -3537,10 +3419,8 @@ async function loadAboutAdmin() {
     const data = await res.json();
 
     document.getElementById("aboutHeroTitle").value = data.hero_title || "";
-    document.getElementById("aboutHistoriaTitle").value =
-      data.historia_title || "";
-    document.getElementById("aboutHistoriaHtml").value =
-      data.historia_html || "";
+    document.getElementById("aboutHistoriaTitle").value = data.historia_title || "";
+    document.getElementById("aboutHistoriaHtml").value = data.historia_html || "";
     document.getElementById("aboutMisionTitle").value = data.mision_title || "";
     document.getElementById("aboutMisionText").value = data.mision_text || "";
     document.getElementById("aboutVisionTitle").value = data.vision_title || "";
@@ -3555,9 +3435,7 @@ async function loadAboutAdmin() {
     showToast("Error al cargar About", "error", "Error");
   }
 
-  document
-    .getElementById("aboutForm")
-    .addEventListener("submit", saveAboutAdmin);
+  document.getElementById("aboutForm").addEventListener("submit", saveAboutAdmin);
 }
 
 async function saveAboutAdmin(e) {
@@ -3610,9 +3488,7 @@ function renderAboutTeam() {
 
   container.innerHTML = `
     <div style="display:grid; gap:1rem;">
-      ${members
-        .map(
-          (m) => `
+      ${members.map(m => `
         <div style="border:1px solid #e2e8f0; padding:1rem; border-radius:12px; display:flex; justify-content:space-between; gap:1rem;">
           <div>
             <div style="font-weight:700;">${m.name}</div>
@@ -3624,16 +3500,13 @@ function renderAboutTeam() {
             <button class="btn btn-sm btn-danger" onclick="deleteTeamMember(${m.id})"><i class="fas fa-trash"></i></button>
           </div>
         </div>
-      `,
-        )
-        .join("")}
+      `).join("")}
     </div>
   `;
 }
 
-function openTeamMemberModal(id = null) {
-  const member =
-    (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
+function openTeamMemberModal(id=null){
+  const member = (window._aboutTeam || []).find(x => String(x.id)===String(id)) || null;
 
   const modal = document.createElement("div");
   modal.className = "modal show";
@@ -3668,48 +3541,48 @@ function openTeamMemberModal(id = null) {
   document.body.appendChild(modal);
 }
 
-async function saveTeamMember(id = null) {
+async function saveTeamMember(id=null){
   const name = document.getElementById("tmName").value.trim();
   const role = document.getElementById("tmRole").value.trim();
   const bio = document.getElementById("tmBio").value.trim();
 
-  if (!name || !role) {
+  if(!name || !role){
     showToast("Nombre y rol son obligatorios", "warning", "Aviso");
     return;
   }
 
-  try {
+  try{
     const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
     const method = id ? "PUT" : "POST";
 
-    const resp = await fetch(url, {
+    const resp = await fetch(url,{
       method,
       headers: getAuthHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ name, role, bio, active: 1 }),
+      body: JSON.stringify({ name, role, bio, active:1 })
     });
 
-    if (!resp.ok) throw new Error("Error guardando miembro");
+    if(!resp.ok) throw new Error("Error guardando miembro");
 
     document.querySelector(".modal")?.remove();
     await loadAboutAdmin();
     showToast("Miembro guardado", "success", "Éxito");
-  } catch (e) {
+  }catch(e){
     console.error(e);
     showToast("No se pudo guardar miembro", "error", "Error");
   }
 }
 
-async function deleteTeamMember(id) {
-  if (!confirm("¿Eliminar este miembro?")) return;
-  try {
-    const resp = await fetch(`${API_URL}/about/team/${id}`, {
-      method: "DELETE",
-      headers: getAuthHeaders(),
+async function deleteTeamMember(id){
+  if(!confirm("¿Eliminar este miembro?")) return;
+  try{
+    const resp = await fetch(`${API_URL}/about/team/${id}`,{
+      method:"DELETE",
+      headers: getAuthHeaders()
     });
-    if (!resp.ok) throw new Error("Error eliminando miembro");
+    if(!resp.ok) throw new Error("Error eliminando miembro");
     await loadAboutAdmin();
     showToast("Miembro eliminado", "success", "Éxito");
-  } catch (e) {
+  }catch(e){
     console.error(e);
     showToast("No se pudo eliminar miembro", "error", "Error");
   }
@@ -3725,6 +3598,7 @@ window.saveTeamMember = saveTeamMember;
 
 window.deleteTeamMember = deleteTeamMember;
 
+
 // ========================================
 // AUTH HELPERS (About / Categories / etc.)
 // ========================================
@@ -3737,7 +3611,7 @@ function getAuthHeaders(extra = {}) {
 
   return {
     ...extra,
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(token ? { Authorization: `Bearer ${token}` } : {})
   };
 }
 window.getAuthHeaders = getAuthHeaders;
