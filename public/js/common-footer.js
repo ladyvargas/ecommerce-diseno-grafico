@@ -1,20 +1,26 @@
-const API_URL = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
-
 async function loadCommonFooter() {
+  const API_URL =
+    "https://ecommerce-diseno-grafico-production.up.railway.app/api";
   try {
     const res = await fetch(`${API_URL}/settings`);
     const settings = await res.json();
 
-    const facebook = settings.facebook_url || "https://www.facebook.com/p/Cnccampas-61557170055468/";
-    const instagram = settings.instagram_url || "https://www.instagram.com/cnccampas/";
+    const facebook =
+      settings.facebook_url ||
+      "https://www.facebook.com/p/Cnccampas-61557170055468/";
+    const instagram =
+      settings.instagram_url || "https://www.instagram.com/cnccampas/";
     const tiktok = settings.tiktok_url || "https://www.tiktok.com/@cnccampas7";
     const whatsapp = settings.whatsapp_url || "#";
     const storeName = settings.store_name || "CNC CAMPAS";
     const storeAddress = settings.store_address || "Esmeraldas, Ecuador";
     const storePhone = settings.store_phone || "+593 964083585";
     const storeEmail = settings.store_email || "cnccampas@gmail.com";
-    const storeSchedule = settings.store_schedule || "Lun - Vie: 8:00 AM - 6:00 PM";
-    const footerText = settings.footer_text || "Fabricación digital profesional con la más alta tecnología. Convirtiendo tus ideas en realidad.";
+    const storeSchedule =
+      settings.store_schedule || "Lun - Vie: 8:00 AM - 6:00 PM";
+    const footerText =
+      settings.footer_text ||
+      "Fabricación digital profesional con la más alta tecnología. Convirtiendo tus ideas en realidad.";
 
     const footerHTML = `
     <footer class="footer">

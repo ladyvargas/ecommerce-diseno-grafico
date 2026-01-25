@@ -778,8 +778,9 @@
             });
         });
         async function loadDynamicContact() {
+            const API_URL_Contact = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
             try {
-                const res = await fetch(`${API_URL}/settings`);
+                const res = await fetch(`${API_URL_Contact}/settings`);
                 const settings = await res.json();
 
                 // Llenar los datos del contacto
