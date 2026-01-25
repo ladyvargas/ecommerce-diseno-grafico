@@ -2,9 +2,17 @@
 // ADMIN PRO - JAVASCRIPT COMPLETO
 // ========================================
 
-const API_URL =
-  "https://ecommerce-diseno-grafico-production.up.railway.app/api";
-let currentToken = localStorage.getItem("token");
+const API_URL ="https://ecommerce-diseno-grafico-production.up.railway.app/api";
+let currentToken =
+  localStorage.getItem("token") ||
+  localStorage.getItem("authToken") ||
+  localStorage.getItem("adminToken") ||
+  localStorage.getItem("cnc_token") ||
+  null;
+
+if (!currentToken) {
+  console.warn("⚠️ No hay token en localStorage. No podrás guardar About.");
+}
 let currentUser = JSON.parse(localStorage.getItem("user") || "{}");
 
 // Estado Global
@@ -3416,9 +3424,7 @@ async function loadAboutAdmin() {
   `;
 
   try {
-    const res = await fetch(`${API_URL}/about`, {
-      headers: currentToken ? { Authorization: `Bearer ${currentToken}` } : {}
-    });
+    const res = await fetch(`${API_URL}/about`);
     if (!res.ok) {
       const text = await res.text();
       console.error("About response:", res.status, text);
