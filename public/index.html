@@ -288,6 +288,7 @@
     </section>
 
     <!-- CONTACTO -->
+    <!-- CONTACTO -->
     <section class="contacto-section" id="contacto">
         <h2 class="contacto-title">CONTÁCTANOS</h2>
         <p class="contacto-subtitle">
@@ -319,7 +320,6 @@
             </div>
         </div>
     </section>
-
 
     <script>
         // Datos de máquinas - SE CARGARÁN DINÁMICAMENTE
@@ -463,48 +463,7 @@
             // Si es ruta relativa, completar con el backend
             return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
         }
-        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
-        async function loadContactInfo() {
-            // 1) Intentar desde localStorage (lo más directo con tu admin actual)
-            try {
-                const storeInfo = JSON.parse(localStorage.getItem('cncStoreInfo') || '{}');
-                if (storeInfo && (storeInfo.email || storeInfo.phone || storeInfo.address || storeInfo.hours)) {
-                    const addressEl = document.getElementById('contactAddress');
-                    const phoneEl = document.getElementById('contactPhone');
-                    const emailEl = document.getElementById('contactEmail');
-                    const hoursEl = document.getElementById('contactHours');
-
-                    if (addressEl) addressEl.textContent = storeInfo.address || '—';
-                    if (phoneEl) phoneEl.textContent = storeInfo.phone || '—';
-                    if (emailEl) emailEl.textContent = storeInfo.email || '—';
-                    if (hoursEl) hoursEl.innerHTML = (storeInfo.hours || '—').replace(/\n/g, '<br>');
-
-                    return; // ✅ Ya cargó
-                }
-            } catch (err) {
-                console.warn('No se pudo leer cncStoreInfo:', err);
-            }
-            
-            try {
-                const res = await fetch(`${API_BASE}/api/settings`);
-                if (!res.ok) throw new Error('No settings endpoint');
-                const settings = await res.json();
-
-                const addressEl = document.getElementById('contactAddress');
-                const phoneEl = document.getElementById('contactPhone');
-                const emailEl = document.getElementById('contactEmail');
-                const hoursEl = document.getElementById('contactHours');
-
-                if (addressEl) addressEl.textContent = settings.address || '—';
-                if (phoneEl) phoneEl.textContent = settings.phone || '—';
-                if (emailEl) emailEl.textContent = settings.email || '—';
-                if (hoursEl) hoursEl.innerHTML = (settings.hours || '—').replace(/\n/g, '<br>');
-            } catch (err) {
-                // Si no hay endpoint, mantenemos contenido fijo / placeholders
-                console.log('Contacto dinámico: endpoint /api/settings no disponible, usando valores locales/default.');
-            }
-        }
-
+        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';    
 
         function resolveImage(image) {
             if (!image || typeof image !== 'string') return null;
@@ -819,6 +778,26 @@
                 }
             });
         });
+        async function loadDynamicContact() {
+            try {
+                const res = await fetch(`${API_URL}/settings`);
+                const settings = await res.json();
+                // Llenar los datos del contacto
+                document.getElementById("contactAddress").textContent = settings.store_address || "Cargando...";
+                document.getElementById("contactPhone").textContent = settings.store_phone || "Cargando...";
+                document.getElementById("contactEmail").textContent = settings.store_email || "Cargando...";
+                document.getElementById("contactHours").textContent = settings.store_schedule || "Cargando...";
+            } catch (err) {
+                console.error("Error cargando datos de contacto:", err);
+            }
+        }
+
+        // Ejecutar cuando el documento esté listo
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", loadDynamicContact);
+        } else {
+            loadDynamicContact();
+        }
     </script>
 
     <!-- ✨ APLICAR COLORES ESTANDARIZADOS -->
