@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../config/database");
-const { verifyToken } = require("../middleware/auth");
 
 // ========================================
 // ASEGURAR QUE EXISTA LA FILA DE SETTINGS
@@ -16,7 +15,8 @@ async function ensureSettingsRow() {
       await pool.query(
         `INSERT INTO settings 
           (id, store_name, store_email, store_phone, store_address, store_city, store_schedule,
-           facebook_url, instagram_url, whatsapp_url, tiktok_url, footer_text, iva_percent)
+           facebook_url, instagram_url, whatsapp_url, tiktok_url, footer_text, iva_percent,
+           privacy_policy_html, terms_conditions_html)
         VALUES
           (1, 'CNC CAMPAS', 'cnccampas@gmail.com', '+593 964083585', 
            'Esmeraldas, Ecuador', 'Esmeraldas', 'Lun – Vie 8:00 AM – 6:00 PM',
@@ -24,7 +24,7 @@ async function ensureSettingsRow() {
            'https://www.instagram.com/cnccampas/', '', 
            'https://www.tiktok.com/@cnccampas7',
            'Fabricación digital profesional con la más alta tecnología. Convirtiendo tus ideas en realidad.',
-           12)`
+           12, '', '')`
       );
     }
   } catch (error) {
@@ -57,87 +57,31 @@ router.put("/", async (req, res) => {
   try {
     await ensureSettingsRow();
 
-    const {
-      store_name,
-      store_email,
-      store_phone,
-      store_address,
-      store_city,
-      store_schedule,
-      facebook_url,
-      instagram_url,
-      whatsapp_url,
-      tiktok_url,
-      footer_text,
-      iva_percent,
-    } = req.body;
-
-    // Construir query dinámicamente (solo actualizar campos que vienen en el body)
     const updateFields = [];
     const updateValues = [];
 
-    if (store_name !== undefined) {
-      updateFields.push("store_name = ?");
-      updateValues.push(store_name);
-    }
-    if (store_email !== undefined) {
-      updateFields.push("store_email = ?");
-      updateValues.push(store_email);
-    }
-    if (store_phone !== undefined) {
-      updateFields.push("store_phone = ?");
-      updateValues.push(store_phone);
-    }
-    if (store_address !== undefined) {
-      updateFields.push("store_address = ?");
-      updateValues.push(store_address);
-    }
-    if (store_city !== undefined) {
-      updateFields.push("store_city = ?");
-      updateValues.push(store_city);
-    }
-    if (store_schedule !== undefined) {
-      updateFields.push("store_schedule = ?");
-      updateValues.push(store_schedule);
-    }
-    if (facebook_url !== undefined) {
-      updateFields.push("facebook_url = ?");
-      updateValues.push(facebook_url);
-    }
-    if (instagram_url !== undefined) {
-      updateFields.push("instagram_url = ?");
-      updateValues.push(instagram_url);
-    }
-    if (whatsapp_url !== undefined) {
-      updateFields.push("whatsapp_url = ?");
-      updateValues.push(whatsapp_url);
-    }
-    if (tiktok_url !== undefined) {
-      updateFields.push("tiktok_url = ?");
-      updateValues.push(tiktok_url);
-    }
-    if (footer_text !== undefined) {
-      updateFields.push("footer_text = ?");
-      updateValues.push(footer_text);
-    }
-    if (iva_percent !== undefined) {
-      updateFields.push("iva_percent = ?");
-      updateValues.push(iva_percent);
-    }
+    // Recorrer TODOS los campos del body
+    const allowedFields = [
+      'store_name', 'store_email', 'store_phone', 'store_address', 'store_city',
+      'store_schedule', 'facebook_url', 'instagram_url', 'whatsapp_url', 'tiktok_url',
+      'footer_text', 'iva_percent', 'privacy_policy_html', 'terms_conditions_html'
+    ];
 
-    // Si no hay campos para actualizar, retornar error
+    allowedFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updateFields.push(`${field} = ?`);
+        updateValues.push(req.body[field]);
+      }
+    });
+
     if (updateFields.length === 0) {
       return res.status(400).json({ error: "No hay campos para actualizar" });
     }
 
-    // Ejecutar UPDATE
     const query = `UPDATE settings SET ${updateFields.join(", ")} WHERE id = 1`;
     await pool.query(query, updateValues);
 
-    // Retornar los settings actualizados
-    const [rows] = await pool.query(
-      "SELECT * FROM settings WHERE id = 1 LIMIT 1"
-    );
+    const [rows] = await pool.query("SELECT * FROM settings WHERE id = 1 LIMIT 1");
 
     res.json({
       ok: true,
