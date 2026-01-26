@@ -153,14 +153,16 @@ nav a:hover {
 /* CONTENEDOR DE LA IMAGEN */
 .machine-box {
     position: absolute;
-    left: 50%; /* Ajusta según tu diseño de escritorio */
+    left: 55%;
     top: 55%;
     transform: translateY(-50%);
     z-index: 10;
     
-    /* CONTENEDOR CON TAMAÑO FIJO */
-    width: 480px; 
-    height: 400px; 
+    /* 1. Definimos el contenedor fijo */
+    width: 380px; 
+    height: 300px; 
+    
+    /* 2. Centramos la imagen dentro del contenedor */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -168,13 +170,15 @@ nav a:hover {
 }
 
 .machine-box img {
-    /* Esto hace que todas las imágenes llenen el contenedor uniformemente */
+    /* 3. Forzamos a que la imagen respete el contenedor */
     width: 100%;
     height: 100%;
-    /* 'contain' mantiene la proporción, 'cover' recorta para llenar */
+    
+    /* 4. CLAVE: 'contain' evita que se deforme o se vea rara */
     object-fit: contain; 
-    filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
+    
+    /* Mantenemos tus estilos visuales */
+    filter: drop-shadow(15px 25px 20px rgba(0, 0, 0, 0.35));
 }
 
 /* EL ÓVALO (MASCARA) */
@@ -213,7 +217,7 @@ nav a:hover {
   top: 55%;
   transform: translateY(-50%);
   z-index: 10;
-  width: 480px;
+  width: 380px;
 }
 
 .machine-box img {
@@ -265,16 +269,16 @@ nav a:hover {
 
   .content h1 {
     font-size: 32px;
-    width: 400px;
+    width: 350px;
   }
 
   .content p {
     font-size: 18px;
-    width: 400px;
+    width: 350px;
   }
 
   .machine-box {
-    height: 420px;
+    height: 320px;
   }
 
   .machine-box img {
@@ -290,7 +294,6 @@ nav a:hover {
   }
 
   .tag {
-    width: 100px;
     font-size: 10px;
   }
   .oval-mask,
@@ -1603,7 +1606,7 @@ nav a:hover {
   }
 
   .machine-box {
-    max-width: 420px;
+    max-width: 320px;
     height: 360px;
     margin: 0 auto;
   }
@@ -1665,11 +1668,12 @@ nav a:hover {
   }
 
   /* 3. Máquina (Adaptable y con Sombra) */
-  .machine-box {
+.machine-box {
         position: relative;
-        width: 90%; /* Se adapta al ancho del celular */
-        height: 280px; /* Altura más pequeña para pantallas móviles */
-        margin: -60px auto 30px;
+        width: 100%;
+        max-width: 250px;
+        height: 280px; /* Altura fija para móvil */
+        margin: -40px auto 20px;
         left: auto;
         top: auto;
         transform: none;
