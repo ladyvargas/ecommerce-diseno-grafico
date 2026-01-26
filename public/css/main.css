@@ -130,6 +130,7 @@ nav a:hover {
   font-weight: 900;
   line-height: 1.1;
   margin-bottom: 20px;
+  width: 600px;
 }
 
 .content p {
@@ -137,12 +138,13 @@ nav a:hover {
   line-height: 1.5;
   margin-bottom: 30px;
   opacity: 0.9;
+  width: 600px;
 }
 
 .btn-cta {
   display: inline-block;
   padding: 14px 30px;
-  background-color: var(--primary-dark);
+  background-color: #243977;
   color: white;
   text-decoration: none;
   border-radius: 50px;
@@ -152,45 +154,53 @@ nav a:hover {
 }
 /* CONTENEDOR DE LA IMAGEN */
 .machine-box {
-    position: absolute;
-    left: 55%;
-    top: 55%;
-    transform: translateY(-50%);
-    z-index: 10;
-    
-    /* 1. Definimos el contenedor fijo */
-    width: 380px; 
-    height: 300px; 
-    
-    /* 2. Centramos la imagen dentro del contenedor */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+  position: absolute;
+  left: 45%;
+  top: 55%;
+  transform: translateY(-50%);
+  z-index: 10;
+
+  /* 1. Definimos el contenedor fijo */
+  width: 380px;
+  height: 300px;
+
+  /* 2. Centramos la imagen dentro del contenedor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .machine-box img {
-    /* 3. Forzamos a que la imagen respete el contenedor */
-    width: 100%;
-    height: 100%;
-    
-    /* 4. CLAVE: 'contain' evita que se deforme o se vea rara */
-    object-fit: contain; 
-    
-    /* Mantenemos tus estilos visuales */
-    filter: drop-shadow(15px 25px 20px rgba(0, 0, 0, 0.35));
+  /* 3. Forzamos a que la imagen respete el contenedor */
+  width: 100%;
+  height: 100%;
+
+  /* 4. CLAVE: 'contain' evita que se deforme o se vea rara */
+  object-fit: contain;
+
+  /* Mantenemos tus estilos visuales */
+  filter: drop-shadow(15px 25px 20px rgba(0, 0, 0, 0.35));
 }
 
 /* EL ÓVALO (MASCARA) */
 /* Este elemento crea el efecto ovalado "hacia adentro" */
+/* EL ÓVALO (MASCARA) */
 .oval-mask {
   position: absolute;
+  /* Mantenemos tu posición original */
   right: 22%;
   top: 50%;
+  /* Mantenemos tu desplazamiento */
   transform: translate(500px, -50%);
-  width: 900px;
-  height: 800px;
+
+  /* Aumentamos el ancho para que la curva sea más abierta/larga */
+  width: 980px;
+  height: 750px;
   background-color: #f7f3f1;
+
+  /* CLAVE: Cambiamos a un radio elíptico (X / Y)
+     El 100% estira la curva hacia los lados, el 50% la mantiene suave arriba y abajo */
   border-radius: 50% / 50%;
   z-index: 2;
 }
@@ -199,30 +209,31 @@ nav a:hover {
 .oval-line {
   position: absolute;
   right: 22.3%;
-  /* Ligeramente desplazado para que se vea el borde */
   top: 50%;
   transform: translate(500px, -50%);
-  width: 905px;
-  height: 805px;
+  width: 985px;
+  height: 750px;
+
+  /* Tu línea de sombra */
   border-left: 18px solid rgba(0, 0, 0, 0.8);
-  /* La línea de sombra en la curva */
-  border-radius: 50%;
+
+  /* Importante que tenga el mismo radio elíptico */
+  border-radius: 50% / 50%;
   z-index: 1;
 }
-
 /* MÁQUINA */
 .machine-box {
   position: absolute;
-  left: 55%;
+  left: 40%;
   top: 55%;
-  transform: translateY(-50%);
   z-index: 10;
-  width: 380px;
+  height: 400px;
+  width: 680px;
 }
 
 .machine-box img {
   width: 100%;
-  filter: drop-shadow(15px 25px 20px rgba(0, 0, 0, 0.35));
+  filter: drop-shadow(0px 0 0 rgba(0, 0, 0, 0.35));
 }
 
 /* TAGS DERECHA */
@@ -334,10 +345,12 @@ nav a:hover {
 
   .content h1 {
     font-size: 28px;
+    width: 100%;
   }
 
   .content p {
     font-size: 16px;
+    width: 100%;
   }
 
   .machine-box {
@@ -347,9 +360,13 @@ nav a:hover {
 
   .oval-mask,
   .oval-line {
-    width: 620px;
-    height: 580px;
-    right: 18%;
+    /* En pantallas muy angostas, empujamos más el óvalo hacia afuera */
+    transform: translate(550px, -50%);
+    width: 800px;
+  }
+
+  .oval-line {
+    border-left-width: 10px; /* Línea más fina */
   }
 
   .tags-side {
@@ -1605,10 +1622,56 @@ nav a:hover {
     margin-top: 10px;
   }
 
+  /* Ajustamos el óvalo para que no ocupe tanto espacio horizontal */
+  .oval-mask {
+    right: 10%; /* Lo movemos más a la derecha */
+    width: 850px;
+    height: 700px;
+    transform: translate(450px, -50%); /* Reducimos el desplazamiento */
+    border-radius: 50%; /* Mantenemos tu curvatura */
+  }
+
+  .oval-line {
+    right: 10.3%;
+    width: 855px;
+    height: 700px;
+    transform: translate(450px, -50%);
+    border-radius: 50%;
+    border-left: 15px solid rgba(0, 0, 0, 0.8); /* Línea un poco más delgada */
+  }
+
   .machine-box {
-    max-width: 320px;
-    height: 360px;
-    margin: 0 auto;
+    /* Ajustamos la posición para que no se amontone con el texto */
+    left: 65%;
+    top: 55%;
+    transform: translate(-50%, -50%); /* Centramos mejor */
+
+    /* Redimensionamos el contenedor para pantallas medianas */
+    width: 400px;
+    height: 300px;
+
+    /* Aseguramos que mantenga su prioridad visual */
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .machine-box img {
+    /* Mantenemos el ajuste proporcional */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+    /* Suavizamos un poco la sombra para pantallas más pequeñas */
+    filter: drop-shadow(10px 15px 15px rgba(0, 0, 0, 0.3));
+  }
+
+  /* Aseguramos que el contenido de texto no quede debajo de la curva */
+  .content {
+    max-width: 45%;
+    padding-left: 30px;
   }
 }
 
@@ -1638,19 +1701,20 @@ nav a:hover {
     position: relative;
     width: 100%;
     height: auto;
-    padding: 60px 20px 100px; /* Más espacio abajo para la curva */
+    padding: 60px 10px 80px; /* Más espacio abajo para la curva */
     background: var(--gradient);
     display: flex;
     flex-direction: column;
     align-items: center;
     /* Crea el efecto ovalado en la base */
-    clip-path: ellipse(150% 100% at 50% 0%);
+    clip-path: ellipse(120% 100% at 50% 0%);
     z-index: 1;
   }
 
   .content {
     max-width: 100%;
     margin: 0 auto;
+    padding-left: 0px;
   }
 
   .content h1 {
@@ -1658,6 +1722,7 @@ nav a:hover {
     margin-bottom: 15px;
     line-height: 1.2;
     padding: 0 10px;
+    width: 100%;
   }
 
   .content p {
@@ -1665,19 +1730,20 @@ nav a:hover {
     line-height: 1.6;
     margin-bottom: 25px;
     padding: 0 5px;
+    width: 100%;
   }
 
   /* 3. Máquina (Adaptable y con Sombra) */
-.machine-box {
-        position: relative;
-        width: 100%;
-        max-width: 250px;
-        height: 280px; /* Altura fija para móvil */
-        margin: -40px auto 20px;
-        left: auto;
-        top: auto;
-        transform: none;
-    }
+  .machine-box {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    height: 280px; /* Altura fija para móvil */
+    margin: -40px auto 20px;
+    left: auto;
+    top: auto;
+    transform: none;
+  }
 
   .machine-box img {
     width: 100%;
