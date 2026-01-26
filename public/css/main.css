@@ -150,6 +150,26 @@ nav a:hover {
   font-size: 13px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
 }
+/* CONTENEDOR DE LA IMAGEN */
+.machine-box {
+  width: 100%;
+  max-width: 520px;
+  height: 420px; /* 🔥 tamaño fijo del banner */
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* La imagen siempre centrada y ajustada */
+.machine-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 🔥 NO se deforma, no se sale */
+  object-position: center;
+  display: block;
+}
 
 /* EL ÓVALO (MASCARA) */
 /* Este elemento crea el efecto ovalado "hacia adentro" */
@@ -228,32 +248,55 @@ nav a:hover {
   color: #2c2c2c;
 }
 
-
 /* ===================== RESPONSIVE ===================== */
 
 /* -------- LAPTOP / TABLET GRANDE -------- */
 @media (max-width: 1200px) {
   .main-banner {
     height: 650px;
+    display: grid !important;
   }
 
   .content h1 {
     font-size: 32px;
+    width: 400px;
   }
 
   .content p {
     font-size: 18px;
+    width: 400px;
   }
 
   .machine-box {
-    width: 420px;
-    left: 58%;
+    height: 420px;
   }
 
+  .machine-box img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .tags-side {
+    right: 20px;
+    font-size: 10px;
+  }
+
+  .tag {
+    width: 120px;
+    font-size: 10px;
+  }
   .oval-mask,
   .oval-line {
     width: 750px;
     height: 700px;
+  }
+  .main-banner {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 20px;
+    padding: 30px 20px;
   }
 }
 
@@ -1642,5 +1685,57 @@ nav a:hover {
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
+  }
+}
+.main-banner {
+  display: grid;
+  grid-template-columns: 1fr 520px 260px;
+  gap: 20px;
+  align-items: center;
+  padding: 30px 20px;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  .main-banner {
+    grid-template-columns: 1fr 420px;
+    grid-template-rows: auto auto;
+  }
+
+  .tags-side {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .machine-box {
+    max-width: 420px;
+    height: 360px;
+    margin: 0 auto;
+  }
+}
+
+
+/* CTA responsive */
+.btn-cta {
+  padding: 14px 22px;
+  font-size: 16px;
+  border-radius: 999px;
+  max-width: 280px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .tags-side .tag {
+    flex: 1 1 auto;
+    min-width: 140px;
+    text-align: center;
+  }
+
+  .btn-cta {
+    max-width: 100%;
   }
 }

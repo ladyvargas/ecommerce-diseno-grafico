@@ -513,28 +513,7 @@
             document.querySelectorAll('.tag').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.machine === machineKey);
             });
-            const img = document.getElementById("machineImage");
-
-            // limpiar estilos anteriores
-            img.style.width = "";
-            img.style.height = "";
-            img.style.maxWidth = "";
-            img.style.maxHeight = "";
-            img.style.objectFit = "contain";
-
-            // recalcular cuando cargue
-            img.onload = () => {
-                const w = img.naturalWidth;
-                const h = img.naturalHeight;
-
-                if (!w || !h) return;
-
-                img.style.height = "auto";
-                img.style.maxHeight = "420px";
-                img.style.display = "block";
-                img.style.margin = "0 auto";
-            };
-
+           
         }
 
         // Autoplay (orden fijo)
@@ -780,7 +759,7 @@
         async function loadDynamicContact() {
             const API_URL_Contact = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
             try {
-                const res = await fetch(`${API_URL_Contact}/settings`);
+                const res = await fetch(`${API_URL}/settings`);
                 const settings = await res.json();
 
                 // Llenar los datos del contacto
