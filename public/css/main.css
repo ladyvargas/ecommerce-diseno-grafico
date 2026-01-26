@@ -272,8 +272,8 @@ nav a:hover {
   }
 
   .machine-box img {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     object-position: center;
   }
@@ -284,7 +284,7 @@ nav a:hover {
   }
 
   .tag {
-    width: 120px;
+    width: 100px;
     font-size: 10px;
   }
   .oval-mask,
@@ -1718,6 +1718,33 @@ nav a:hover {
   }
 }
 
+/* MOBILE */
+@media (max-width: 768px) {
+  .main-banner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    text-align: center;
+  }
+
+  .brown-side .content {
+    align-items: center;
+  }
+
+  .machine-box {
+    max-width: 100%;
+    height: 280px;
+  }
+
+  .tags-side {
+    width: 100%;
+  }
+}
+.tags-side .tag {
+  padding: 10px 10px;
+  font-size: 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
 
 /* CTA responsive */
 .btn-cta {
