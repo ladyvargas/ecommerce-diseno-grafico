@@ -514,25 +514,7 @@
             });
             const img = document.getElementById("machineImage");
 
-            // limpiar estilos anteriores
-            img.style.width = "";
-            img.style.height = "";
-            img.style.maxWidth = "";
-            img.style.maxHeight = "";
-            img.style.objectFit = "contain";
-
-            // recalcular cuando cargue
-            img.onload = () => {
-                const w = img.naturalWidth;
-                const h = img.naturalHeight;
-
-                if (!w || !h) return;
-
-                img.style.height = "auto";
-                img.style.maxHeight = "300px";
-                img.style.display = "block";
-                img.style.margin = "0 auto";
-            };
+            
         }
         document.addEventListener('DOMContentLoaded', () => {
             const hamburgerBtn = document.getElementById('hamburgerBtn');
