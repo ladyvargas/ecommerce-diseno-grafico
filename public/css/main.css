@@ -152,23 +152,29 @@ nav a:hover {
 }
 /* CONTENEDOR DE LA IMAGEN */
 .machine-box {
-  width: 100%;
-  max-width: 520px;
-  height: 420px; /* 🔥 tamaño fijo del banner */
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+    position: absolute;
+    left: 50%; /* Ajusta según tu diseño de escritorio */
+    top: 55%;
+    transform: translateY(-50%);
+    z-index: 10;
+    
+    /* CONTENEDOR CON TAMAÑO FIJO */
+    width: 480px; 
+    height: 400px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-/* La imagen siempre centrada y ajustada */
 .machine-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* 🔥 NO se deforma, no se sale */
-  object-position: center;
-  display: block;
+    /* Esto hace que todas las imágenes llenen el contenedor uniformemente */
+    width: 100%;
+    height: 100%;
+    /* 'contain' mantiene la proporción, 'cover' recorta para llenar */
+    object-fit: contain; 
+    filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.3));
+    transition: transform 0.3s ease;
 }
 
 /* EL ÓVALO (MASCARA) */
@@ -1660,16 +1666,14 @@ nav a:hover {
 
   /* 3. Máquina (Adaptable y con Sombra) */
   .machine-box {
-    position: relative;
-    width: 85%; /* La imagen se encoge según el ancho del celular */
-    max-width: 340px;
-    height: auto;
-    margin: -60px auto 30px; /* Sube para "pisar" el bloque café */
-    left: auto;
-    top: auto;
-    transform: none;
-    z-index: 10;
-  }
+        position: relative;
+        width: 90%; /* Se adapta al ancho del celular */
+        height: 280px; /* Altura más pequeña para pantallas móviles */
+        margin: -60px auto 30px;
+        left: auto;
+        top: auto;
+        transform: none;
+    }
 
   .machine-box img {
     width: 100%;
