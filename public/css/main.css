@@ -353,87 +353,6 @@ nav a:hover {
   }
 }
 
-/* -------- MOBILE -------- */
-@media (max-width: 768px) {
-  header {
-    position: relative;
-  }
-
-  nav {
-    display: none; /* menú hamburguesa recomendado */
-  }
-
-  .header-icons .icon-btn {
-    width: 42px;
-    height: 42px;
-  }
-
-  .main-banner {
-    height: auto;
-    flex-direction: column;
-    box-shadow: none;
-    border-radius: 0;
-  }
-
-  .brown-side {
-    position: relative;
-    width: 100%;
-    padding: 60px 25px;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .content {
-    max-width: 100%;
-  }
-
-  .content h1 {
-    font-size: 26px;
-  }
-
-  .content p {
-    font-size: 15px;
-  }
-
-  .btn-cta {
-    font-size: 12px;
-    padding: 12px 26px;
-  }
-
-  /* Se eliminan óvalo y línea */
-  .oval-mask,
-  .oval-line {
-    display: none;
-  }
-
-  /* Máquina centrada debajo */
-  .machine-box {
-    position: relative;
-    width: 300px;
-    left: auto;
-    top: auto;
-    transform: none;
-    margin: 30px auto 0;
-  }
-
-  /* Tags horizontales */
-  .tags-side {
-    position: relative;
-    flex-direction: row;
-    justify-content: center;
-    gap: 8px;
-    margin: 25px auto;
-    right: auto;
-  }
-
-  .tag {
-    width: auto;
-    padding: 8px 14px;
-    font-size: 10px;
-    border-radius: 20px;
-  }
-}
-
 /* PRODUCTOS DESTACADOS - DISEÑO MEJORADO */
 .productos-section {
   padding: 6rem 5%;
@@ -1653,46 +1572,12 @@ nav a:hover {
   display: block;
 }
 
-/* MOBILE MENU */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
-  nav {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    background: white;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 2rem 0;
-    display: none;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  }
-
-  nav.active {
-    display: flex;
-  }
-
-  .mobile-user-menu {
-    display: flex;
-  }
-}
-
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none;
-  }
-}
 .main-banner {
   display: grid;
   grid-template-columns: 1fr 520px 260px;
   gap: 20px;
   align-items: center;
-  padding: 30px 20px;
+  padding: 0px 0px;
 }
 
 /* TABLET */
@@ -1718,25 +1603,165 @@ nav a:hover {
   }
 }
 
-/* MOBILE */
+/* ==========================================================================
+   OPTIMIZACIÓN MÓVIL TOTAL (768px o menos)
+   ========================================================================== */
 @media (max-width: 768px) {
+  /* 1. Reset del Contenedor Principal */
   .main-banner {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto auto;
+    display: flex !important; /* Cambiamos de grid a flex para control total */
+    flex-direction: column;
+    height: auto !important;
+    min-height: 100vh;
+    padding: 0 !important; /* El color café debe tocar los bordes */
+    background-color: var(--bg-crema);
     text-align: center;
   }
 
-  .brown-side .content {
-    align-items: center;
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 2000;
   }
 
-  .machine-box {
-    max-width: 100%;
-    height: 280px;
-  }
-
-  .tags-side {
+  /* 2. Bloque Café con Curvatura Móvil */
+  .brown-side {
+    position: relative;
     width: 100%;
+    height: auto;
+    padding: 60px 20px 100px; /* Más espacio abajo para la curva */
+    background: var(--gradient);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Crea el efecto ovalado en la base */
+    clip-path: ellipse(150% 100% at 50% 0%);
+    z-index: 1;
+  }
+
+  .content {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .content h1 {
+    font-size: 24px;
+    margin-bottom: 15px;
+    line-height: 1.2;
+    padding: 0 10px;
+  }
+
+  .content p {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    padding: 0 5px;
+  }
+
+  /* 3. Máquina (Adaptable y con Sombra) */
+  .machine-box {
+    position: relative;
+    width: 85%; /* La imagen se encoge según el ancho del celular */
+    max-width: 340px;
+    height: auto;
+    margin: -60px auto 30px; /* Sube para "pisar" el bloque café */
+    left: auto;
+    top: auto;
+    transform: none;
+    z-index: 10;
+  }
+
+  .machine-box img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.3));
+  }
+
+  /* 4. Botones (Tags) en Cuadrícula */
+  .tags-side {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto 40px;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 botones por fila */
+    gap: 10px;
+    right: auto;
+    height: auto;
+  }
+
+  .tag {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    padding: 5px;
+    border-radius: 12px;
+    background-color: var(--brown-primary);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Botón Hamburguesa */
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2100;
+    position: relative;
+  }
+
+  .hamburger span {
+    width: 100%;
+    height: 3px;
+    background-color: var(--brown-primary);
+    border-radius: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  /* Animación a X cuando está activo */
+  .hamburger.is-active span:nth-child(1) {
+    transform: translateY(9px) rotate(45deg);
+  }
+  .hamburger.is-active span:nth-child(2) {
+    opacity: 0;
+  }
+  .hamburger.is-active span:nth-child(3) {
+    transform: translateY(-9px) rotate(-45deg);
+  }
+
+  /* Menú de navegación móvil */
+  nav {
+    display: none; /* Oculto por defecto */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 0;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    z-index: 2000;
+  }
+
+  /* Clase que activa el menú (la que pone el JS) */
+  nav.active {
+    display: flex !important;
+  }
+
+  /* Ocultar elementos innecesarios */
+  .oval-mask,
+  .oval-line {
+    display: none !important;
   }
 }
 .tags-side .tag {
@@ -1753,16 +1778,4 @@ nav a:hover {
   border-radius: 999px;
   max-width: 280px;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .tags-side .tag {
-    flex: 1 1 auto;
-    min-width: 140px;
-    text-align: center;
-  }
-
-  .btn-cta {
-    max-width: 100%;
-  }
 }

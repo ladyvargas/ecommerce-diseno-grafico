@@ -6,43 +6,72 @@
 function loadCommonHeader() {
   const headerHTML = `
         <header>
-            <div class="header-container">
-                <img src="/img/logo.png" alt="CNC CAMPAS" class="logo" onclick="window.location.href='/'">
-                <nav>
-                    <a href="/" data-page="home">Inicio</a>
-                    <a href="/pages/productos.html" data-page="productos">Tienda Virtual</a>
-                    <a href="/pages/about.html" data-page="about">Sobre Nosotros</a>
-                    <a href="/#contacto" data-page="contacto">Contacto</a>
-                </nav>
-                <div class="header-icons">
-                    <button class="icon-btn" onclick="window.location.href='/pages/cart.html'" title="Carrito">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="cartCount" class="cart-count" style="display: none;">0</span>
+        <div class="header-container">
+            <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            <nav id="mainNav">
+                <a href="/">Inicio</a>
+                <a href="/pages/productos.html">Tienda Virtual</a>
+                <a href="/pages/services.html">Servicios</a>
+                <a href="/pages/about.html">Sobre Nosotros</a>
+                <a href="#contacto">Contacto</a>
+
+                <!-- OPCIONES USUARIO SOLO MÓVIL -->
+                <div class="mobile-user-menu">
+                    <a href="/pages/mis-pedidos.html">Mis Pedidos</a>
+                    <a href="/pages/admin-pro.html" id="adminLinkMobile" style="display:none;">
+                        Panel Admin
+                    </a>
+                    <button onclick="logout()" class="logout-mobile">
+                        Cerrar Sesión
                     </button>
-                    <div class="user-menu-container">
-                        <button class="icon-btn" onclick="toggleUserMenu()" id="userMenuBtn" title="Mi cuenta">
-                            <i class="fas fa-user"></i>
+                </div>
+            </nav>
+
+            <div class="header-icons">
+                <!-- CARRITO -->
+                <button class="icon-btn" onclick="window.location.href='/cart'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-count" style="display: none;">0</span>
+                </button>
+
+                <!-- USUARIO SOLO DESKTOP -->
+                <div class="user-menu-container desktop-only">
+                    <button class="icon-btn" id="userMenuBtn">
+                        <i class="fas fa-user"></i>
+                    </button>
+
+                    <div class="user-dropdown" id="userDropdown" style="display: none;">
+                        <div class="user-info" id="userInfo">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="userName">Usuario</span>
+                        </div>
+                        <a href="/pages/mis-pedidos.html" class="dropdown-item">
+                            <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        </a>
+                        <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
+                            <i class="fas fa-cog"></i> Panel Admin
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <button onclick="logout()" class="dropdown-item logout-btn" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
                         </button>
-                        <div class="user-dropdown" id="userDropdown" style="display: none;">
-                            <div class="user-info" id="userInfo">
-                                <i class="fas fa-user-circle"></i>
-                                <span id="userName">Usuario</span>
-                            </div>
-                            <a href="/pages/mis-pedidos.html" class="dropdown-item">
-                                <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                        <div id="userGuest" style="display:none;">
+                            <a href="/pages/login.html" class="dropdown-item">
+                                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
                             </a>
-                            <a href="/pages/admin-pro.html" class="dropdown-item" id="adminLink" style="display: none;">
-                                <i class="fas fa-cog"></i> Panel Admin
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <button onclick="logout()" class="dropdown-item logout-btn">
-                                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                            </button>
                         </div>
                     </div>
                 </div>
+
+                <!-- HAMBURGER -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
-        </header>
+        </div>
+    </header>
     `;
 
   // Insertar header al inicio del body
@@ -138,7 +167,7 @@ function updateCartCount() {
   if (cart.length > 0) {
     const totalItems = cart.reduce(
       (sum, item) => sum + (item.quantity || 1),
-      0
+      0,
     );
     cartCount.textContent = totalItems;
     cartCount.style.display = "block";
@@ -170,6 +199,34 @@ if (document.readyState === "loading") {
 window.addEventListener("storage", (e) => {
   if (e.key === "cart") {
     updateCartCount();
+  }
+});
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburgerBtn = document.getElementById("hamburgerBtn");
+  const mainNav = document.getElementById("mainNav");
+  const userMenuBtn = document.getElementById("userMenuBtn");
+  const userDropdown = document.getElementById("userDropdown");
+
+  // Lógica del Menú Hamburguesa
+  if (hamburgerBtn && mainNav) {
+    hamburgerBtn.addEventListener("click", () => {
+      mainNav.classList.toggle("active");
+      hamburgerBtn.classList.toggle("is-active");
+    });
+  }
+
+  // Lógica del Dropdown de Usuario (Desktop)
+  if (userMenuBtn && userDropdown) {
+    userMenuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isVisible = userDropdown.style.display === "block";
+      userDropdown.style.display = isVisible ? "none" : "block";
+    });
+
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener("click", () => {
+      userDropdown.style.display = "none";
+    });
   }
 });
 

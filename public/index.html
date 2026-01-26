@@ -41,13 +41,6 @@
                     <span id="cartCount" class="cart-count" style="display: none;">0</span>
                 </button>
 
-                <!-- HAMBURGER -->
-                <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-
                 <!-- USUARIO SOLO DESKTOP -->
                 <div class="user-menu-container desktop-only">
                     <button class="icon-btn" id="userMenuBtn">
@@ -76,6 +69,13 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- HAMBURGER -->
+                <button class="hamburger" id="hamburgerBtn" aria-label="Menú">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
         </div>
     </header>
@@ -513,8 +513,56 @@
             document.querySelectorAll('.tag').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.machine === machineKey);
             });
-           
+            const img = document.getElementById("machineImage");
+
+            // limpiar estilos anteriores
+            img.style.width = "";
+            img.style.height = "";
+            img.style.maxWidth = "";
+            img.style.maxHeight = "";
+            img.style.objectFit = "contain";
+
+            // recalcular cuando cargue
+            img.onload = () => {
+                const w = img.naturalWidth;
+                const h = img.naturalHeight;
+
+                if (!w || !h) return;
+
+                img.style.height = "auto";
+                img.style.maxHeight = "420px";
+                img.style.display = "block";
+                img.style.margin = "0 auto";
+            };
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainNav = document.getElementById('mainNav');
+            const userMenuBtn = document.getElementById('userMenuBtn');
+            const userDropdown = document.getElementById('userDropdown');
+
+            // Lógica del Menú Hamburguesa
+            if (hamburgerBtn && mainNav) {
+                hamburgerBtn.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    hamburgerBtn.classList.toggle('is-active');
+                });
+            }
+
+            // Lógica del Dropdown de Usuario (Desktop)
+            if (userMenuBtn && userDropdown) {
+                userMenuBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isVisible = userDropdown.style.display === 'block';
+                    userDropdown.style.display = isVisible ? 'none' : 'block';
+                });
+
+                // Cerrar dropdown al hacer clic fuera
+                document.addEventListener('click', () => {
+                    userDropdown.style.display = 'none';
+                });
+            }
+        });
 
         // Autoplay (orden fijo)
         function startAutoplay() {
