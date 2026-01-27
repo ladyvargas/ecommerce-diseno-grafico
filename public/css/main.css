@@ -144,7 +144,7 @@ nav a:hover {
 .btn-cta {
   display: inline-block;
   padding: 14px 30px;
-  background-color: #243977;
+  background-color: var(--primary-dark);;
   color: white;
   text-decoration: none;
   border-radius: 50px;
@@ -249,7 +249,7 @@ nav a:hover {
 }
 
 .tag {
-  background-color: var(--primary);
+  background-color: var(--primary-dark);
   color: white;
   width: 145px;
   padding: 10px;
@@ -264,9 +264,26 @@ nav a:hover {
 .tag:hover {
   background-color: #7a553a;
 }
+/* Este es el estilo único para el botón activo */
 .tag.active {
-  background-color: var(--accent);
-  color: #2c2c2c;
+    /* Creamos el fondo clarito mezclando el color acento con blanco */
+    background-color: color-mix(in srgb, var(--accent), white 90%);
+    /* El texto y el borde usan el color acento fuerte */
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    font-weight: bold;
+}
+
+/* --- Los disparadores de color --- */
+
+/* Cuando los botones estén dentro de la sección de Corte Láser */
+.container-laser {
+    --accent: #243977; /* Tu azul */
+}
+
+/* Cuando los botones estén dentro de la sección de Sublimación */
+.container-sublimacion {
+    --accent: #cda870; /* Tu café/dorado */
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -1748,7 +1765,7 @@ nav a:hover {
   .machine-box img {
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0.3));
   }
 
   /* 4. Botones (Tags) en Cuadrícula */
@@ -1774,7 +1791,7 @@ nav a:hover {
     font-size: 11px;
     padding: 5px;
     border-radius: 12px;
-    background-color: var(--brown-primary);
+    background-color: var(--primary-dark);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
