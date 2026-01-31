@@ -1755,7 +1755,7 @@ loadSectionData = function (section) {
       break;
     case "newsletter":
     case "ajustes":
-        loadAjustesCompleto();
+      loadAjustesCompleto();
       break;
     default:
       if (originalLoadSectionData) {
@@ -3627,10 +3627,10 @@ async function loadSettings() {
   try {
     const response = await fetch(`${API_URL}/settings`);
     if (!response.ok) throw new Error("Error cargando settings");
-    
+
     const currentSettings = await response.json();
     console.log("✅ Settings cargados:", currentSettings);
-    
+
     container.innerHTML = `
       <div class="filters-bar">
         <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
@@ -3646,27 +3646,27 @@ async function loadSettings() {
             <form id="storeInfoForm">
               <div class="form-group">
                 <label>Nombre de la Tienda</label>
-                <input type="text" id="storeName" value="${currentSettings.store_name || ''}" />
+                <input type="text" id="storeName" value="${currentSettings.store_name || ""}" />
               </div>
               <div class="form-group">
                 <label>Email de Contacto</label>
-                <input type="email" id="storeEmail" value="${currentSettings.store_email || ''}" />
+                <input type="email" id="storeEmail" value="${currentSettings.store_email || ""}" />
               </div>
               <div class="form-group">
                 <label>Teléfono</label>
-                <input type="tel" id="storePhone" value="${currentSettings.store_phone || ''}" />
+                <input type="tel" id="storePhone" value="${currentSettings.store_phone || ""}" />
               </div>
               <div class="form-group">
                 <label>Dirección</label>
-                <input type="text" id="storeAddress" value="${currentSettings.store_address || ''}" />
+                <input type="text" id="storeAddress" value="${currentSettings.store_address || ""}" />
               </div>
               <div class="form-group">
                 <label>Ciudad</label>
-                <input type="text" id="storeCity" value="${currentSettings.store_city || ''}" />
+                <input type="text" id="storeCity" value="${currentSettings.store_city || ""}" />
               </div>
               <div class="form-group">
                 <label>Horario</label>
-                <input type="text" id="storeSchedule" value="${currentSettings.store_schedule || ''}" placeholder="Lun – Vie 8:00 AM – 6:00 PM" />
+                <input type="text" id="storeSchedule" value="${currentSettings.store_schedule || ""}" placeholder="Lun – Vie 8:00 AM – 6:00 PM" />
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%;">
                 <i class="fas fa-save"></i> Guardar
@@ -3684,19 +3684,19 @@ async function loadSettings() {
             <form id="socialMediaForm">
               <div class="form-group">
                 <label><i class="fab fa-facebook"></i> Facebook</label>
-                <input type="url" id="facebookUrl" value="${currentSettings.facebook_url || ''}" placeholder="https://facebook.com/..." />
+                <input type="url" id="facebookUrl" value="${currentSettings.facebook_url || ""}" placeholder="https://facebook.com/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-instagram"></i> Instagram</label>
-                <input type="url" id="instagramUrl" value="${currentSettings.instagram_url || ''}" placeholder="https://instagram.com/..." />
+                <input type="url" id="instagramUrl" value="${currentSettings.instagram_url || ""}" placeholder="https://instagram.com/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
-                <input type="url" id="whatsappUrl" value="${currentSettings.whatsapp_url || ''}" placeholder="https://wa.me/..." />
+                <input type="url" id="whatsappUrl" value="${currentSettings.whatsapp_url || ""}" placeholder="https://wa.me/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-tiktok"></i> TikTok</label>
-                <input type="url" id="tiktokUrl" value="${currentSettings.tiktok_url || ''}" placeholder="https://tiktok.com/@..." />
+                <input type="url" id="tiktokUrl" value="${currentSettings.tiktok_url || ""}" placeholder="https://tiktok.com/@..." />
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%;">
                 <i class="fas fa-save"></i> Guardar
@@ -3733,7 +3733,7 @@ async function loadSettings() {
             <form id="footerForm">
               <div class="form-group">
                 <label>Texto del Pie de Página</label>
-                <textarea id="footerText" rows="4" placeholder="Texto que aparece en el pie de página...">${currentSettings.footer_text || ''}</textarea>
+                <textarea id="footerText" rows="4" placeholder="Texto que aparece en el pie de página...">${currentSettings.footer_text || ""}</textarea>
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
                 <i class="fas fa-save"></i> Guardar
@@ -3745,29 +3745,33 @@ async function loadSettings() {
     `;
 
     // Event listeners
-    document.getElementById("storeInfoForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        store_name: document.getElementById("storeName").value,
-        store_email: document.getElementById("storeEmail").value,
-        store_phone: document.getElementById("storePhone").value,
-        store_address: document.getElementById("storeAddress").value,
-        store_city: document.getElementById("storeCity").value,
-        store_schedule: document.getElementById("storeSchedule").value,
-      };
-      await guardarSettings(payload);
-    });
+    document
+      .getElementById("storeInfoForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          store_name: document.getElementById("storeName").value,
+          store_email: document.getElementById("storeEmail").value,
+          store_phone: document.getElementById("storePhone").value,
+          store_address: document.getElementById("storeAddress").value,
+          store_city: document.getElementById("storeCity").value,
+          store_schedule: document.getElementById("storeSchedule").value,
+        };
+        await guardarSettings(payload);
+      });
 
-    document.getElementById("socialMediaForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        facebook_url: document.getElementById("facebookUrl").value,
-        instagram_url: document.getElementById("instagramUrl").value,
-        whatsapp_url: document.getElementById("whatsappUrl").value,
-        tiktok_url: document.getElementById("tiktokUrl").value,
-      };
-      await guardarSettings(payload);
-    });
+    document
+      .getElementById("socialMediaForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          facebook_url: document.getElementById("facebookUrl").value,
+          instagram_url: document.getElementById("instagramUrl").value,
+          whatsapp_url: document.getElementById("whatsappUrl").value,
+          tiktok_url: document.getElementById("tiktokUrl").value,
+        };
+        await guardarSettings(payload);
+      });
 
     document.getElementById("taxForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -3777,14 +3781,15 @@ async function loadSettings() {
       await guardarSettings(payload);
     });
 
-    document.getElementById("footerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        footer_text: document.getElementById("footerText").value,
-      };
-      await guardarSettings(payload);
-    });
-
+    document
+      .getElementById("footerForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          footer_text: document.getElementById("footerText").value,
+        };
+        await guardarSettings(payload);
+      });
   } catch (error) {
     console.error("❌ Error al cargar settings:", error);
     showToast("Error al cargar configuración", "error", "Error");
@@ -3806,14 +3811,12 @@ async function guardarSettings(payload) {
 
     showToast("Configuración guardada exitosamente", "success", "Éxito");
     await loadSettings();
-
   } catch (error) {
     console.error("Error al guardar settings:", error);
     showToast("Error al guardar configuración", "error", "Error");
   }
 }
 window.getAuthHeaders = getAuthHeaders;
-
 
 // ========================================
 // DOCUMENTOS LEGALES - EDITOR QUILL
@@ -3839,7 +3842,7 @@ async function loadAjustesCompleto() {
     // Cargar datos actuales
     const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
     if (!res.ok) throw new Error("Error cargando settings");
-    
+
     const data = await res.json();
 
     // Renderizar la interfaz COMPLETA (Settings + Documentos Legales)
@@ -3859,27 +3862,27 @@ async function loadAjustesCompleto() {
             <form id="storeInfoForm">
               <div class="form-group">
                 <label>Nombre de la Tienda</label>
-                <input type="text" id="storeName" value="${data.store_name || ''}" />
+                <input type="text" id="storeName" value="${data.store_name || ""}" />
               </div>
               <div class="form-group">
                 <label>Email de Contacto</label>
-                <input type="email" id="storeEmail" value="${data.store_email || ''}" />
+                <input type="email" id="storeEmail" value="${data.store_email || ""}" />
               </div>
               <div class="form-group">
                 <label>Teléfono</label>
-                <input type="tel" id="storePhone" value="${data.store_phone || ''}" />
+                <input type="tel" id="storePhone" value="${data.store_phone || ""}" />
               </div>
               <div class="form-group">
                 <label>Dirección</label>
-                <input type="text" id="storeAddress" value="${data.store_address || ''}" />
+                <input type="text" id="storeAddress" value="${data.store_address || ""}" />
               </div>
               <div class="form-group">
                 <label>Ciudad</label>
-                <input type="text" id="storeCity" value="${data.store_city || ''}" />
+                <input type="text" id="storeCity" value="${data.store_city || ""}" />
               </div>
               <div class="form-group">
                 <label>Horario</label>
-                <input type="text" id="storeSchedule" value="${data.store_schedule || ''}" placeholder="Lun – Vie 8:00 AM – 6:00 PM" />
+                <input type="text" id="storeSchedule" value="${data.store_schedule || ""}" placeholder="Lun – Vie 8:00 AM – 6:00 PM" />
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%;">
                 <i class="fas fa-save"></i> Guardar
@@ -3897,19 +3900,19 @@ async function loadAjustesCompleto() {
             <form id="socialMediaForm">
               <div class="form-group">
                 <label><i class="fab fa-facebook"></i> Facebook</label>
-                <input type="url" id="facebookUrl" value="${data.facebook_url || ''}" placeholder="https://facebook.com/..." />
+                <input type="url" id="facebookUrl" value="${data.facebook_url || ""}" placeholder="https://facebook.com/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-instagram"></i> Instagram</label>
-                <input type="url" id="instagramUrl" value="${data.instagram_url || ''}" placeholder="https://instagram.com/..." />
+                <input type="url" id="instagramUrl" value="${data.instagram_url || ""}" placeholder="https://instagram.com/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-whatsapp"></i> WhatsApp</label>
-                <input type="url" id="whatsappUrl" value="${data.whatsapp_url || ''}" placeholder="https://wa.me/..." />
+                <input type="url" id="whatsappUrl" value="${data.whatsapp_url || ""}" placeholder="https://wa.me/..." />
               </div>
               <div class="form-group">
                 <label><i class="fab fa-tiktok"></i> TikTok</label>
-                <input type="url" id="tiktokUrl" value="${data.tiktok_url || ''}" placeholder="https://tiktok.com/@..." />
+                <input type="url" id="tiktokUrl" value="${data.tiktok_url || ""}" placeholder="https://tiktok.com/@..." />
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%;">
                 <i class="fas fa-save"></i> Guardar
@@ -3946,13 +3949,75 @@ async function loadAjustesCompleto() {
             <form id="footerForm">
               <div class="form-group">
                 <label>Texto del Pie de Página</label>
-                <textarea id="footerText" rows="4" placeholder="Texto que aparece en el pie de página...">${data.footer_text || ''}</textarea>
+                <textarea id="footerText" rows="4" placeholder="Texto que aparece en el pie de página...">${data.footer_text || ""}</textarea>
               </div>
               <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
                 <i class="fas fa-save"></i> Guardar
               </button>
             </form>
           </div>
+        </div>
+      </div>
+      
+      <!-- Configuración Bancaria -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fas fa-university"></i> Datos Bancarios</h3>
+        </div>
+        <div class="modal-body">
+          <form id="bankForm">
+            <div class="form-group">
+              <label>Banco</label>
+              <input type="text" id="bankName" value="${data.bank_name || "Banco Pichincha"}" placeholder="Banco Pichincha" />
+            </div>
+            <div class="form-group">
+              <label>Tipo de Cuenta</label>
+              <select id="accountType">
+                <option value="Cuenta Corriente" ${data.account_type === "Cuenta Corriente" ? "selected" : ""}>Cuenta Corriente</option>
+                <option value="Cuenta de Ahorros" ${data.account_type === "Cuenta de Ahorros" ? "selected" : ""}>Cuenta de Ahorros</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Número de Cuenta</label>
+              <input type="text" id="accountNumber" value="${data.account_number || "2100123456"}" placeholder="2100123456" />
+            </div>
+            <div class="form-group">
+              <label>Beneficiario</label>
+              <input type="text" id="accountHolder" value="${data.account_holder || "CNC CAMPAS"}" placeholder="CNC CAMPAS" />
+            </div>
+            <div class="form-group">
+              <label>RUC/Cédula</label>
+              <input type="text" id="accountId" value="${data.account_id || "0992345678001"}" placeholder="0992345678001" />
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Mensaje de WhatsApp -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title"><i class="fab fa-whatsapp"></i> Mensaje de WhatsApp</h3>
+        </div>
+        <div class="modal-body">
+          <form id="whatsappForm">
+            <div class="form-group">
+              <label>Mensaje Automático al Cliente</label>
+              <textarea id="whatsappMessage" rows="6" placeholder="Hola! Gracias por tu pedido...">${data.whatsapp_message || "Hola! Gracias por tu pedido #{orderId}. Total: ${total}. Te contactaremos pronto."}</textarea>
+              <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
+                <strong>Variables disponibles:</strong><br>
+                <code>#{orderId}</code> - ID del pedido<br>
+                <code>\${total}</code> - Total del pedido<br>
+                <code>#{customerName}</code> - Nombre del cliente<br>
+                <code>#{customerEmail}</code> - Email del cliente
+              </small>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+          </form>
         </div>
       </div>
 
@@ -4006,29 +4071,54 @@ async function loadAjustesCompleto() {
     }, 200);
 
     // Event listeners de SETTINGS
-    document.getElementById("storeInfoForm").addEventListener("submit", async (e) => {
+    document
+      .getElementById("storeInfoForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          store_name: document.getElementById("storeName").value,
+          store_email: document.getElementById("storeEmail").value,
+          store_phone: document.getElementById("storePhone").value,
+          store_address: document.getElementById("storeAddress").value,
+          store_city: document.getElementById("storeCity").value,
+          store_schedule: document.getElementById("storeSchedule").value,
+        };
+        await guardarSettings(payload);
+      });
+      // Event listener para datos bancarios
+    document.getElementById("bankForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
-        store_name: document.getElementById("storeName").value,
-        store_email: document.getElementById("storeEmail").value,
-        store_phone: document.getElementById("storePhone").value,
-        store_address: document.getElementById("storeAddress").value,
-        store_city: document.getElementById("storeCity").value,
-        store_schedule: document.getElementById("storeSchedule").value,
+        bank_name: document.getElementById("bankName").value,
+        account_type: document.getElementById("accountType").value,
+        account_number: document.getElementById("accountNumber").value,
+        account_holder: document.getElementById("accountHolder").value,
+        account_id: document.getElementById("accountId").value,
       };
       await guardarSettings(payload);
     });
 
-    document.getElementById("socialMediaForm").addEventListener("submit", async (e) => {
+    // Event listener para mensaje de WhatsApp
+    document.getElementById("whatsappForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const payload = {
-        facebook_url: document.getElementById("facebookUrl").value,
-        instagram_url: document.getElementById("instagramUrl").value,
-        whatsapp_url: document.getElementById("whatsappUrl").value,
-        tiktok_url: document.getElementById("tiktokUrl").value,
+        whatsapp_message: document.getElementById("whatsappMessage").value,
       };
       await guardarSettings(payload);
     });
+
+    document
+      .getElementById("socialMediaForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          facebook_url: document.getElementById("facebookUrl").value,
+          instagram_url: document.getElementById("instagramUrl").value,
+          whatsapp_url: document.getElementById("whatsappUrl").value,
+          tiktok_url: document.getElementById("tiktokUrl").value,
+        };
+        await guardarSettings(payload);
+      });
 
     document.getElementById("taxForm").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -4038,14 +4128,15 @@ async function loadAjustesCompleto() {
       await guardarSettings(payload);
     });
 
-    document.getElementById("footerForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        footer_text: document.getElementById("footerText").value,
-      };
-      await guardarSettings(payload);
-    });
-
+    document
+      .getElementById("footerForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          footer_text: document.getElementById("footerText").value,
+        };
+        await guardarSettings(payload);
+      });
   } catch (error) {
     console.error("❌ Error al cargar documentos legales:", error);
     showToast("Error al cargar documentos legales", "error", "Error");
@@ -4065,8 +4156,14 @@ async function loadAjustesCompleto() {
 
 function initQuillEditors(data) {
   if (typeof Quill === "undefined") {
-    console.error("❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html");
-    showToast("Editor Quill no cargó. Revisa el CDN en admin-pro.html", "error", "Error");
+    console.error(
+      "❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html",
+    );
+    showToast(
+      "Editor Quill no cargó. Revisa el CDN en admin-pro.html",
+      "error",
+      "Error",
+    );
     return;
   }
 
@@ -4132,7 +4229,11 @@ function initQuillEditors(data) {
 async function saveLegalDocs(docType) {
   try {
     if (!quillPrivacy || !quillTerms) {
-      showToast("Los editores no se inicializaron correctamente", "warning", "Aviso");
+      showToast(
+        "Los editores no se inicializaron correctamente",
+        "warning",
+        "Aviso",
+      );
       return;
     }
 
@@ -4164,7 +4265,6 @@ async function saveLegalDocs(docType) {
 
     showToast("Documento legal guardado exitosamente ✅", "success", "Éxito");
     console.log("✅ Documento guardado:", docType);
-
   } catch (error) {
     console.error("❌ Error al guardar documentos:", error);
     showToast(error.message || "Error guardando documento", "error", "Error");
@@ -4190,7 +4290,6 @@ async function guardarSettings(payload) {
 
     showToast("Configuración guardada exitosamente", "success", "Éxito");
     await loadAjustesCompleto();
-
   } catch (error) {
     console.error("Error al guardar settings:", error);
     showToast("Error al guardar configuración", "error", "Error");
