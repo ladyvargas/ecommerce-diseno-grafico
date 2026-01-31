@@ -64,7 +64,9 @@ router.put("/", async (req, res) => {
     const allowedFields = [
       'store_name', 'store_email', 'store_phone', 'store_address', 'store_city',
       'store_schedule', 'facebook_url', 'instagram_url', 'whatsapp_url', 'tiktok_url',
-      'footer_text', 'iva_percent', 'privacy_policy_html', 'terms_conditions_html'
+      'footer_text', 'iva_percent', 'privacy_policy_html', 'terms_conditions_html',
+      'bank_name', 'account_type', 'account_number', 'account_holder', 'account_id',
+      'whatsapp_message'
     ];
 
     allowedFields.forEach(field => {
@@ -73,7 +75,6 @@ router.put("/", async (req, res) => {
         updateValues.push(req.body[field]);
       }
     });
-
     if (updateFields.length === 0) {
       return res.status(400).json({ error: "No hay campos para actualizar" });
     }

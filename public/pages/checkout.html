@@ -10,9 +10,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/main-checkout.css">
+    <link rel="stylesheet" href="/css/whatsapp-float.css">
 </head>
 
 <body>
+    <a id="whatsappFloat" href="#" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp">
+        <i class="fab fa-whatsapp"></i>
+    </a>
     <!-- Modal de alerta -->
     <div id="alertModal" class="alert-modal">
         <div class="alert-modal-content">
@@ -466,7 +470,6 @@
             const title = document.getElementById('alertModalTitle');
             const messageEl = document.getElementById('alertModalMessage');
 
-            // Configurar contenido según el tipo
             const config = {
                 success: {
                     icon: '<i class="fas fa-check-circle success"></i>',
@@ -474,7 +477,7 @@
                 },
                 error: {
                     icon: '<i class="fas fa-exclamation-circle error"></i>',
-                    title: 'Atención'
+                    title: 'Error'
                 },
                 warning: {
                     icon: '<i class="fas fa-exclamation-triangle warning"></i>',
@@ -489,19 +492,13 @@
             messageEl.textContent = message;
 
             modal.classList.add('show');
-
-            // Auto-cerrar después de 5 segundos (opcional)
-            setTimeout(() => {
-                if (modal.classList.contains('show')) {
-                    closeAlertModal();
-                }
-            }, 5000);
         }
 
         function closeAlertModal() {
             const modal = document.getElementById('alertModal');
             modal.classList.remove('show');
         }
+
 
         // Cerrar modal al hacer clic fuera de él
         document.addEventListener('click', (e) => {
@@ -512,16 +509,27 @@
         });
 
         // Realizar pedido
-        document.getElementById('placeOrderBtn').addEventListener('click', async () => {
+        document.getElementById('placeOrderBtn').addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevenir cualquier acción por defecto
+
+            console.log('🔘 Botón clickeado');
+
+            // ⛔ VALIDAR PRIMERO - SI FALLA, DETENER TODO
+            const isValid = validateForm();
+            console.log('✅ Validación:', isValid);
+
+            if (!isValid) {
+                console.log('❌ Validación falló - deteniendo ejecución');
+                return; // ⛔ SALIR INMEDIATAMENTE SI HAY ERROR
+            }
+
+            console.log('✅ Validación exitosa - continuando con el pedido');
+
+            // Solo continúa si la validación pasó ✅
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
             const notes = document.getElementById('notes').value.trim();
-
-            if (!name || !email || !phone) {
-                showAlert('Por favor, completa todos los campos requeridos', 'error');
-                return;
-            }
 
             const btn = document.getElementById('placeOrderBtn');
             const originalContent = btn.innerHTML;
@@ -529,7 +537,6 @@
             btn.innerHTML = '<div class="spinner"></div> Procesando...';
 
             try {
-                // Calcular totales con cupón si existe
                 const totals = calculateTotals();
 
                 const orderData = {
@@ -552,6 +559,8 @@
                     total: totals.total
                 };
 
+                console.log('📦 Enviando pedido:', orderData);
+
                 const response = await fetch(`${API_URL}/orders/create-guest`, {
                     method: 'POST',
                     headers: {
@@ -563,14 +572,12 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Guardar email del cliente para ver sus pedidos después
+                    console.log('✅ Pedido creado exitosamente');
+
                     localStorage.setItem('userEmail', email);
                     localStorage.setItem('userName', name);
-
-                    // Limpiar carrito
                     localStorage.removeItem('cart');
 
-                    // Redirigir a página de éxito (ruta correcta)
                     window.location.href = `/pages/order-success.html?orderId=${data.order.id}`;
                 } else {
                     showAlert(data.error || 'Error al crear el pedido', 'error');
@@ -578,7 +585,7 @@
                     btn.innerHTML = originalContent;
                 }
             } catch (error) {
-                console.error('Error:', error);
+                console.error('❌ Error:', error);
                 showAlert('Error de conexión. Intenta de nuevo.', 'error');
                 btn.disabled = false;
                 btn.innerHTML = originalContent;
@@ -603,9 +610,7 @@
         }
 
         function validatePhone(phone) {
-            // Eliminar espacios, guiones y paréntesis
             const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-            // Validar que tenga entre 7 y 15 dígitos (puede incluir +)
             const regex = /^\+?\d{7,15}$/;
             return regex.test(cleanPhone);
         }
@@ -615,40 +620,51 @@
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
 
+            // Resetear bordes primero
+            document.getElementById('name').style.borderColor = '';
+            document.getElementById('email').style.borderColor = '';
+            document.getElementById('phone').style.borderColor = '';
+
             // Validar campos vacíos
             if (!name || !email || !phone) {
                 showAlert('Por favor, completa todos los campos requeridos', 'error');
+                if (!name) document.getElementById('name').style.borderColor = '#ef4444';
+                if (!email) document.getElementById('email').style.borderColor = '#ef4444';
+                if (!phone) document.getElementById('phone').style.borderColor = '#ef4444';
                 return false;
             }
 
             // Validar nombre (mínimo 3 caracteres)
             if (name.length < 3) {
                 showAlert('El nombre debe tener al menos 3 caracteres', 'error');
+                document.getElementById('name').style.borderColor = '#ef4444';
+                document.getElementById('name').focus();
                 return false;
             }
 
             // Validar email
             if (!validateEmail(email)) {
-                showAlert('Por favor, ingresa un correo electrónico válido', 'error');
-                return false;
+                showAlert('Por favor, ingresa un correo electrónico válido. Ejemplo: usuario@dominio.com', 'error');
+                document.getElementById('email').style.borderColor = '#ef4444';
+                document.getElementById('email').focus();
+                return false; // ⛔ STOP AQUÍ
             }
 
             // Validar teléfono
             if (!validatePhone(phone)) {
-                showAlert('Por favor, ingresa un número de teléfono válido (7-15 dígitos)', 'error');
-                return false;
+                showAlert('Por favor, ingresa un número de teléfono válido (7-15 dígitos). Ejemplo: +593991234567', 'error');
+                document.getElementById('phone').style.borderColor = '#ef4444';
+                document.getElementById('phone').focus();
+                return false; // ⛔ STOP AQUÍ
             }
 
             return true;
         }
 
-        // Reemplazar el event listener del botón con esta versión mejorada
         document.getElementById('placeOrderBtn').addEventListener('click', async () => {
-            // Validar formulario primero
             if (!validateForm()) {
                 return;
             }
-
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const phone = document.getElementById('phone').value.trim();
@@ -660,7 +676,6 @@
             btn.innerHTML = '<div class="spinner"></div> Procesando...';
 
             try {
-                // Calcular totales con cupón si existe
                 const totals = calculateTotals();
 
                 const orderData = {
@@ -694,14 +709,9 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Guardar email del cliente para ver sus pedidos después
                     localStorage.setItem('userEmail', email);
                     localStorage.setItem('userName', name);
-
-                    // Limpiar carrito
                     localStorage.removeItem('cart');
-
-                    // Redirigir a página de éxito (ruta correcta)
                     window.location.href = `/pages/order-success.html?orderId=${data.order.id}`;
                 } else {
                     showAlert(data.error || 'Error al crear el pedido', 'error');
@@ -720,6 +730,7 @@
     </script>
 
     <!-- ✨ SCRIPTS ESTANDARIZADOS -->
+    <script src="/js/whatsapp-float.js"></script>
     <script src="/js/common-header.js"></script>
     <script src="/js/apply-colors.js"></script>
 </body>

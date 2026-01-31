@@ -3958,68 +3958,71 @@ async function loadAjustesCompleto() {
           </div>
         </div>
       </div>
-      
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+    
       <!-- Configuración Bancaria -->
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><i class="fas fa-university"></i> Datos Bancarios</h3>
-        </div>
-        <div class="modal-body">
-          <form id="bankForm">
-            <div class="form-group">
-              <label>Banco</label>
-              <input type="text" id="bankName" value="${data.bank_name || "Banco Pichincha"}" placeholder="Banco Pichincha" />
-            </div>
-            <div class="form-group">
-              <label>Tipo de Cuenta</label>
-              <select id="accountType">
-                <option value="Cuenta Corriente" ${data.account_type === "Cuenta Corriente" ? "selected" : ""}>Cuenta Corriente</option>
-                <option value="Cuenta de Ahorros" ${data.account_type === "Cuenta de Ahorros" ? "selected" : ""}>Cuenta de Ahorros</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Número de Cuenta</label>
-              <input type="text" id="accountNumber" value="${data.account_number || "2100123456"}" placeholder="2100123456" />
-            </div>
-            <div class="form-group">
-              <label>Beneficiario</label>
-              <input type="text" id="accountHolder" value="${data.account_holder || "CNC CAMPAS"}" placeholder="CNC CAMPAS" />
-            </div>
-            <div class="form-group">
-              <label>RUC/Cédula</label>
-              <input type="text" id="accountId" value="${data.account_id || "0992345678001"}" placeholder="0992345678001" />
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-              <i class="fas fa-save"></i> Guardar
-            </button>
-          </form>
-        </div>
+          <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-university"></i> Datos Bancarios</h3>
+          </div>
+          <div class="modal-body">
+              <form id="bankForm">
+                  <div class="form-group">
+                      <label>Banco</label>
+                      <input type="text" id="bankName" value="${data.bank_name || 'Banco Pichincha'}" placeholder="Banco Pichincha" />
+                  </div>
+                  <div class="form-group">
+                      <label>Tipo de Cuenta</label>
+                      <select id="accountType">
+                          <option value="Cuenta Corriente" ${data.account_type === 'Cuenta Corriente' ? 'selected' : ''}>Cuenta Corriente</option>
+                          <option value="Cuenta de Ahorros" ${data.account_type === 'Cuenta de Ahorros' ? 'selected' : ''}>Cuenta de Ahorros</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label>Número de Cuenta</label>
+                      <input type="text" id="accountNumber" value="${data.account_number || '2100123456'}" placeholder="2100123456" />
+                  </div>
+                  <div class="form-group">
+                      <label>Beneficiario</label>
+                      <input type="text" id="accountHolder" value="${data.account_holder || 'CNC CAMPAS'}" placeholder="CNC CAMPAS" />
+                  </div>
+                  <div class="form-group">
+                      <label>RUC/Cédula</label>
+                      <input type="text" id="accountId" value="${data.account_id || '0992345678001'}" placeholder="0992345678001" />
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                      <i class="fas fa-save"></i> Guardar
+                  </button>
+              </form>
+          </div>
       </div>
 
       <!-- Mensaje de WhatsApp -->
       <div class="card">
-        <div class="card-header">
-          <h3 class="card-title"><i class="fab fa-whatsapp"></i> Mensaje de WhatsApp</h3>
-        </div>
-        <div class="modal-body">
-          <form id="whatsappForm">
-            <div class="form-group">
-              <label>Mensaje Automático al Cliente</label>
-              <textarea id="whatsappMessage" rows="6" placeholder="Hola! Gracias por tu pedido...">${data.whatsapp_message || "Hola! Gracias por tu pedido #{orderId}. Total: ${total}. Te contactaremos pronto."}</textarea>
-              <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
-                <strong>Variables disponibles:</strong><br>
-                <code>#{orderId}</code> - ID del pedido<br>
-                <code>\${total}</code> - Total del pedido<br>
-                <code>#{customerName}</code> - Nombre del cliente<br>
-                <code>#{customerEmail}</code> - Email del cliente
-              </small>
-            </div>
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-              <i class="fas fa-save"></i> Guardar
-            </button>
-          </form>
-        </div>
+          <div class="card-header">
+              <h3 class="card-title"><i class="fab fa-whatsapp"></i> Mensaje de WhatsApp</h3>
+          </div>
+          <div class="modal-body">
+              <form id="whatsappForm">
+                  <div class="form-group">
+                      <label>Mensaje Automático al Cliente</label>
+                      <textarea id="whatsappMessage" rows="8" placeholder="Hola! Gracias por tu pedido...">${data.whatsapp_message || 'Hola! Gracias por tu pedido #{orderId}. Total: ${total}. Te contactaremos pronto.'}</textarea>
+                      <small style="color: #6b7280; display: block; margin-top: 0.75rem; padding: 0.75rem; background: #f9fafb; border-radius: 8px; border-left: 3px solid #4a2f1a;">
+                          <strong style="display: block; margin-bottom: 0.5rem;">📝 Variables disponibles:</strong>
+                          <code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px; margin-right: 0.5rem;">#{orderId}</code> ID del pedido<br>
+                          <code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px; margin-right: 0.5rem;">\${total}</code> Total del pedido<br>
+                          <code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px; margin-right: 0.5rem;">#{customerName}</code> Nombre del cliente<br>
+                          <code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px; margin-right: 0.5rem;">#{customerEmail}</code> Email del cliente
+                      </small>
+                  </div>
+                  <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                      <i class="fas fa-save"></i> Guardar
+                  </button>
+              </form>
+          </div>
       </div>
+  </div>
 
       <!-- DOCUMENTOS LEGALES -->
       <div class="filters-bar" style="margin-top: 3rem;">
@@ -4277,6 +4280,8 @@ window.saveLegalDocs = saveLegalDocs;
 
 async function guardarSettings(payload) {
   try {
+    console.log('📤 Enviando payload:', payload); // DEBUG
+    
     const response = await fetch(`${API_URL}/settings`, {
       method: "PUT",
       headers: {
@@ -4286,12 +4291,21 @@ async function guardarSettings(payload) {
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok) throw new Error("Error al guardar");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(errorData.error || "Error al guardar");
+    }
+
+    const result = await response.json();
+    console.log('✅ Respuesta del servidor:', result);
 
     showToast("Configuración guardada exitosamente", "success", "Éxito");
+    
     await loadAjustesCompleto();
+
   } catch (error) {
-    console.error("Error al guardar settings:", error);
-    showToast("Error al guardar configuración", "error", "Error");
+    console.error("❌ Error al guardar settings:", error);
+    showToast(error.message || "Error al guardar configuración", "error", "Error");
   }
 }
