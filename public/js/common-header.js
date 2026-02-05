@@ -7,7 +7,9 @@ function loadCommonHeader() {
   const headerHTML = `
         <header>
         <div class="header-container">
-            <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            <a href="/" class="logo-link" title="Volver al inicio">
+              <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            </a>
             <nav id="mainNav">
                 <a href="/">Inicio</a>
                 <a href="/pages/productos.html">Tienda Virtual</a>

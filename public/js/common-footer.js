@@ -26,7 +26,9 @@ async function loadCommonFooter() {
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-column">
-          <img src="/img/logo.png" alt="${storeName}" class="footer-logo">
+          <a href="/" class="logo-link" title="Volver al inicio">
+            <img src="/img/logo.png" alt="${storeName}" class="footer-logo">
+          </a>
           <p>${footerText}</p>
 
           <div class="footer-social">

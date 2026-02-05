@@ -18,7 +18,9 @@
     <!-- HEADER -->
     <header>
         <div class="header-container">
-            <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            <a href="/" class="logo-link" title="Volver al inicio">
+                <img src="/img/logo.png" alt="CNC CAMPAS" class="logo">
+            </a>
             <nav id="mainNav">
                 <a href="/">Inicio</a>
                 <a href="/pages/productos.html">Tienda Virtual</a>
@@ -89,10 +91,8 @@
         <!-- SECCIÓN 1: CONTENIDO TEXTO -->
         <div class="brown-side">
             <div class="content" id="heroContent">
-                <h1 id="heroTitle">CORTE Y DESBASTE CNC ROUTER PROFESIONAL</h1>
-                <p id="heroDescription">Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para
-                    piezas personalizadas, producción en serie y acabados limpios con alta exactitud. Precisión y
-                    calidad en cada corte.</p>
+                <h1 id="heroTitle">Cargando servicios...</h1>
+                <p id="heroDescription">Por favor espera mientras cargamos la información.</p>
                 <button class="btn-cta" onclick="window.location.href='/pages/services.html'">
                     Contratar ahora
                 </button>
@@ -103,19 +103,12 @@
 
         <!-- SECCIÓN 2: IMAGEN -->
         <div class="machine-box">
-            <img id="machineImage" src="https://images.unsplash.com/photo-1565024640326-b2ae7c1c2fd9?w=800&q=80"
-                alt="Router CNC">
+            <img id="machineImage" src="/img/placeholder-servicio.png" alt="Servicio">
         </div>
 
         <!-- SECCIÓN 3: BOTONES LATERALES -->
         <div class="tags-side" id="heroImage">
-            <button class="tag active" data-machine="router-cnc">ROUTER CNC</button>
-            <button class="tag" data-machine="corte-laser">CORTE LÁSER</button>
-            <button class="tag" data-machine="laser-fibra">LÁSER FIBRA</button>
-            <button class="tag" data-machine="impresora-uv">IMPRESORA UV</button>
-            <button class="tag" data-machine="impresora-3d">IMPRESORA 3D</button>
-            <button class="tag" data-machine="plotter">PLOTTER</button>
-            <button class="tag" data-machine="sublimacion">SUBLIMACION</button>
+            <!-- Se cargan dinámicamente -->
         </div>
     </section>
 
@@ -325,95 +318,26 @@
     </section>
 
     <script>
-        // Datos de máquinas - SE CARGARÁN DINÁMICAMENTE
-        const BANNER_ORDER = ['router-cnc', 'corte-laser', 'laser-fibra', 'impresora-uv', 'impresora-3d', 'plotter', 'sublimacion'];
+        // ============================================
+        // 🔥 CONFIGURACIÓN DE LA API
+        // ============================================
+        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
+        const API_URL = `${API_BASE}/api`;
 
-        const machines = {
-            'router-cnc': {
-                title: 'CORTE Y DESBASTE CNC ROUTER PROFESIONAL',
-                description: 'Servicio de corte preciso y profesional para madera, plywood y MDF. Ideal para piezas personalizadas, producción en serie y acabados limpios con alta exactitud.',
-                class: 'router-cnc',
-                colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
-                }
-            },
-            'corte-laser': {
-                title: 'CORTE Y GRABADO LÁSER PROFESIONAL',
-                description: 'Cortamos y grabamos con láser de alta precisión, logrando detalles finos y bordes limpios en múltiples materiales.',
-                class: 'grabador-laser',
-                colors: {
-                    primary: '#243977',
-                    primaryDark: '#243977',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
-                }
-            },
-            'laser-fibra': {
-                title: 'GRABADO LÁSER DE FIBRA INDUSTRIAL',
-                description: 'Grabado de alta precisión sobre materiales industriales, ideal para marcaje permanente, placas, herramientas y piezas técnicas.',
-                class: 'laser-fibra',
-                colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
-                }
-            },
-            'impresora-uv': {
-                title: 'IMPRESIÓN UV DTF DE ALTA CALIDAD',
-                description: 'Impresión UV directa sobre una amplia variedad de materiales como madera, acrílico, vidrio, metal y PVC.',
-                class: 'impresora-uv',
-                colors: {
-                    primary: '#243977',
-                    primaryDark: '#243977',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
-                }
-            },
+        // ============================================
+        // 📊 VARIABLES GLOBALES
+        // ============================================
+        let machines = {}; // Se llena dinámicamente desde la BD
+        let currentMachine = null; // Se establece cuando se cargan los datos
+        let autoplayInterval = null;
 
-            'impresora-3d': {
-                title: 'IMPRESIÓN 3D PROFESIONAL',
-                description: 'Realizamos impresión 3D personalizada para prototipos, piezas técnicas, repuestos y objetos decorativos.',
-                class: 'impresora-3d',
-                colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
-                }
-            },
-
-            'plotter': {
-                title: 'PLOTTER DE IMPRESIÓN GRAN FORMATO',
-                description: 'Impresión profesional hasta 1.80 metros, ideal para banners, vinilos, gigantografías y rotulación comercial.',
-                class: 'plotter-corte',
-                colors: {
-                    primary: '#243977',
-                    primaryDark: '#243977',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
-                }
-            },
-
-            'sublimacion': {
-                title: 'IMPRESIÓN DE PAPELERÍA POR SUBLIMACIÓN',
-                description: 'Servicio de sublimación profesional en textiles y productos promocionales. Colores intensos y permanentes en camisetas, tazas, gorras, mouse pads y artículos personalizados.',
-                class: 'sublimacion',
-                colors: {
-                    primary: '#6b4423',
-                    primaryDark: '#1a1a1a',
-                    accent: '#CDA870',
-                    gradient: 'radial-gradient(circle at 15% 25%, #a6734c 0%, #633d26 100%)'
-                }
-            }
-        };
-
-        let currentMachine = 'router-cnc';
-        let autoplayInterval;
-
+        // ============================================
+        // 🛠️ FUNCIONES AUXILIARES
+        // ============================================
+        
+        /**
+         * Normaliza texto para comparaciones
+         */
         function normalizeText(text = '') {
             return text
                 .toLowerCase()
@@ -423,154 +347,263 @@
                 .replace(/(^-|-$)/g, '');
         }
 
-        const categoryMap = {
-            'letrero-corporeo-cnc': 'router-cnc',
-            'corte-y-grabado-laser-profesional': 'corte-laser',
-            'servicio-de-impresion-uv-dtf': 'impresora-uv',
-            'impresion-profesional-3d': 'impresora-3d',
-            'grabado-laser-de-fibra': 'laser-fibra',
-            'plotter-de-impresion': 'plotter',
-            'impresion-de-papeleria-por-sublimacion': 'sublimacion'
-        };
+        /**
+         * Extrae etiqueta corta del nombre del servicio
+         */
+        function getShortLabel(serviceName) {
+            // Mapeo de palabras clave a etiquetas cortas
+            const keywords = {
+                'router': 'ROUTER CNC',
+                'cnc': 'ROUTER CNC',
+                'corte.*laser': 'CORTE LÁSER',
+                'grabado.*laser': 'CORTE LÁSER',
+                'laser.*fibra': 'LÁSER FIBRA',
+                'fibra': 'LÁSER FIBRA',
+                'impresora.*uv': 'IMPRESORA UV',
+                'uv.*dtf': 'IMPRESORA UV',
+                'impresion.*uv': 'IMPRESORA UV',
+                'impresora.*3d': 'IMPRESORA 3D',
+                'impresion.*3d': 'IMPRESORA 3D',
+                '3d': 'IMPRESORA 3D',
+                'plotter': 'PLOTTER',
+                'sublimacion': 'SUBLIMACION',
+                'sublimación': 'SUBLIMACION'
+            };
 
-        // CARGAR IMÁGENES DESDE LA BASE DE DATOS
-        async function loadMachineImages() {
-            try {
-                const response = await fetch(
-                    'https://ecommerce-diseno-grafico-production.up.railway.app/api/products'
-                );
-                const products = await response.json();
-                products.forEach(product => {
-                    if (!product.image || !product.name) return;
-                    const normalizedName = normalizeText(product.name);
-                    const machineKey = categoryMap[normalizedName];
-                    if (!machineKey || !machines[machineKey]) return;
-                    machines[machineKey].image = product.image;
-                    console.log(`✔ Imagen aplicada a ${machineKey}:`, product.image);
-                });
-                changeMachine(currentMachine);
-            } catch (error) {
-                console.error('❌ Error cargando imágenes desde BD:', error);
-            }
-        }
-
-
-        function getFullImageUrl(image) {
-            if (!image) return null;
-
-            // Si ya es URL completa (http o https), usarla tal cual
-            if (image.startsWith('http://') || image.startsWith('https://')) {
-                return image;
+            const normalizedName = serviceName.toLowerCase();
+            
+            // Buscar coincidencia
+            for (const [pattern, label] of Object.entries(keywords)) {
+                const regex = new RegExp(pattern, 'i');
+                if (regex.test(normalizedName)) {
+                    return label;
+                }
             }
 
-            // Si es ruta relativa, completar con el backend
-            return `https://ecommerce-diseno-grafico-production.up.railway.app${image}`;
+            // Si no hay coincidencia, extraer primeras 2-3 palabras significativas
+            const words = serviceName.toUpperCase().split(' ')
+                .filter(w => w.length > 2 && !['DE', 'LA', 'EL', 'LOS', 'LAS'].includes(w))
+                .slice(0, 2);
+            
+            return words.join(' ') || serviceName.toUpperCase().substring(0, 15);
         }
-        const API_BASE = 'https://ecommerce-diseno-grafico-production.up.railway.app';
 
+        /**
+         * Resuelve URL de imagen completa
+         */
         function resolveImage(image) {
-            if (!image || typeof image !== 'string') return null;
-            if (image.startsWith('http://') || image.startsWith('https://')) {
-                return image;
-            }
+            if (!image || typeof image !== 'string') return '/img/placeholder-servicio.png';
+            if (image.startsWith('http://') || image.startsWith('https://')) return image;
             if (image.includes('uploads')) {
                 return API_BASE + (image.startsWith('/') ? image : '/' + image);
             }
-
-            return null;
+            return '/img/placeholder-servicio.png';
         }
 
+        /**
+         * Genera colores alternos para el banner
+         */
+        function getColorScheme(index) {
+            const schemes = [
+                {
+                    primary: '#243977',
+                    primaryDark: '#243977',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
+                },
+                {
+                    primary: '#243977',
+                    primaryDark: '#243977',
+                    accent: '#CDA870',
+                    gradient: 'radial-gradient(circle at 15% 25%, #2c4389 0%, #243977 100%)'
+                }
+            ];
+            return schemes[index % 2];
+        }
 
-        // Cambiar máquina
+        // ============================================
+        // 🎨 CARGAR SERVICIOS DESDE LA BASE DE DATOS
+        // ============================================
+        async function loadServicesFromDB() {
+            try {
+                console.log('🔄 Cargando servicios desde la BD...');
+                const response = await fetch(`${API_URL}/products`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const products = await response.json();
+                
+                // Filtrar solo productos de categoría "Servicios"
+                const services = products.filter(p => 
+                    p.category && p.category.toLowerCase() === 'servicios'
+                );
+
+                console.log(`✅ ${services.length} servicios encontrados`);
+
+                // Reiniciar el objeto machines
+                machines = {};
+
+                // Construir dinámicamente el objeto machines
+                services.forEach((service, index) => {
+                    const key = normalizeText(service.name);
+                    const colors = getColorScheme(index);
+
+                    machines[key] = {
+                        id: service.id,
+                        title: service.name.toUpperCase(),
+                        shortLabel: getShortLabel(service.name), // Etiqueta corta para botones
+                        description: service.description || 'Servicio profesional de alta calidad',
+                        image: resolveImage(service.image),
+                        colors: colors,
+                        category: service.category
+                    };
+                });
+
+                // Establecer el primer servicio como activo
+                const firstKey = Object.keys(machines)[0];
+                if (firstKey) {
+                    currentMachine = firstKey;
+                    console.log('✅ Servicio inicial:', currentMachine);
+                }
+
+                // Generar botones del banner
+                renderBannerButtons();
+
+                // Cambiar a la primera máquina
+                if (currentMachine) {
+                    changeMachine(currentMachine);
+                }
+
+                return services;
+
+            } catch (error) {
+                console.error('❌ Error cargando servicios:', error);
+                
+                // Mostrar mensaje de error en el banner
+                document.getElementById('heroTitle').textContent = 'Error al cargar servicios';
+                document.getElementById('heroDescription').textContent = 
+                    'No se pudieron cargar los servicios. Por favor, recarga la página.';
+                
+                return [];
+            }
+        }
+
+        // ============================================
+        // 🎯 RENDERIZAR BOTONES DEL BANNER
+        // ============================================
+        function renderBannerButtons() {
+            const tagsSide = document.querySelector('.tags-side');
+            
+            if (!tagsSide) {
+                console.error('❌ Elemento .tags-side no encontrado');
+                return;
+            }
+
+            // Limpiar botones existentes
+            tagsSide.innerHTML = '';
+
+            // Crear un botón por cada servicio
+            Object.keys(machines).forEach((key, index) => {
+                const button = document.createElement('button');
+                button.className = 'tag';
+                if (index === 0) button.classList.add('active');
+                
+                button.dataset.machine = key;
+                button.textContent = machines[key].shortLabel || machines[key].title; // Usar etiqueta corta
+                
+                // Agregar evento click
+                button.addEventListener('click', () => {
+                    changeMachine(key);
+                    resetAutoplay();
+                });
+
+                tagsSide.appendChild(button);
+            });
+
+            console.log(`✅ ${Object.keys(machines).length} botones renderizados`);
+        }
+
+        // ============================================
+        // 🔄 CAMBIAR MÁQUINA/SERVICIO EN EL BANNER
+        // ============================================
         function changeMachine(machineKey) {
             const machine = machines[machineKey];
-            if (!machine) return;
+            
+            if (!machine) {
+                console.warn('⚠️ Máquina no encontrada:', machineKey);
+                return;
+            }
+
+            console.log('🔄 Cambiando a:', machineKey);
 
             currentMachine = machineKey;
 
-            document.getElementById('heroTitle').textContent = machine.title || '';
+            // Actualizar título (nombre completo) y descripción
+            document.getElementById('heroTitle').textContent = machine.title || 'Servicio Profesional';
             document.getElementById('heroDescription').textContent = machine.description || '';
 
+            // Actualizar imagen
             const imgEl = document.getElementById('machineImage');
-            const imageUrl = resolveImage(machine.image);
-            console.log('Cambiando imagen máquina:', imageUrl);
-            imgEl.onerror = null;
+            const imageUrl = machine.image;
+            
+            imgEl.onerror = () => {
+                imgEl.onerror = null;
+                imgEl.src = '/img/placeholder-servicio.png';
+            };
+            imgEl.src = imageUrl;
 
-            if (imageUrl) {
-                imgEl.onerror = () => {
-                    imgEl.onerror = null;
-                    imgEl.src = '/img/placeholder-servicio.png';
-                };
-                imgEl.src = imageUrl;
-            } else {
-                imgEl.src = '/uploads/placeholder-servicio.png';
+            // Aplicar colores
+            const banner = document.querySelector('.main-banner');
+            if (banner && machine.colors) {
+                banner.style.setProperty('--primary', machine.colors.primary);
+                banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
+                banner.style.setProperty('--accent', machine.colors.accent);
+                banner.style.setProperty('--gradient', machine.colors.gradient);
             }
 
-            // 🎨 Colores
-            const banner = document.querySelector('.main-banner');
-            banner.style.setProperty('--primary', machine.colors.primary);
-            banner.style.setProperty('--primary-dark', machine.colors.primaryDark);
-            banner.style.setProperty('--accent', machine.colors.accent);
-            banner.style.setProperty('--gradient', machine.colors.gradient);
-
+            // Actualizar botones activos
             document.querySelectorAll('.tag').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.machine === machineKey);
             });
-            const img = document.getElementById("machineImage");
-
-
         }
-        document.addEventListener('DOMContentLoaded', () => {
-            const hamburgerBtn = document.getElementById('hamburgerBtn');
-            const mainNav = document.getElementById('mainNav');
-            const userMenuBtn = document.getElementById('userMenuBtn');
-            const userDropdown = document.getElementById('userDropdown');
 
-            // Lógica del Menú Hamburguesa
-            if (hamburgerBtn && mainNav) {
-                hamburgerBtn.addEventListener('click', () => {
-                    mainNav.classList.toggle('active');
-                    hamburgerBtn.classList.toggle('is-active');
-                });
-            }
-
-            // Lógica del Dropdown de Usuario (Desktop)
-            if (userMenuBtn && userDropdown) {
-                userMenuBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const isVisible = userDropdown.style.display === 'block';
-                    userDropdown.style.display = isVisible ? 'none' : 'block';
-                });
-
-                // Cerrar dropdown al hacer clic fuera
-                document.addEventListener('click', () => {
-                    userDropdown.style.display = 'none';
-                });
-            }
-        });
-
-        // Autoplay (orden fijo)
+        // ============================================
+        // ⏱️ AUTOPLAY DEL BANNER
+        // ============================================
         function startAutoplay() {
-            const machineKeys = (Array.isArray(BANNER_ORDER) ? BANNER_ORDER : Object.keys(machines))
-                .filter(k => machines[k]);
+            const machineKeys = Object.keys(machines);
+            
+            if (machineKeys.length === 0) {
+                console.warn('⚠️ No hay servicios para el autoplay');
+                return;
+            }
 
             let currentIndex = machineKeys.indexOf(currentMachine);
             if (currentIndex < 0) currentIndex = 0;
 
             clearInterval(autoplayInterval);
+            
             autoplayInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % machineKeys.length;
                 changeMachine(machineKeys[currentIndex]);
             }, 5000);
+
+            console.log('▶️ Autoplay iniciado');
         }
 
         function resetAutoplay() {
+            console.log('🔄 Reiniciando autoplay');
             startAutoplay();
         }
-        // Cargar productos
+
+        // ============================================
+        // 📦 CARGAR PRODUCTOS DESTACADOS
+        // ============================================
         async function loadProducts() {
             try {
-                const response = await fetch('https://ecommerce-diseno-grafico-production.up.railway.app/api/products');
+                const response = await fetch(`${API_URL}/products`);
                 const products = await response.json();
 
                 const featured = products
@@ -581,11 +614,20 @@
                     )
                     .slice(0, 6);
 
-                console.log('Productos destacados cargados:', featured);
+                console.log('✅ Productos destacados cargados:', featured.length);
+                
                 const grid = document.getElementById('productosGrid');
 
+                if (featured.length === 0) {
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
+                            <p>No hay productos destacados disponibles</p>
+                        </div>
+                    `;
+                    return;
+                }
+
                 grid.innerHTML = featured.map(product => {
-                    // Convertir precios a números
                     const price = parseFloat(product.price) || 0;
                     const salePrice = product.sale_price ? parseFloat(product.sale_price) : null;
                     const precio = salePrice || price;
@@ -594,7 +636,7 @@
                     return `
                         <div class="producto-card">
                             <div class="producto-img-container">
-                                <img src="${product.image}" alt="${product.name}" class="producto-img">
+                                <img src="${resolveImage(product.image)}" alt="${product.name}" class="producto-img">
                                 ${product.featured && product.trending ?
                             '<div class="producto-badge destacado">✨ Destacado</div>' :
                             salePrice ?
@@ -623,7 +665,7 @@
                     `;
                 }).join('');
             } catch (error) {
-                console.error('Error cargando productos:', error);
+                console.error('❌ Error cargando productos:', error);
                 document.getElementById('productosGrid').innerHTML = `
                     <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: #666;">
                         <i class="fas fa-exclamation-circle" style="font-size: 3rem; margin-bottom: 1rem; color: #ccc;"></i>
@@ -633,97 +675,84 @@
             }
         }
 
-        // Cargar galería
-        async function loadGallery() {
+        // ============================================
+        // 📞 CARGAR INFORMACIÓN DE CONTACTO
+        // ============================================
+        async function loadDynamicContact() {
             try {
-                const response = await fetch('https://ecommerce-diseno-grafico-production.up.railway.app/api/products');
-                const products = await response.json();
+                const res = await fetch(`${API_URL}/settings`);
+                const settings = await res.json();
 
-                // Tomar solo productos que tengan imagen
-                const galleryProducts = products
-                    .filter(p => p.image)
-                    .slice(0, 9); // máximo 9
-
-                const grid = document.getElementById('galeriaGrid');
-
-                if (!galleryProducts.length) {
-                    grid.innerHTML = `
-        <div style="grid-column: 1/-1; text-align: center; padding: 3rem;">
-          <p>No hay productos para mostrar</p>
-        </div>
-      `;
-                    return;
-                }
-
-                grid.innerHTML = galleryProducts.map(p => `
-      <div class="galeria-item">
-        <img src="${p.image}" alt="${p.name}">
-        <div class="galeria-overlay">
-          <h3>${p.name}</h3>
-          <p>${p.category}</p>
-        </div>
-      </div>
-    `).join('');
-
-            } catch (error) {
-                console.error('Error cargando galería dinámica:', error);
+                document.getElementById("contactAddress").textContent = settings.store_address || "No disponible";
+                document.getElementById("contactPhone").textContent = settings.store_phone || "No disponible";
+                document.getElementById("contactEmail").textContent = settings.store_email || "No disponible";
+                document.getElementById("contactHours").textContent = settings.store_schedule || "No disponible";
+            } catch (err) {
+                console.error("❌ Error cargando datos de contacto:", err);
             }
         }
 
-        // User Menu
+        // ============================================
+        // 👤 GESTIÓN DE USUARIO
+        // ============================================
         document.addEventListener("DOMContentLoaded", function () {
-
-            // Estado menú
-            var userMenuOpen = false;
-
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mainNav = document.getElementById('mainNav');
             const userMenuBtn = document.getElementById('userMenuBtn');
-            const dropdown = document.getElementById('userDropdown');
+            const userDropdown = document.getElementById('userDropdown');
             const userMenuContainer = document.querySelector('.user-menu-container');
 
-            // Elementos de sesión
-            const userInfo = document.getElementById('userInfo');
-            const userName = document.getElementById('userName');
-            const adminLink = document.getElementById('adminLink');
-            const userGuest = document.getElementById('userGuest');
+            let userMenuOpen = false;
 
-            function toggleUserMenu() {
-                userMenuOpen = !userMenuOpen;
-                dropdown.style.display = userMenuOpen ? 'block' : 'none';
+            // Menú hamburguesa
+            if (hamburgerBtn && mainNav) {
+                hamburgerBtn.addEventListener('click', () => {
+                    mainNav.classList.toggle('active');
+                    hamburgerBtn.classList.toggle('is-active');
+                });
             }
 
-            // 👉 CONTROLAR ESTADO DE SESIÓN
-            function updateUserMenu() {
-                const user = JSON.parse(localStorage.getItem('user'));
-
-                if (user) {
-                    userInfo.style.display = 'flex';
-                    logoutBtn.style.display = 'flex';
-                    userGuest.style.display = 'none';
-
-                    userName.textContent = user.nombre || 'Usuario';
-                    adminLink.style.display = user.role === 'admin' ? 'flex' : 'none';
-                } else {
-                    userInfo.style.display = 'none';
-                    adminLink.style.display = 'none';
-                    logoutBtn.style.display = 'none';
-                    userGuest.style.display = 'block';
+            // Dropdown de usuario
+            function toggleUserMenu() {
+                userMenuOpen = !userMenuOpen;
+                if (userDropdown) {
+                    userDropdown.style.display = userMenuOpen ? 'block' : 'none';
                 }
             }
 
-            // LOGOUT
+            function updateUserMenu() {
+                const user = JSON.parse(localStorage.getItem('user'));
+                const userInfo = document.getElementById('userInfo');
+                const userName = document.getElementById('userName');
+                const adminLink = document.getElementById('adminLink');
+                const userGuest = document.getElementById('userGuest');
+                const logoutBtn = document.getElementById('logoutBtn');
+
+                if (user) {
+                    if (userInfo) userInfo.style.display = 'flex';
+                    if (logoutBtn) logoutBtn.style.display = 'flex';
+                    if (userGuest) userGuest.style.display = 'none';
+                    if (userName) userName.textContent = user.nombre || 'Usuario';
+                    if (adminLink) adminLink.style.display = user.role === 'admin' ? 'flex' : 'none';
+                } else {
+                    if (userInfo) userInfo.style.display = 'none';
+                    if (adminLink) adminLink.style.display = 'none';
+                    if (logoutBtn) logoutBtn.style.display = 'none';
+                    if (userGuest) userGuest.style.display = 'block';
+                }
+            }
+
             window.logout = function () {
                 if (confirm('¿Estás seguro de que deseas cerrar sesión?')) {
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
                     localStorage.removeItem('cart');
-
-                    updateUserMenu();     // 🔥 CLAVE
-                    toggleUserMenu();     // cerrar menú
+                    updateUserMenu();
+                    toggleUserMenu();
                     window.location.href = '/pages/login.html';
                 }
             };
 
-            // Click botón usuario
             if (userMenuBtn) {
                 userMenuBtn.addEventListener('click', function (e) {
                     e.stopPropagation();
@@ -731,94 +760,80 @@
                 });
             }
 
-            // Click fuera
             document.addEventListener('click', function (e) {
                 if (userMenuOpen && userMenuContainer && !userMenuContainer.contains(e.target)) {
                     toggleUserMenu();
                 }
             });
 
-            // Ejecutar al cargar
             updateUserMenu();
-
-        });
-        // Actualizar info de usuario al cargar
-        window.addEventListener('DOMContentLoaded', () => {
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-            // Actualizar nombre de usuario
-            if (user.name) {
-                document.getElementById('userName').textContent = user.name;
-            }
-
-            // Mostrar link de admin si es admin
-            if (user.role === 'admin') {
-                document.getElementById('adminLink').style.display = 'flex';
-            }
-
-            // Actualizar contador de carrito
-            if (cart.length > 0) {
-                const cartCount = document.getElementById('cartCount');
-                cartCount.textContent = cart.length;
-                cartCount.style.display = 'block';
-            }
-            // LISTENERS DE BOTONES DEL BANNER
-            document.querySelectorAll('.tag[data-machine]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    changeMachine(btn.dataset.machine);
-                    resetAutoplay();
-                });
-            });
         });
 
-        // Iniciar - IMPORTANTE: Cargar imágenes primero
+        // ============================================
+        // 🚀 INICIALIZACIÓN
+        // ============================================
         window.addEventListener('load', async () => {
-            await loadMachineImages(); // Cargar imágenes desde BD
-            await loadProducts();      // Cargar productos
-            startAutoplay();           // Iniciar carrusel
+            console.log('🚀 Iniciando carga de la página...');
+            
+            try {
+                // 1. Cargar servicios (esto llena el banner)
+                await loadServicesFromDB();
+                
+                // 2. Cargar productos destacados
+                await loadProducts();
+                
+                // 3. Cargar información de contacto
+                await loadDynamicContact();
+                
+                // 4. Iniciar autoplay
+                startAutoplay();
+                
+                console.log('✅ Página cargada completamente');
+            } catch (error) {
+                console.error('❌ Error durante la inicialización:', error);
+            }
         });
 
         // Scroll suave
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
-
                 if (!href || href === '#') return;
-
+                
                 const target = document.getElementById(href.substring(1));
                 if (!target) return;
-
+                
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth' });
             });
         });
 
-        async function loadDynamicContact() {
-            const API_URL_Contact = "https://ecommerce-diseno-grafico-production.up.railway.app/api";
-            try {
-                const res = await fetch(`${API_URL_Contact}/settings`);
-                const settings = await res.json();
+        // Actualizar carrito al cargar
+        window.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
 
-                // Llenar los datos del contacto
-                document.getElementById("contactAddress").textContent = settings.store_address || "Cargando...";
-                document.getElementById("contactPhone").textContent = settings.store_phone || "Cargando...";
-                document.getElementById("contactEmail").textContent = settings.store_email || "Cargando...";
-                document.getElementById("contactHours").textContent = settings.store_schedule || "Cargando...";
-            } catch (err) {
-                console.error("Error cargando datos de contacto:", err);
+            if (user.name) {
+                const userNameEl = document.getElementById('userName');
+                if (userNameEl) userNameEl.textContent = user.name;
             }
-        }
 
-        // Ejecutar cuando el documento esté listo
-        if (document.readyState === "loading") {
-            document.addEventListener("DOMContentLoaded", loadDynamicContact);
-        } else {
-            loadDynamicContact();
-        }
+            if (user.role === 'admin') {
+                const adminLink = document.getElementById('adminLink');
+                if (adminLink) adminLink.style.display = 'flex';
+            }
+
+            if (cart.length > 0) {
+                const cartCount = document.getElementById('cartCount');
+                if (cartCount) {
+                    cartCount.textContent = cart.length;
+                    cartCount.style.display = 'block';
+                }
+            }
+        });
     </script>
 
-    <!-- ✨ APLICAR COLORES ESTANDARIZADOS -->
+    <!-- ✨ SCRIPTS EXTERNOS -->
     <script src="/js/apply-colors.js"></script>
     <script src="/js/common-footer.js"></script>
     <script src="/js/whatsapp-float.js"></script>

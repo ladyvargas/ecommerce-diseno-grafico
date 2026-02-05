@@ -10,13 +10,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/main-checkout.css">
-    <link rel="stylesheet" href="/css/whatsapp-float.css">
 </head>
 
 <body>
-    <a id="whatsappFloat" href="#" target="_blank" class="whatsapp-float" title="Contáctanos por WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-    </a>
     <!-- Modal de alerta -->
     <div id="alertModal" class="alert-modal">
         <div class="alert-modal-content">
@@ -314,7 +310,6 @@
                 cart.forEach(cartItem => {
                     const product = products.find(p => p.id === cartItem.productId);
                     if (!product) {
-                        console.error('Producto no encontrado:', cartItem.productId);
                         invalidProducts.push(cartItem.productId);
                         return;
                     }
@@ -372,7 +367,6 @@
                     document.getElementById('email').value = user.email || '';
                 }
             } catch (error) {
-                console.error('Error cargando carrito:', error);
                 showAlert('Error cargando información del carrito', 'error');
             }
         }
@@ -386,21 +380,40 @@
             // Aplicar descuento de cupón si existe
             if (appliedCoupon) {
                 if (appliedCoupon.type === 'percentage') {
+                    // Descuento porcentual
                     discount = subtotal * (appliedCoupon.value / 100);
+
+                    // Aplicar descuento máximo si existe
                     if (appliedCoupon.maxDiscount && discount > appliedCoupon.maxDiscount) {
                         discount = appliedCoupon.maxDiscount;
                     }
                 } else if (appliedCoupon.type === 'fixed') {
+                    // Descuento fijo
                     discount = appliedCoupon.value;
+
+                    // El descuento no puede ser mayor al subtotal
+                    if (discount > subtotal) {
+                        discount = subtotal;
+                    }
                 }
             }
 
             const subtotalAfterDiscount = subtotal - discount;
-            const tax = subtotalAfterDiscount * 0.12;
+            const tax = subtotalAfterDiscount * 0.12; // IVA 12%
             const total = subtotalAfterDiscount + tax;
 
+            console.log('📊 Totales calculados:', {
+                subtotal: subtotal.toFixed(2),
+                discount: discount.toFixed(2),
+                subtotalAfterDiscount: subtotalAfterDiscount.toFixed(2),
+                tax: tax.toFixed(2),
+                total: total.toFixed(2)
+            });
+
+            // Actualizar DOM
             document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
 
+            // Mostrar u ocultar fila de descuento
             if (discount > 0) {
                 document.getElementById('discountRow').style.display = 'flex';
                 document.getElementById('discount').textContent = `-$${discount.toFixed(2)}`;
@@ -435,22 +448,36 @@
                 const data = await response.json();
 
                 if (data.valid) {
-                    appliedCoupon = data.coupon;
-                    messageEl.innerHTML = `<span style="color: #10b981;"><i class="fas fa-check-circle"></i> Cupón aplicado: ${data.coupon.description}</span>`;
+                    // 🔥 MAPEAR CORRECTAMENTE LOS DATOS DEL API
+                    appliedCoupon = {
+                        code: data.coupon.code,
+                        type: data.coupon.discount_type, // ✅ discount_type → type
+                        value: parseFloat(data.coupon.discount_value), // ✅ discount_value → value
+                        maxDiscount: null, // El API no retorna esto actualmente
+                        description: data.coupon.description || `${data.coupon.discount_value}% de descuento`
+                    };
+
+                    messageEl.innerHTML = `<span style="color: #10b981;"><i class="fas fa-check-circle"></i> Cupón aplicado: ${appliedCoupon.description}</span>`;
+
+                    // Cambiar botón a "Quitar"
                     document.getElementById('applyCouponBtn').textContent = 'Quitar';
                     document.getElementById('applyCouponBtn').onclick = removeCoupon;
+                    document.getElementById('couponCode').disabled = true;
+
+                    // Recalcular totales con el descuento
                     calculateTotals();
                 } else {
-                    messageEl.innerHTML = `<span style="color: #ef4444;"><i class="fas fa-times-circle"></i> ${data.error}</span>`;
+                    messageEl.innerHTML = `<span style="color: #ef4444;"><i class="fas fa-times-circle"></i> ${data.error || 'Cupón inválido'}</span>`;
                 }
             } catch (error) {
-                messageEl.innerHTML = '<span style="color: #ef4444;">Error al validar cupón</span>';
+                messageEl.innerHTML = '<span style="color: #ef4444;">Error al validar cupón. Intenta de nuevo.</span>';
             }
         }
 
         function removeCoupon() {
             appliedCoupon = null;
             document.getElementById('couponCode').value = '';
+            document.getElementById('couponCode').disabled = false;
             document.getElementById('couponMessage').innerHTML = '';
             document.getElementById('applyCouponBtn').textContent = 'Aplicar';
             document.getElementById('applyCouponBtn').onclick = applyCoupon;
@@ -511,19 +538,11 @@
         // Realizar pedido
         document.getElementById('placeOrderBtn').addEventListener('click', async (e) => {
             e.preventDefault(); // Prevenir cualquier acción por defecto
-
-            console.log('🔘 Botón clickeado');
-
             // ⛔ VALIDAR PRIMERO - SI FALLA, DETENER TODO
             const isValid = validateForm();
-            console.log('✅ Validación:', isValid);
-
             if (!isValid) {
-                console.log('❌ Validación falló - deteniendo ejecución');
                 return; // ⛔ SALIR INMEDIATAMENTE SI HAY ERROR
             }
-
-            console.log('✅ Validación exitosa - continuando con el pedido');
 
             // Solo continúa si la validación pasó ✅
             const name = document.getElementById('name').value.trim();
@@ -559,8 +578,6 @@
                     total: totals.total
                 };
 
-                console.log('📦 Enviando pedido:', orderData);
-
                 const response = await fetch(`${API_URL}/orders/create-guest`, {
                     method: 'POST',
                     headers: {
@@ -572,8 +589,6 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    console.log('✅ Pedido creado exitosamente');
-
                     localStorage.setItem('userEmail', email);
                     localStorage.setItem('userName', name);
                     localStorage.removeItem('cart');
@@ -585,7 +600,6 @@
                     btn.innerHTML = originalContent;
                 }
             } catch (error) {
-                console.error('❌ Error:', error);
                 showAlert('Error de conexión. Intenta de nuevo.', 'error');
                 btn.disabled = false;
                 btn.innerHTML = originalContent;
@@ -719,7 +733,6 @@
                     btn.innerHTML = originalContent;
                 }
             } catch (error) {
-                console.error('Error:', error);
                 showAlert('Error de conexión. Intenta de nuevo.', 'error');
                 btn.disabled = false;
                 btn.innerHTML = originalContent;
@@ -730,7 +743,6 @@
     </script>
 
     <!-- ✨ SCRIPTS ESTANDARIZADOS -->
-    <script src="/js/whatsapp-float.js"></script>
     <script src="/js/common-header.js"></script>
     <script src="/js/apply-colors.js"></script>
 </body>

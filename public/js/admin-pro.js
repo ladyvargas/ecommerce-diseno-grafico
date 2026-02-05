@@ -434,53 +434,53 @@ function renderRecentOrders() {
 
   if (orders.length === 0) {
     container.innerHTML = `
-            <div class="empty-state">
-                <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
-                <div class="empty-state-title">No hay pedidos recientes</div>
-                <div class="empty-state-desc">Los nuevos pedidos aparecerán aquí</div>
-            </div>
-        `;
+      <div class="empty-state">
+        <div class="empty-state-icon"><i class="fas fa-inbox"></i></div>
+        <div class="empty-state-title">No hay pedidos recientes</div>
+        <div class="empty-state-desc">Los nuevos pedidos aparecerán aquí</div>
+      </div>
+    `;
     return;
   }
 
   container.innerHTML = `
-        <div class="table-container">
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Email</th>
-                        <th>Total</th>
-                        <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${orders
-                      .map(
-                        (order) => `
-                        <tr>
-                            <td><strong>#${order.id}</strong></td>
-                            <td>${order.userName}</td>
-                            <td>${order.userEmail}</td>
-                            <td><strong>$${parseFloat(order.total || 0).toFixed(2)}</strong></td>
-                            <td>${renderStatusBadge(order.status)}</td>
-                            <td>${formatDate(order.created_at || order.createdAt)}</td>
-                            <td>
-                                <button class="btn btn-primary btn-sm" onclick="viewOrderDetail(${order.id})">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `,
-                      )
-                      .join("")}
-                </tbody>
-            </table>
-        </div>
-    `;
+    <div class="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Email</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${orders
+            .map(
+              (order) => `
+                <tr>
+                  <td><strong>#${order.id}</strong></td>
+                  <td>${order.customer_name || order.userName || 'Sin nombre'}</td>
+                  <td>${order.customer_email || order.userEmail || 'Sin email'}</td>
+                  <td><strong>$${parseFloat(order.total || 0).toFixed(2)}</strong></td>
+                  <td>${renderStatusBadge(order.status)}</td>
+                  <td>${formatDate(order.created_at || order.createdAt)}</td>
+                  <td>
+                    <button class="btn btn-primary btn-sm" onclick="viewOrderDetail(${order.id})">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </td>
+                </tr>
+              `,
+            )
+            .join("")}
+        </tbody>
+      </table>
+    </div>
+  `;
 }
 
 // ========================================
