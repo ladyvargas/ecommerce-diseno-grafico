@@ -66,9 +66,10 @@ nav a:hover {
 
 .header-icons {
   display: flex;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
 }
-
 .icon-btn {
   width: 50px;
   height: 50px;
@@ -238,52 +239,63 @@ nav a:hover {
 
 /* TAGS DERECHA */
 .tags-side {
-  position: absolute;
-  right: 35px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 10px;
-  z-index: 15;
+  align-items: flex-end; /* alinea a la derecha */
+  justify-content: center;
+  padding: 1rem 0.75rem;
+  overflow: visible; /* evita que se corten */
+  width: auto;
+  min-width: 160px;
 }
 
 .tag {
-  background-color: var(--primary-dark);
+  /* Adaptar al contenido */
+  width: auto;
+  min-width: 120px;
+  max-width: 220px; /* límite máximo razonable */
+  white-space: nowrap; /* no partir el texto */
+  overflow: visible;
+
+  /* Estilo visual */
+  padding: 10px 18px;
+  border-radius: 50px;
+  border: 2px solid transparent;
+  background-color: #243977;
   color: white;
-  width: 145px;
-  padding: 10px;
-  text-align: center;
-  border-radius: 15px;
-  font-size: 11px;
+  font-size: 0.72rem;
   font-weight: 700;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+
+  /* Asegurar que no se salga del contenedor */
+  box-sizing: border-box;
+  display: inline-block;
 }
 
 .tag:hover {
-  background-color: #7a553a;
-}
-/* Este es el estilo único para el botón activo */
-.tag.active {
-    /* Creamos el fondo clarito mezclando el color acento con blanco */
-    background-color: color-mix(in srgb, var(--accent), white 90%);
-    /* El texto y el borde usan el color acento fuerte */
-    color: var(--accent);
-    border: 2px solid var(--accent);
-    font-weight: bold;
+  background-color: #1a2b5e;
+  transform: translateX(-4px);
 }
 
+.tag.active {
+  background-color: transparent;
+  border-color: #cda870;
+  color: #cda870;
+}
 /* --- Los disparadores de color --- */
 
 /* Cuando los botones estén dentro de la sección de Corte Láser */
 .container-laser {
-    --accent: #243977; /* Tu azul */
+  --accent: #243977; /* Tu azul */
 }
 
 /* Cuando los botones estén dentro de la sección de Sublimación */
 .container-sublimacion {
-    --accent: #cda870; /* Tu café/dorado */
+  --accent: #cda870; /* Tu café/dorado */
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -617,7 +629,7 @@ nav a:hover {
 
 /* SERVICIOS SECTION - DISEÑO DINÁMICO MEJORADO */
 .services-section {
-  background: linear-gradient(180deg, #2B4B8C  0%, #2B4B8C 100%);
+  background: linear-gradient(180deg, #2b4b8c 0%, #2b4b8c 100%);
   padding: 8rem 5%;
   position: relative;
   overflow: hidden;
@@ -768,8 +780,8 @@ nav a:hover {
 }
 
 .service-tags span {
-  background: linear-gradient(135deg, #243977, var(--beige));
-  color: var(--brown-dark);
+  background: #243977;
+  color: #ffffff;
   padding: 0.6rem 1.3rem;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -824,13 +836,13 @@ nav a:hover {
 .service-icon-medium {
   width: 75px;
   height: 75px;
-  background: linear-gradient(135deg, var(--beige), #243977);
+  background: #243977;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: var(--brown-dark);
+  color: #ffffff;
   margin: 0 auto 1.5rem;
   transition: all 0.4s;
 }
@@ -871,8 +883,8 @@ nav a:hover {
 }
 
 .service-card-medium:hover .service-link {
-  background: var(--beige);
-  color: var(--brown-dark);
+  background: #243977;
+  color: #ffffff;
   transform: translateX(5px);
 }
 
@@ -1043,7 +1055,7 @@ nav a:hover {
 /* TESTIMONIOS */
 .testimonios-section {
   padding: 6rem 5%;
-  background: linear-gradient(135deg, #243977 0%, #ffffff 100%);
+  background: #ffffff;
 }
 
 .testimonios-section h2 {
@@ -1064,7 +1076,7 @@ nav a:hover {
 }
 
 .testimonio-card {
-  background: white;
+  background: #24397736;
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -1104,7 +1116,7 @@ nav a:hover {
 }
 
 .testimonio-author span {
-  color: #999;
+  color: #ffffff;
   font-size: 0.9rem;
 }
 
@@ -1158,7 +1170,7 @@ nav a:hover {
 }
 
 .porque-item p {
-  color: #243977;
+  color: #ffffff;
   line-height: 1.7;
 }
 
@@ -1497,16 +1509,22 @@ nav a:hover {
 
 .cart-count {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: -4px;
+  right: -6px;
   background: #ef4444;
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 10px;
   min-width: 18px;
-  text-align: center;
+  height: 18px;
+  border-radius: 50%;
+  display: flex !important; /* forzar display cuando tiene valor */
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  line-height: 1;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .contacto-section {
@@ -1631,12 +1649,17 @@ nav a:hover {
   }
 
   .tags-side {
-    grid-column: 1 / -1;
-    display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 12px;
     justify-content: center;
-    margin-top: 10px;
+    align-items: center;
+    max-height: none;
+  }
+
+  .tag {
+    max-width: 160px;
+    font-size: 0.65rem;
+    padding: 8px 14px;
   }
 
   /* Ajustamos el óvalo para que no ocupe tanto espacio horizontal */
