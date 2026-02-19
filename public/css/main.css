@@ -1498,7 +1498,7 @@ nav a:hover {
 .cart-count {
   position: absolute;
   top: -20px;
-  right: -5px;
+  right: 5px;
   background: #ef4444;
   color: white;
   font-size: 0.7rem;
