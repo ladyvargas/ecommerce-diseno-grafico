@@ -1497,7 +1497,7 @@ nav a:hover {
 
 .cart-count {
   position: absolute;
-  top: -5px;
+  top: -20px;
   right: -5px;
   background: #ef4444;
   color: white;
@@ -1856,8 +1856,7 @@ nav a:hover {
   }
 }
 .tags-side .tag {
-  padding: 10px 10px;
-  font-size: 14px;
+  padding: 10px 5px;
   border-radius: 999px;
   white-space: nowrap;
 }
