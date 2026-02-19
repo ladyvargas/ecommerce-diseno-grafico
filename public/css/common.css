@@ -102,7 +102,7 @@ nav a.active::after {
 .icon-btn {
   width: 50px;
   height: 50px;
-  background: var(--beige-light);
+  background: var(--gradient);
   border: none;
   border-radius: 10px;
   cursor: pointer;

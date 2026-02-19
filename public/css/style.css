@@ -1,6 +1,6 @@
 :root {
     --primary-color: #4a2f1a;
-    --primary-dark: var(--beige-light);
+    --primary-dark: var(--gradient);
     --secondary-color: #ec4899;
     --success-color: #10b981;
     --warning-color: #f59e0b;

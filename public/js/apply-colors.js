@@ -33,9 +33,9 @@
         '#d4a574': 'var(--beige)',
         'rgb(212, 165, 116)': 'var(--beige)',
         
-        '#E8C9A0': 'var(--beige-light)',
-        '#e8c9a0': 'var(--beige-light)',
-        'rgb(232, 201, 160)': 'var(--beige-light)'
+        '#E8C9A0': 'var(--gradient)',
+        '#e8c9a0': 'var(--gradient)',
+        'rgb(232, 201, 160)': 'var(--gradient)'
     };
     
     // Aplicar colores a elementos inline

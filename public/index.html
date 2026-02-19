@@ -334,7 +334,7 @@
         // ============================================
         // 🛠️ FUNCIONES AUXILIARES
         // ============================================
-        
+
         /**
          * Normaliza texto para comparaciones
          */
@@ -371,7 +371,7 @@
             };
 
             const normalizedName = serviceName.toLowerCase();
-            
+
             // Buscar coincidencia
             for (const [pattern, label] of Object.entries(keywords)) {
                 const regex = new RegExp(pattern, 'i');
@@ -384,7 +384,7 @@
             const words = serviceName.toUpperCase().split(' ')
                 .filter(w => w.length > 2 && !['DE', 'LA', 'EL', 'LOS', 'LAS'].includes(w))
                 .slice(0, 2);
-            
+
             return words.join(' ') || serviceName.toUpperCase().substring(0, 15);
         }
 
@@ -428,15 +428,15 @@
             try {
                 console.log('🔄 Cargando servicios desde la BD...');
                 const response = await fetch(`${API_URL}/products`);
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 const products = await response.json();
-                
+
                 // Filtrar solo productos de categoría "Servicios"
-                const services = products.filter(p => 
+                const services = products.filter(p =>
                     p.category && p.category.toLowerCase() === 'servicios'
                 );
 
@@ -453,7 +453,9 @@
                     machines[key] = {
                         id: service.id,
                         title: service.name.toUpperCase(),
-                        shortLabel: getShortLabel(service.name), // Etiqueta corta para botones
+                        shortLabel: (service.file_format && service.file_format.trim())
+                            ? service.file_format.trim().toUpperCase()
+                            : getShortLabel(service.name),
                         description: service.description || 'Servicio profesional de alta calidad',
                         image: resolveImage(service.image),
                         colors: colors,
@@ -480,12 +482,12 @@
 
             } catch (error) {
                 console.error('❌ Error cargando servicios:', error);
-                
+
                 // Mostrar mensaje de error en el banner
                 document.getElementById('heroTitle').textContent = 'Error al cargar servicios';
-                document.getElementById('heroDescription').textContent = 
+                document.getElementById('heroDescription').textContent =
                     'No se pudieron cargar los servicios. Por favor, recarga la página.';
-                
+
                 return [];
             }
         }
@@ -495,7 +497,7 @@
         // ============================================
         function renderBannerButtons() {
             const tagsSide = document.querySelector('.tags-side');
-            
+
             if (!tagsSide) {
                 console.error('❌ Elemento .tags-side no encontrado');
                 return;
@@ -509,10 +511,10 @@
                 const button = document.createElement('button');
                 button.className = 'tag';
                 if (index === 0) button.classList.add('active');
-                
+
                 button.dataset.machine = key;
                 button.textContent = machines[key].shortLabel || machines[key].title; // Usar etiqueta corta
-                
+
                 // Agregar evento click
                 button.addEventListener('click', () => {
                     changeMachine(key);
@@ -530,7 +532,7 @@
         // ============================================
         function changeMachine(machineKey) {
             const machine = machines[machineKey];
-            
+
             if (!machine) {
                 console.warn('⚠️ Máquina no encontrada:', machineKey);
                 return;
@@ -547,7 +549,7 @@
             // Actualizar imagen
             const imgEl = document.getElementById('machineImage');
             const imageUrl = machine.image;
-            
+
             imgEl.onerror = () => {
                 imgEl.onerror = null;
                 imgEl.src = '/img/placeholder-servicio.png';
@@ -574,7 +576,7 @@
         // ============================================
         function startAutoplay() {
             const machineKeys = Object.keys(machines);
-            
+
             if (machineKeys.length === 0) {
                 console.warn('⚠️ No hay servicios para el autoplay');
                 return;
@@ -584,7 +586,7 @@
             if (currentIndex < 0) currentIndex = 0;
 
             clearInterval(autoplayInterval);
-            
+
             autoplayInterval = setInterval(() => {
                 currentIndex = (currentIndex + 1) % machineKeys.length;
                 changeMachine(machineKeys[currentIndex]);
@@ -615,7 +617,7 @@
                     .slice(0, 6);
 
                 console.log('✅ Productos destacados cargados:', featured.length);
-                
+
                 const grid = document.getElementById('productosGrid');
 
                 if (featured.length === 0) {
@@ -774,20 +776,20 @@
         // ============================================
         window.addEventListener('load', async () => {
             console.log('🚀 Iniciando carga de la página...');
-            
+
             try {
                 // 1. Cargar servicios (esto llena el banner)
                 await loadServicesFromDB();
-                
+
                 // 2. Cargar productos destacados
                 await loadProducts();
-                
+
                 // 3. Cargar información de contacto
                 await loadDynamicContact();
-                
+
                 // 4. Iniciar autoplay
                 startAutoplay();
-                
+
                 console.log('✅ Página cargada completamente');
             } catch (error) {
                 console.error('❌ Error durante la inicialización:', error);
@@ -799,10 +801,10 @@
             anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
                 if (!href || href === '#') return;
-                
+
                 const target = document.getElementById(href.substring(1));
                 if (!target) return;
-                
+
                 e.preventDefault();
                 target.scrollIntoView({ behavior: 'smooth' });
             });

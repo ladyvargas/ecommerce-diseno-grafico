@@ -72,7 +72,7 @@ nav a:hover {
 .icon-btn {
   width: 50px;
   height: 50px;
-  background: var(--beige-light);
+  background: var(--gradient);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -664,7 +664,7 @@ nav a:hover {
 
 .services-subtitle {
   font-size: 1.4rem;
-  color: var(--beige-light);
+  color: var(--gradient);
   font-weight: 300;
 }
 
@@ -768,7 +768,7 @@ nav a:hover {
 }
 
 .service-tags span {
-  background: linear-gradient(135deg, var(--beige-light), var(--beige));
+  background: linear-gradient(135deg, var(--gradient), var(--beige));
   color: var(--brown-dark);
   padding: 0.6rem 1.3rem;
   border-radius: 20px;
@@ -824,7 +824,7 @@ nav a:hover {
 .service-icon-medium {
   width: 75px;
   height: 75px;
-  background: linear-gradient(135deg, var(--beige), var(--beige-light));
+  background: linear-gradient(135deg, var(--beige), var(--gradient));
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1036,14 +1036,14 @@ nav a:hover {
 }
 
 .galeria-overlay p {
-  color: var(--beige-light);
+  color: var(--gradient);
   font-size: 0.95rem;
 }
 
 /* TESTIMONIOS */
 .testimonios-section {
   padding: 6rem 5%;
-  background: linear-gradient(135deg, var(--beige-light) 0%, #ffffff 100%);
+  background: linear-gradient(135deg, var(--gradient) 0%, #ffffff 100%);
 }
 
 .testimonios-section h2 {
@@ -1095,7 +1095,7 @@ nav a:hover {
   flex-direction: column;
   gap: 0.25rem;
   padding-top: 1.5rem;
-  border-top: 2px solid var(--beige-light);
+  border-top: 2px solid var(--gradient);
 }
 
 .testimonio-author strong {
@@ -1158,7 +1158,7 @@ nav a:hover {
 }
 
 .porque-item p {
-  color: var(--beige-light);
+  color: var(--gradient);
   line-height: 1.7;
 }
 

@@ -73,7 +73,7 @@
         /* Buttons */
         .btn { padding: 0.75rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
         .btn-primary { background: #4a2f1a; color: white; }
-        .btn-primary:hover { background: var(--beige-light); }
+        .btn-primary:hover { background: var(--gradient); }
         .btn-success { background: #10b981; color: white; }
         .btn-success:hover { background: #059669; }
         .btn-danger { background: #ef4444; color: white; }
@@ -101,6 +101,16 @@
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #4a2f1a; }
         .form-group.checkbox { display: flex; align-items: center; gap: 0.5rem; }
         .form-group.checkbox input { width: auto; }
+
+        /* Short label highlight */
+        #shortLabelGroup {
+            background: #fffbf5;
+            border: 2px dashed #CDA870;
+            border-radius: 10px;
+            padding: 1rem 1rem 0.25rem;
+        }
+        #shortLabelGroup label { color: #4a2f1a; }
+        #productShortLabel { text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
         
         /* Empty State */
         .empty-state { text-align: center; padding: 3rem; color: #6b7280; }
@@ -167,7 +177,7 @@
                 <div class="user-info">
                     <div>
                         <div style="font-weight: 600;" id="adminUserName">Admin</div>
-                        <div style="font-size: 0.875rem; color: #6b7280;" id="adminUserEmail">admin@CNC CAMPAS.com</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;" id="adminUserEmail">admin@cnccampas.com</div>
                     </div>
                     <img id="adminUserAvatar" class="user-avatar" src="" alt="Avatar">
                 </div>
@@ -330,7 +340,9 @@
         </main>
     </div>
     
-    <!-- Modal Producto -->
+    <!-- ============================================================
+         MODAL PRODUCTO — incluye campo "Etiqueta del Botón (Banner)"
+         ============================================================ -->
     <div class="modal" id="productModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -339,54 +351,87 @@
             </div>
             <form id="productForm">
                 <input type="hidden" id="productId">
+
                 <div class="form-group">
                     <label>Nombre *</label>
                     <input type="text" id="productName" required>
                 </div>
+
                 <div class="form-group">
                     <label>Descripción Corta *</label>
                     <input type="text" id="productShortDesc" required>
                 </div>
+
                 <div class="form-group">
                     <label>Descripción Completa *</label>
                     <textarea id="productDescription" rows="4" required></textarea>
                 </div>
+
                 <div class="form-group">
                     <label>Precio ($) *</label>
                     <input type="number" id="productPrice" step="0.01" required>
                 </div>
+
                 <div class="form-group">
                     <label>Precio de Oferta ($)</label>
                     <input type="number" id="productSalePrice" step="0.01">
                 </div>
+
                 <div class="form-group">
                     <label>Categoría *</label>
                     <select id="productCategory" required></select>
                 </div>
+
+                <!-- ✅ CAMPO NUEVO: Etiqueta del botón del banner (solo visible si categoría = Servicios) -->
+                <div class="form-group" id="shortLabelGroup" style="display: none;">
+                    <label>
+                        <i class="fas fa-tag"></i>
+                        Etiqueta del Botón (Banner)
+                        <small style="color: #6b7280; font-weight: normal; margin-left: 0.5rem;">
+                            — Texto que aparece en los botones del banner principal
+                        </small>
+                    </label>
+                    <input
+                        type="text"
+                        id="productShortLabel"
+                        placeholder="ej. ROUTER CNC, CORTE LÁSER, IMPRESORA 3D"
+                        maxlength="20"
+                    >
+                    <small style="color: #9ca3af; margin-top: 0.25rem; display: block;">
+                        Máximo 20 caracteres. Si se deja vacío, se generará automáticamente.
+                    </small>
+                </div>
+
                 <div class="form-group">
                     <label>URL de Imagen *</label>
                     <input type="url" id="productImage" required>
                 </div>
+
                 <div class="form-group">
                     <label>Formato de Archivo</label>
                     <input type="text" id="productFileFormat" placeholder="ej. AI, PSD, SVG">
                 </div>
+
                 <div class="form-group">
                     <label>Stock</label>
                     <input type="number" id="productStock" value="999">
                 </div>
+
                 <div class="form-group checkbox">
                     <input type="checkbox" id="productFeatured">
                     <label for="productFeatured">Destacado</label>
                 </div>
+
                 <div class="form-group checkbox">
                     <input type="checkbox" id="productTrending">
                     <label for="productTrending">Tendencia</label>
                 </div>
+
                 <div class="form-group checkbox">
                     <input type="checkbox" id="productBestseller">
                     <label for="productBestseller">Más Vendido</label>
                 </div>
+
                 <button type="submit" class="btn btn-primary" style="width: 100%;">
                     <i class="fas fa-save"></i> Guardar Producto
                 </button>
@@ -398,5 +443,67 @@
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/admin.js"></script>
+
+    <!-- ================================================================
+         PATCH: mostrar/ocultar shortLabelGroup según categoría seleccionada
+         Este script se ejecuta DESPUÉS de admin.js para poder parchear
+         la función openProductModal al vuelo.
+         ================================================================ -->
+    <script>
+    (function patchAdminForShortLabel() {
+
+        // ── 1. Mostrar/ocultar el campo según la categoría ─────────────
+        function toggleShortLabelField() {
+            const cat = (document.getElementById('productCategory')?.value || '').toLowerCase();
+            const group = document.getElementById('shortLabelGroup');
+            if (!group) return;
+            group.style.display = (cat === 'servicios') ? 'block' : 'none';
+        }
+
+        // ── 2. Patch de openProductModal ───────────────────────────────
+        const _origOpen = window.openProductModal;
+        window.openProductModal = function(product) {
+            _origOpen(product);          // llama al original
+
+            // Rellenar el campo shortLabel con file_format del producto
+            const slInput = document.getElementById('productShortLabel');
+            if (slInput) {
+                slInput.value = product?.file_format
+                    ? product.file_format.toUpperCase()
+                    : (product?.fileFormat ? product.fileFormat.toUpperCase() : '');
+            }
+
+            // Mostrar/ocultar según categoría actual
+            toggleShortLabelField();
+
+            // Escuchar cambios de categoría
+            const catEl = document.getElementById('productCategory');
+            if (catEl) {
+                // Quitar listener anterior si existe, agregar nuevo
+                catEl.removeEventListener('change', toggleShortLabelField);
+                catEl.addEventListener('change', toggleShortLabelField);
+            }
+        };
+
+        // ── 3. Patch de handleProductSubmit (vía form submit override) ─
+        //    Interceptamos el submit para inyectar shortLabel en fileFormat
+        document.addEventListener('submit', function(e) {
+            if (e.target && e.target.id === 'productForm') {
+                const slInput = document.getElementById('productShortLabel');
+                const ffInput = document.getElementById('productFileFormat');
+                // Si hay shortLabel, usarlo como file_format
+                // (el JS original lee productFileFormat en handleProductSubmit)
+                if (slInput && slInput.value.trim()) {
+                    if (ffInput) {
+                        // Guardamos el valor original y lo restauramos después
+                        ffInput._originalValue = ffInput.value;
+                        ffInput.value = slInput.value.trim().toUpperCase();
+                    }
+                }
+            }
+        }, true); // capture=true para ir antes que el handler original
+
+    })();
+    </script>
 </body>
 </html>
