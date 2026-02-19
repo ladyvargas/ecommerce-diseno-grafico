@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --primary: #4a2f1a;
             --secondary: #ec4899;
@@ -23,12 +29,19 @@
             --sidebar-width: 280px;
             --header-height: 70px;
         }
-        
-        body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); }
-        
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+        }
+
         /* Layout Principal */
-        .admin-layout { display: flex; min-height: 100vh; }
-        
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
         /* Sidebar Expandido */
         .sidebar {
             width: var(--sidebar-width);
@@ -39,21 +52,30 @@
             overflow-y: auto;
             transition: all 0.3s;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
         }
-        
-        .sidebar::-webkit-scrollbar { width: 6px; }
-        .sidebar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
-        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-        
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
         .sidebar-header {
             padding: 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-        
+
         .sidebar-logo {
             width: 45px;
             height: 45px;
@@ -64,47 +86,67 @@
             justify-content: center;
             font-size: 1.5rem;
         }
-        
-        .sidebar-brand h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 0.2rem; }
-        .sidebar-brand span { font-size: 0.75rem; color: var(--secondary); letter-spacing: 1px; text-transform: uppercase; }
-        
+
+        .sidebar-brand h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .sidebar-brand span {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         .sidebar-user {
             padding: 1.5rem;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
             gap: 1rem;
             margin: 1rem;
             border-radius: 12px;
         }
-        
+
         .sidebar-user-avatar {
             width: 50px;
             height: 50px;
             border-radius: 50%;
             border: 3px solid var(--brown-dark);
         }
-        
-        .sidebar-user-info h4 { font-size: 0.95rem; margin-bottom: 0.25rem; }
-        .sidebar-user-info p { font-size: 0.75rem; color: var(--gray); }
-        .sidebar-user-badge { 
-            background: var(--success); 
-            color: white; 
-            padding: 0.15rem 0.5rem; 
-            border-radius: 20px; 
+
+        .sidebar-user-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .sidebar-user-info p {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .sidebar-user-badge {
+            background: var(--success);
+            color: white;
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
             font-size: 0.65rem;
             font-weight: 600;
             display: inline-block;
             margin-top: 0.25rem;
         }
-        
+
         /* Navegación */
-        .sidebar-nav { padding: 0 1rem; }
-        
+        .sidebar-nav {
+            padding: 0 1rem;
+        }
+
         .nav-section {
             margin: 1.5rem 0;
         }
-        
+
         .nav-section-title {
             font-size: 0.7rem;
             text-transform: uppercase;
@@ -114,13 +156,13 @@
             margin-bottom: 0.75rem;
             font-weight: 600;
         }
-        
+
         .nav-item {
             display: flex;
             align-items: center;
             gap: 1rem;
             padding: 0.85rem 1rem;
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
             border-radius: 10px;
             margin-bottom: 0.35rem;
@@ -128,25 +170,25 @@
             cursor: pointer;
             position: relative;
         }
-        
+
         .nav-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             transform: translateX(5px);
         }
-        
+
         .nav-item.active {
             background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
             color: white;
             box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
         }
-        
-        .nav-item i { 
-            width: 20px; 
+
+        .nav-item i {
+            width: 20px;
             font-size: 1.1rem;
             text-align: center;
         }
-        
+
         .nav-item-badge {
             margin-left: auto;
             background: var(--danger);
@@ -156,7 +198,7 @@
             font-size: 0.7rem;
             font-weight: 600;
         }
-        
+
         /* Main Content */
         .main-content {
             flex: 1;
@@ -164,7 +206,7 @@
             display: flex;
             flex-direction: column;
         }
-        
+
         /* Header Superior */
         .top-header {
             height: var(--header-height);
@@ -177,34 +219,39 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
-        
+
         .header-left {
             display: flex;
             align-items: center;
             gap: 2rem;
         }
-        
-        .page-title h1 { font-size: 1.5rem; font-weight: 700; color: var(--dark); }
-        .breadcrumb { 
-            display: flex; 
-            gap: 0.5rem; 
-            font-size: 0.85rem; 
+
+        .page-title h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .breadcrumb {
+            display: flex;
+            gap: 0.5rem;
+            font-size: 0.85rem;
             color: var(--gray);
             margin-top: 0.25rem;
         }
-        
+
         .header-right {
             display: flex;
             align-items: center;
             gap: 1.5rem;
         }
-        
+
         .header-search {
             position: relative;
         }
-        
+
         .header-search input {
             padding: 0.65rem 1rem 0.65rem 2.75rem;
             border: 2px solid var(--border);
@@ -213,13 +260,13 @@
             font-size: 0.9rem;
             transition: all 0.3s;
         }
-        
+
         .header-search input:focus {
             outline: none;
             border-color: var(--brown-dark);
             width: 350px;
         }
-        
+
         .header-search i {
             position: absolute;
             left: 1rem;
@@ -227,12 +274,12 @@
             transform: translateY(-50%);
             color: var(--gray);
         }
-        
+
         .header-actions {
             display: flex;
             gap: 1rem;
         }
-        
+
         .header-icon {
             width: 40px;
             height: 40px;
@@ -245,13 +292,13 @@
             transition: all 0.3s;
             position: relative;
         }
-        
+
         .header-icon:hover {
             background: var(--brown-dark);
             color: white;
             transform: scale(1.1);
         }
-        
+
         .header-icon .badge-dot {
             position: absolute;
             top: 8px;
@@ -262,27 +309,34 @@
             border-radius: 50%;
             border: 2px solid white;
         }
-        
+
         /* Content Area */
         .content-area {
             padding: 2rem;
             flex: 1;
         }
-        
+
         .content-section {
             display: none;
         }
-        
+
         .content-section.active {
             display: block;
             animation: fadeIn 0.3s;
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
+
         /* Stats Cards Grid */
         .stats-grid {
             display: grid;
@@ -290,18 +344,18 @@
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        
+
         .stat-card {
             background: white;
             border-radius: 16px;
             padding: 1.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
-        
+
         .stat-card::before {
             content: '';
             position: absolute;
@@ -310,24 +364,35 @@
             width: 4px;
             height: 100%;
         }
-        
-        .stat-card.revenue::before { background: var(--success); }
-        .stat-card.orders::before { background: var(--brown-dark); }
-        .stat-card.products::before { background: var(--warning); }
-        .stat-card.users::before { background: var(--secondary); }
-        
+
+        .stat-card.revenue::before {
+            background: var(--success);
+        }
+
+        .stat-card.orders::before {
+            background: var(--brown-dark);
+        }
+
+        .stat-card.products::before {
+            background: var(--warning);
+        }
+
+        .stat-card.users::before {
+            background: var(--secondary);
+        }
+
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
-        
+
         .stat-card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1rem;
         }
-        
+
         .stat-icon {
             width: 55px;
             height: 55px;
@@ -337,12 +402,27 @@
             justify-content: center;
             font-size: 1.5rem;
         }
-        
-        .stat-icon.revenue { background: #d1fae5; color: var(--success); }
-        .stat-icon.orders { background: #dbeafe; color: var(--brown-dark); }
-        .stat-icon.products { background: #fef3c7; color: var(--warning); }
-        .stat-icon.users { background: #fce7f3; color: var(--secondary); }
-        
+
+        .stat-icon.revenue {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .stat-icon.orders {
+            background: #dbeafe;
+            color: var(--brown-dark);
+        }
+
+        .stat-icon.products {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .stat-icon.users {
+            background: #fce7f3;
+            color: var(--secondary);
+        }
+
         .stat-value {
             font-size: 2.25rem;
             font-weight: 700;
@@ -350,13 +430,13 @@
             margin-bottom: 0.5rem;
             line-height: 1;
         }
-        
+
         .stat-label {
             font-size: 0.9rem;
             color: var(--gray);
             font-weight: 500;
         }
-        
+
         .stat-footer {
             display: flex;
             align-items: center;
@@ -366,22 +446,27 @@
             border-top: 1px solid var(--border);
             font-size: 0.85rem;
         }
-        
+
         .stat-change {
             display: flex;
             align-items: center;
             gap: 0.25rem;
             font-weight: 600;
         }
-        
-        .stat-change.up { color: var(--success); }
-        .stat-change.down { color: var(--danger); }
-        
+
+        .stat-change.up {
+            color: var(--success);
+        }
+
+        .stat-change.down {
+            color: var(--danger);
+        }
+
         .stat-period {
             color: var(--gray);
             margin-left: auto;
         }
-        
+
         /* Cards Grid */
         .cards-grid {
             display: grid;
@@ -389,15 +474,15 @@
             gap: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .card {
             background: white;
             border-radius: 16px;
             padding: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
         }
-        
+
         .card-header {
             display: flex;
             justify-content: space-between;
@@ -406,18 +491,18 @@
             padding-bottom: 1rem;
             border-bottom: 2px solid var(--border);
         }
-        
+
         .card-title {
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--dark);
         }
-        
+
         .card-actions {
             display: flex;
             gap: 0.75rem;
         }
-        
+
         /* Botones */
         .btn {
             padding: 0.75rem 1.5rem;
@@ -432,39 +517,71 @@
             gap: 0.5rem;
             text-decoration: none;
         }
-        
-        .btn-primary { background: #CDA870; color: rgb(0, 0, 0); }
-        .btn-primary:hover { background: #EFE8DB; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
-        
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #059669; transform: translateY(-2px); }
-        
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        
-        .btn-outline { background: white; color: var(--brown-dark); border: 2px solid var(--brown-dark); }
-        .btn-outline:hover { background: var(--brown-dark); color: white; }
-        
-        .btn-sm { padding: 0.5rem 1rem; font-size: 0.85rem; }
-        
+
+        .btn-primary {
+            background: #CDA870;
+            color: rgb(0, 0, 0);
+        }
+
+        .btn-primary:hover {
+            background: #EFE8DB;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--brown-dark);
+            border: 2px solid var(--brown-dark);
+        }
+
+        .btn-outline:hover {
+            background: var(--brown-dark);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
         /* Tabla Avanzada */
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
             border: 1px solid var(--border);
         }
-        
+
         .data-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
         }
-        
+
         .data-table thead {
             background: linear-gradient(135deg, #e8d9a0, #e8c9a0);
             color: white;
         }
-        
+
         .data-table th {
             padding: 1.25rem 1rem;
             text-align: left;
@@ -473,22 +590,22 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        
+
         .data-table td {
             padding: 1.25rem 1rem;
             border-bottom: 1px solid var(--border);
             font-size: 0.9rem;
         }
-        
+
         .data-table tbody tr {
             transition: all 0.3s;
         }
-        
+
         .data-table tbody tr:hover {
             background: var(--light);
             transform: scale(1.01);
         }
-        
+
         .data-table img {
             width: 60px;
             height: 60px;
@@ -496,7 +613,7 @@
             border-radius: 10px;
             border: 2px solid var(--border);
         }
-        
+
         /* Badges */
         .badge {
             padding: 0.35rem 0.85rem;
@@ -507,19 +624,38 @@
             letter-spacing: 0.5px;
             display: inline-block;
         }
-        
-        .badge.success { background: #d1fae5; color: var(--success); }
-        .badge.warning { background: #fef3c7; color: var(--warning); }
-        .badge.danger { background: #fee2e2; color: var(--danger); }
-        .badge.primary { background: #dbeafe; color: var(--brown-dark); }
-        .badge.info { background: #e0e7ff; color: var(--info); }
-        
+
+        .badge.success {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background: #fef3c7;
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .badge.primary {
+            background: #dbeafe;
+            color: var(--brown-dark);
+        }
+
+        .badge.info {
+            background: #e0e7ff;
+            color: var(--info);
+        }
+
         /* Charts Container */
         .chart-canvas {
             height: 350px;
             max-height: 350px;
         }
-        
+
         /* Quick Actions */
         .quick-actions {
             display: grid;
@@ -527,7 +663,7 @@
             gap: 1rem;
             margin-bottom: 2rem;
         }
-        
+
         .quick-action {
             background: white;
             padding: 1.5rem;
@@ -537,30 +673,30 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .quick-action:hover {
             border-color: var(--brown-dark);
             background: var(--light);
             transform: translateY(-3px);
         }
-        
+
         .quick-action i {
             font-size: 2rem;
             color: var(--brown-dark);
             margin-bottom: 0.75rem;
         }
-        
+
         .quick-action-title {
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 0.25rem;
         }
-        
+
         .quick-action-desc {
             font-size: 0.8rem;
             color: var(--gray);
         }
-        
+
         /* Filters Bar */
         .filters-bar {
             background: white;
@@ -572,12 +708,12 @@
             flex-wrap: wrap;
             border: 1px solid var(--border);
         }
-        
+
         .filter-group {
             flex: 1;
             min-width: 200px;
         }
-        
+
         .filter-group label {
             display: block;
             font-size: 0.85rem;
@@ -585,7 +721,7 @@
             color: var(--dark);
             margin-bottom: 0.5rem;
         }
-        
+
         .filter-group input,
         .filter-group select {
             width: 100%;
@@ -595,13 +731,13 @@
             font-size: 0.9rem;
             transition: all 0.3s;
         }
-        
+
         .filter-group input:focus,
         .filter-group select:focus {
             outline: none;
             border-color: var(--brown-dark);
         }
-        
+
         /* Modal Mejorado */
         .modal {
             display: none;
@@ -610,18 +746,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0, 0, 0, 0.6);
             z-index: 2000;
             backdrop-filter: blur(5px);
         }
-        
+
         .modal.show {
             display: flex;
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.3s;
         }
-        
+
         .modal-dialog {
             background: white;
             border-radius: 20px;
@@ -629,15 +765,22 @@
             max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s;
         }
-        
+
         @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
-        
+
         .modal-header {
             padding: 2rem;
             border-bottom: 2px solid var(--border);
@@ -645,13 +788,13 @@
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .modal-title {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--dark);
         }
-        
+
         .modal-close {
             width: 40px;
             height: 40px;
@@ -663,17 +806,17 @@
             color: var(--gray);
             transition: all 0.3s;
         }
-        
+
         .modal-close:hover {
             background: var(--danger);
             color: white;
             transform: rotate(90deg);
         }
-        
+
         .modal-body {
             padding: 2rem;
         }
-        
+
         .modal-content {
             background: white;
             border-radius: 20px;
@@ -681,10 +824,10 @@
             max-width: 700px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.3s;
         }
-        
+
         .modal-actions {
             padding: 1.5rem 2rem;
             border-top: 2px solid var(--border);
@@ -694,7 +837,7 @@
             background: var(--light);
             border-radius: 0 0 20px 20px;
         }
-        
+
         .modal-footer {
             padding: 1.5rem 2rem;
             border-top: 2px solid var(--border);
@@ -704,32 +847,32 @@
             background: var(--light);
             border-radius: 0 0 20px 20px;
         }
-        
+
         .form-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-group.full {
             grid-column: 1 / -1;
         }
-        
+
         .form-row {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .form-row .form-group {
             margin-bottom: 0;
         }
-        
+
         .form-group label {
             display: block;
             font-size: 0.9rem;
@@ -737,7 +880,7 @@
             color: var(--dark);
             margin-bottom: 0.5rem;
         }
-        
+
         .form-group input,
         .form-group select,
         .form-group textarea {
@@ -749,7 +892,7 @@
             font-family: inherit;
             transition: all 0.3s;
         }
-        
+
         .form-group input:focus,
         .form-group select:focus,
         .form-group textarea:focus {
@@ -757,18 +900,18 @@
             border-color: var(--brown-dark);
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
-        
+
         .form-group.checkbox {
             display: flex;
             align-items: center;
             gap: 0.75rem;
         }
-        
+
         .form-group.checkbox input {
             width: auto;
             cursor: pointer;
         }
-        
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -776,12 +919,12 @@
             right: 2rem;
             z-index: 3000;
         }
-        
+
         .toast {
             background: white;
             padding: 1.25rem 1.5rem;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
@@ -790,17 +933,35 @@
             border-left: 4px solid;
             animation: slideInRight 0.3s;
         }
-        
+
         @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
-        
-        .toast.success { border-left-color: var(--success); }
-        .toast.error { border-left-color: var(--danger); }
-        .toast.info { border-left-color: var(--info); }
-        .toast.warning { border-left-color: var(--warning); }
-        
+
+        .toast.success {
+            border-left-color: var(--success);
+        }
+
+        .toast.error {
+            border-left-color: var(--danger);
+        }
+
+        .toast.info {
+            border-left-color: var(--info);
+        }
+
+        .toast.warning {
+            border-left-color: var(--warning);
+        }
+
         .toast-icon {
             width: 40px;
             height: 40px;
@@ -810,57 +971,68 @@
             justify-content: center;
             font-size: 1.2rem;
         }
-        
-        .toast.success .toast-icon { background: #d1fae5; color: var(--success); }
-        .toast.error .toast-icon { background: #fee2e2; color: var(--danger); }
-        .toast.info .toast-icon { background: #dbeafe; color: var(--info); }
-        
+
+        .toast.success .toast-icon {
+            background: #d1fae5;
+            color: var(--success);
+        }
+
+        .toast.error .toast-icon {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .toast.info .toast-icon {
+            background: #dbeafe;
+            color: var(--info);
+        }
+
         .toast-content {
             flex: 1;
         }
-        
+
         .toast-title {
             font-weight: 600;
             color: var(--dark);
             margin-bottom: 0.25rem;
         }
-        
+
         .toast-message {
             font-size: 0.85rem;
             color: var(--gray);
         }
-        
+
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
         }
-        
+
         .empty-state-icon {
             font-size: 5rem;
             color: var(--gray);
             opacity: 0.5;
             margin-bottom: 1.5rem;
         }
-        
+
         .empty-state-title {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--dark);
             margin-bottom: 0.75rem;
         }
-        
+
         .empty-state-desc {
             color: var(--gray);
             margin-bottom: 2rem;
         }
-        
+
         /* Loading */
         .loading {
             text-align: center;
             padding: 3rem;
         }
-        
+
         .spinner {
             width: 50px;
             height: 50px;
@@ -870,29 +1042,51 @@
             animation: spin 0.8s linear infinite;
             margin: 0 auto 1rem;
         }
-        
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
+
         /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); }
-            .main-content { margin-left: 0; }
-            .stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .cards-grid { grid-template-columns: 1fr; }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
         }
-        
+
         @media (max-width: 768px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .header-search input { width: 200px; }
-            .form-grid { grid-template-columns: 1fr; }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-search input {
+                width: 200px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 
     <!-- ✅ Quill WYSIWYG -->
     <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
@@ -906,7 +1100,7 @@
                     <span>Pro Admin</span>
                 </div>
             </div>
-            
+
             <div class="sidebar-user">
                 <img id="sidebarUserAvatar" class="sidebar-user-avatar" src="" alt="">
                 <div class="sidebar-user-info">
@@ -915,7 +1109,7 @@
                     <span class="sidebar-user-badge">ADMINISTRADOR</span>
                 </div>
             </div>
-            
+
             <nav class="sidebar-nav">
                 <div class="nav-section">
                     <div class="nav-section-title">Principal</div>
@@ -928,7 +1122,7 @@
                         <span>Analytics</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
                     <div class="nav-section-title">E-Commerce</div>
                     <a class="nav-item" data-section="productos">
@@ -950,7 +1144,7 @@
                         <span>Clientes</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
                     <div class="nav-section-title">Reportes</div>
                     <a class="nav-item" data-section="reportes">
@@ -966,7 +1160,7 @@
                         <span>Inventario</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
                     <div class="nav-section-title">Marketing</div>
                     <a class="nav-item" data-section="promociones">
@@ -978,7 +1172,7 @@
                         <span>Cupones</span>
                     </a>
                 </div>
-                
+
                 <div class="nav-section">
                     <div class="nav-section-title">Contenido</div>
                     <a class="nav-item" data-section="about">
@@ -1004,7 +1198,7 @@
                 </div>
             </nav>
         </aside>
-        
+
         <!-- Main Content -->
         <div class="main-content">
             <!-- Top Header -->
@@ -1019,13 +1213,13 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="header-right">
                     <div class="header-search">
                         <i class="fas fa-search"></i>
                         <input type="text" placeholder="Buscar productos, pedidos..." id="globalSearch">
                     </div>
-                    
+
                     <div class="header-actions">
                         <div class="header-icon" title="Notificaciones">
                             <i class="fas fa-bell"></i>
@@ -1041,7 +1235,7 @@
                     </div>
                 </div>
             </header>
-            
+
             <!-- Content Area -->
             <div class="content-area">
                 <!-- Dashboard Section -->
@@ -1065,7 +1259,7 @@
                                 <span class="stat-period">vs mes anterior</span>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card orders">
                             <div class="stat-card-header">
                                 <div>
@@ -1083,7 +1277,7 @@
                                 <span class="stat-period">vs mes anterior</span>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card products">
                             <div class="stat-card-header">
                                 <div>
@@ -1101,7 +1295,7 @@
                                 <span class="stat-period">nuevos esta semana</span>
                             </div>
                         </div>
-                        
+
                         <div class="stat-card users">
                             <div class="stat-card-header">
                                 <div>
@@ -1120,7 +1314,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Quick Actions -->
                     <div class="quick-actions">
                         <div class="quick-action" onclick="navigateToSection('productos'); openProductModal()">
@@ -1144,7 +1338,7 @@
                             <div class="quick-action-desc">Gestionar clientes</div>
                         </div>
                     </div>
-                    
+
                     <!-- Recent Orders -->
                     <div class="card">
                         <div class="card-header">
@@ -1158,7 +1352,7 @@
                         <div id="recentOrdersContainer"></div>
                     </div>
                 </div>
-                
+
                 <!-- Productos Section -->
                 <div id="productos-section" class="content-section">
                     <div class="filters-bar">
@@ -1187,7 +1381,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Listado de Productos (<span id="productsTotal">0</span>)</h3>
@@ -1195,7 +1389,7 @@
                         <div class="table-container" id="productsTableContainer"></div>
                     </div>
                 </div>
-                
+
                 <!-- Pedidos Section -->
                 <div id="pedidos-section" class="content-section">
                     <div class="filters-bar">
@@ -1221,7 +1415,7 @@
                             <input type="date" id="orderDateTo">
                         </div>
                     </div>
-                    
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Listado de Pedidos (<span id="ordersTotal">0</span>)</h3>
@@ -1234,7 +1428,7 @@
                         <div class="table-container" id="ordersTableContainer"></div>
                     </div>
                 </div>
-                
+
                 <!-- Otras secciones... (continúa en el siguiente archivo JS) -->
                 <div id="analytics-section" class="content-section">
                     <!-- Contenido generado por JS -->
@@ -1265,37 +1459,37 @@
                 </div>
                 <div id="ajustes-section" class="content-section">
                     <!-- Contenido generado por JS -->
-                
-        <!-- =============================== -->
-        <!-- DOCUMENTOS LEGALES (WYSIWYG) -->
-        <!-- =============================== -->
-        <div class="card" style="margin-top: 2rem;">
-            <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-file-contract"></i> Documentos Legales</h3>
-                <div class="card-actions">
-                    <button class="btn btn-primary btn-sm" onclick="saveLegalDocs()">
-                        <i class="fas fa-save"></i> Guardar
-                    </button>
+
+                    <!-- =============================== -->
+                    <!-- DOCUMENTOS LEGALES (WYSIWYG) -->
+                    <!-- =============================== -->
+                    <div class="card" style="margin-top: 2rem;">
+                        <div class="card-header">
+                            <h3 class="card-title"><i class="fas fa-file-contract"></i> Documentos Legales</h3>
+                            <div class="card-actions">
+                                <button class="btn btn-primary btn-sm" onclick="saveLegalDocs()">
+                                    <i class="fas fa-save"></i> Guardar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group full">
+                            <label><strong>Política de Privacidad</strong></label>
+                            <div id="privacyEditor" style="height:260px;background:white;"></div>
+                            <small style="color:var(--gray);">Página pública: /pages/politica-privacidad.html</small>
+                        </div>
+
+                        <div class="form-group full" style="margin-top:1.5rem;">
+                            <label><strong>Términos y Condiciones</strong></label>
+                            <div id="termsEditor" style="height:260px;background:white;"></div>
+                            <small style="color:var(--gray);">Página pública: /pages/terminos-condiciones.html</small>
+                        </div>
+                    </div>
                 </div>
-            </div>
-
-            <div class="form-group full">
-                <label><strong>Política de Privacidad</strong></label>
-                <div id="privacyEditor" style="height:260px;background:white;"></div>
-                <small style="color:var(--gray);">Página pública: /pages/politica-privacidad.html</small>
-            </div>
-
-            <div class="form-group full" style="margin-top:1.5rem;">
-                <label><strong>Términos y Condiciones</strong></label>
-                <div id="termsEditor" style="height:260px;background:white;"></div>
-                <small style="color:var(--gray);">Página pública: /pages/terminos-condiciones.html</small>
-            </div>
-        </div>
-</div>
             </div>
         </div>
     </div>
-    
+
     <!-- Modal Producto -->
     <div class="modal" id="productModal">
         <div class="modal-dialog">
@@ -1311,106 +1505,132 @@
                             <label>Nombre del Producto *</label>
                             <input type="text" id="productName" required placeholder="Ej: Pack de Logos Minimalistas">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Categoría *</label>
                             <select id="productCategory" required></select>
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Precio ($) *</label>
                             <input type="number" id="productPrice" step="0.01" required placeholder="29.99">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Precio de Oferta ($)</label>
                             <input type="number" id="productSalePrice" step="0.01" placeholder="19.99">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Stock *</label>
                             <input type="number" id="productStock" value="100" required min="0" placeholder="100">
-                            <small style="color: #6b7280; display: block; margin-top: 0.25rem;">Cantidad de unidades disponibles</small>
+                            <small style="color: #6b7280; display: block; margin-top: 0.25rem;">Cantidad de unidades
+                                disponibles</small>
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Umbral Stock Bajo</label>
                             <input type="number" id="productLowStockThreshold" value="10" min="0" placeholder="10">
-                            <small style="color: #6b7280; display: block; margin-top: 0.25rem;">Alerta cuando stock sea menor o igual</small>
+                            <small style="color: #6b7280; display: block; margin-top: 0.25rem;">Alerta cuando stock sea
+                                menor o igual</small>
                         </div>
-                        
+
                         <div class="form-group full">
                             <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
                                 <input type="checkbox" id="productActive" checked style="width: auto;">
                                 <span>Producto activo (visible en tienda)</span>
                             </label>
                         </div>
-                        
+
                         <div class="form-group full">
                             <label>Descripción Completa *</label>
-                            <textarea id="productDescription" rows="4" required placeholder="Descripción detallada..."></textarea>
+                            <textarea id="productDescription" rows="4" required
+                                placeholder="Descripción detallada..."></textarea>
                         </div>
-                        
+
                         <div class="form-group full">
                             <label>Imagen del Producto *</label>
-                            <div style="border: 2px dashed #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-top: 0.5rem;">
+                            <div
+                                style="border: 2px dashed #e2e8f0; border-radius: 12px; padding: 1.5rem; margin-top: 0.5rem;">
                                 <div style="margin-bottom: 1rem;">
-                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 1rem; background: linear-gradient(135deg, #4a2f1a, #8b5cf6); color: white; border-radius: 10px; justify-content: center; transition: all 0.3s;">
+                                    <label
+                                        style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 1rem; background: linear-gradient(135deg, #4a2f1a, #8b5cf6); color: white; border-radius: 10px; justify-content: center; transition: all 0.3s;">
                                         <i class="fas fa-upload"></i>
                                         <span>Subir Imagen desde tu Computadora</span>
-                                        <input type="file" id="productImageFile" accept="image/*" style="display: none;" onchange="previewProductImage(this)">
+                                        <input type="file" id="productImageFile" accept="image/*" style="display: none;"
+                                            onchange="previewProductImage(this)">
                                     </label>
                                 </div>
-                                
+
                                 <div style="text-align: center; margin: 1rem 0; color: #6b7280;">
                                     <span>-- O --</span>
                                 </div>
-                                
+
                                 <div>
-                                    <input type="text" id="productImage" placeholder="https://ejemplo.com/imagen.jpg" style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                                    <input type="text" id="productImage" placeholder="https://ejemplo.com/imagen.jpg"
+                                        style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 8px;">
                                     <small style="color: #6b7280; display: block; margin-top: 0.5rem;">
                                         <i class="fas fa-link"></i> O pega una URL de imagen
                                     </small>
                                 </div>
-                                
+
                                 <div id="imagePreviewContainer" style="margin-top: 1rem; display: none;">
-                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Vista Previa:</label>
-                                    <img id="imagePreview" src="" style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 2px solid #e2e8f0;">
+                                    <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Vista
+                                        Previa:</label>
+                                    <img id="imagePreview" src=""
+                                        style="max-width: 100%; max-height: 200px; border-radius: 8px; border: 2px solid #e2e8f0;">
                                     <div style="margin-top: 0.5rem;">
-                                        <button type="button" onclick="clearImagePreview()" style="padding: 0.5rem 1rem; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                        <button type="button" onclick="clearImagePreview()"
+                                            style="padding: 0.5rem 1rem; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer;">
                                             <i class="fas fa-times"></i> Eliminar
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
+
+                        <!-- Campo exclusivo para servicios: etiqueta del botón del banner -->
+                        <div class="form-group" id="shortLabelGroup">
+                            <label>
+                                <i class="fas fa-tag" style="color: #4a2f1a;"></i>
+                                Etiqueta del Botón (Banner)
+                                <small style="color: #6b7280; font-weight: normal; margin-left: 0.5rem;">
+                                    — Solo para productos de categoría "Servicios"
+                                </small>
+                            </label>
+                            <input type="text" id="productShortLabel"
+                                placeholder="ej. ROUTER CNC, CORTE LÁSER, IMPRESORA 3D" maxlength="20"
+                                style="text-transform: uppercase;">
+                            <small style="color: #6b7280;">
+                                Este texto aparece en los botones laterales del banner principal. Máximo 20 caracteres.
+                            </small>
+                        </div>
                         <div class="form-group">
                             <label>Formato de Archivo</label>
-                            <input type="text" id="productFileFormat" placeholder="AI, PSD, SVG">
+                            <input type="text" id="productFileFormat" placeholder="ej. AI, PSD, SVG">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Tamaño</label>
                             <input type="text" id="productFileSize" placeholder="125 MB">
                         </div>
-                        
+
                         <div class="form-group checkbox">
                             <input type="checkbox" id="productFeatured">
                             <label>⭐ Destacado</label>
                         </div>
-                        
+
                         <div class="form-group checkbox">
                             <input type="checkbox" id="productTrending">
                             <label>🔥 Tendencia</label>
                         </div>
-                        
+
                         <div class="form-group checkbox">
                             <input type="checkbox" id="productBestseller">
                             <label>🏆 Más Vendido</label>
                         </div>
                     </div>
-                    
+
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
                         <i class="fas fa-save"></i> Guardar Producto
                     </button>
@@ -1418,14 +1638,15 @@
             </div>
         </div>
     </div>
-    
+
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/js/admin-pro.js"></script>
 
     <!-- ✅ Quill WYSIWYG -->
     <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
 </body>
+
 </html>

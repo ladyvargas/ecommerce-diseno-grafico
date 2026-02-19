@@ -72,7 +72,7 @@ nav a:hover {
 .icon-btn {
   width: 50px;
   height: 50px;
-  background: var(--gradient);
+  background: #243977;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -80,7 +80,7 @@ nav a:hover {
   align-items: center;
   justify-content: center;
   font-size: 1.3rem;
-  color: var(--brown-primary);
+  color: #ffffff;
   transition: all 0.3s;
 }
 
@@ -113,7 +113,7 @@ nav a:hover {
   width: 75%;
   /* Cubre gran parte para luego ser cortado por el óvalo */
   height: 100%;
-  background: var(--gradient);
+  background: #243977;
   display: flex;
   align-items: center;
   padding-left: 60px;
@@ -664,7 +664,7 @@ nav a:hover {
 
 .services-subtitle {
   font-size: 1.4rem;
-  color: var(--gradient);
+  color: #243977;
   font-weight: 300;
 }
 
@@ -768,7 +768,7 @@ nav a:hover {
 }
 
 .service-tags span {
-  background: linear-gradient(135deg, var(--gradient), var(--beige));
+  background: linear-gradient(135deg, #243977, var(--beige));
   color: var(--brown-dark);
   padding: 0.6rem 1.3rem;
   border-radius: 20px;
@@ -824,7 +824,7 @@ nav a:hover {
 .service-icon-medium {
   width: 75px;
   height: 75px;
-  background: linear-gradient(135deg, var(--beige), var(--gradient));
+  background: linear-gradient(135deg, var(--beige), #243977);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -1036,14 +1036,14 @@ nav a:hover {
 }
 
 .galeria-overlay p {
-  color: var(--gradient);
+  color: #243977;
   font-size: 0.95rem;
 }
 
 /* TESTIMONIOS */
 .testimonios-section {
   padding: 6rem 5%;
-  background: linear-gradient(135deg, var(--gradient) 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #243977 0%, #ffffff 100%);
 }
 
 .testimonios-section h2 {
@@ -1095,7 +1095,7 @@ nav a:hover {
   flex-direction: column;
   gap: 0.25rem;
   padding-top: 1.5rem;
-  border-top: 2px solid var(--gradient);
+  border-top: 2px solid #243977;
 }
 
 .testimonio-author strong {
@@ -1158,7 +1158,7 @@ nav a:hover {
 }
 
 .porque-item p {
-  color: var(--gradient);
+  color: #243977;
   line-height: 1.7;
 }
 
@@ -1719,7 +1719,7 @@ nav a:hover {
     width: 100%;
     height: auto;
     padding: 60px 10px 80px; /* Más espacio abajo para la curva */
-    background: var(--gradient);
+    background: #243977;
     display: flex;
     flex-direction: column;
     align-items: center;

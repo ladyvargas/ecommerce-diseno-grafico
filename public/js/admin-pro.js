@@ -463,8 +463,8 @@ function renderRecentOrders() {
               (order) => `
                 <tr>
                   <td><strong>#${order.id}</strong></td>
-                  <td>${order.customer_name || order.userName || 'Sin nombre'}</td>
-                  <td>${order.customer_email || order.userEmail || 'Sin email'}</td>
+                  <td>${order.customer_name || order.userName || "Sin nombre"}</td>
+                  <td>${order.customer_email || order.userEmail || "Sin email"}</td>
                   <td><strong>$${parseFloat(order.total || 0).toFixed(2)}</strong></td>
                   <td>${renderStatusBadge(order.status)}</td>
                   <td>${formatDate(order.created_at || order.createdAt)}</td>
@@ -647,6 +647,10 @@ function openProductModal(product = null) {
     setValue("productLowStockThreshold", product.lowStockThreshold ?? 10);
     setValue("productShortDesc", product.shortDescription ?? "");
     setValue("productFileFormat", product.fileFormat ?? "");
+    setValue(
+      "productShortLabel",
+      product.shortLabel ?? product.fileFormat ?? "",
+    );
     setValue("productFileSize", product.fileSize ?? "");
     setValue("productImage", product.image ?? "");
 
@@ -662,6 +666,20 @@ function openProductModal(product = null) {
     setValue("productStock", 100);
     setValue("productLowStockThreshold", 10);
     setChecked("productActive", true);
+  }
+  function toggleShortLabelVisibility() {
+    const cat = document
+      .getElementById("productCategory")
+      ?.value?.toLowerCase();
+    const group = document.getElementById("shortLabelGroup");
+    if (group) {
+      group.style.display = cat === "servicios" ? "block" : "none";
+    }
+  }
+  const catSelect = document.getElementById("productCategory");
+  if (catSelect) {
+    catSelect.addEventListener("change", toggleShortLabelVisibility);
+    toggleShortLabelVisibility(); // ejecutar al abrir modal
   }
 
   modal.classList.add("show");
@@ -802,7 +820,7 @@ async function handleProductSubmit(e) {
     shortDescription: getValue("productShortDesc"),
     description: getValue("productDescription"),
     image: imageUrl,
-    fileFormat: getValue("productFileFormat"),
+    fileFormat: getValue("productShortLabel") || getValue("productFileFormat"),
     fileSize: getValue("productFileSize"),
     featured: getChecked("productFeatured"),
     trending: getChecked("productTrending"),
@@ -3970,26 +3988,26 @@ async function loadAjustesCompleto() {
               <form id="bankForm">
                   <div class="form-group">
                       <label>Banco</label>
-                      <input type="text" id="bankName" value="${data.bank_name || 'Banco Pichincha'}" placeholder="Banco Pichincha" />
+                      <input type="text" id="bankName" value="${data.bank_name || "Banco Pichincha"}" placeholder="Banco Pichincha" />
                   </div>
                   <div class="form-group">
                       <label>Tipo de Cuenta</label>
                       <select id="accountType">
-                          <option value="Cuenta Corriente" ${data.account_type === 'Cuenta Corriente' ? 'selected' : ''}>Cuenta Corriente</option>
-                          <option value="Cuenta de Ahorros" ${data.account_type === 'Cuenta de Ahorros' ? 'selected' : ''}>Cuenta de Ahorros</option>
+                          <option value="Cuenta Corriente" ${data.account_type === "Cuenta Corriente" ? "selected" : ""}>Cuenta Corriente</option>
+                          <option value="Cuenta de Ahorros" ${data.account_type === "Cuenta de Ahorros" ? "selected" : ""}>Cuenta de Ahorros</option>
                       </select>
                   </div>
                   <div class="form-group">
                       <label>Número de Cuenta</label>
-                      <input type="text" id="accountNumber" value="${data.account_number || '2100123456'}" placeholder="2100123456" />
+                      <input type="text" id="accountNumber" value="${data.account_number || "2100123456"}" placeholder="2100123456" />
                   </div>
                   <div class="form-group">
                       <label>Beneficiario</label>
-                      <input type="text" id="accountHolder" value="${data.account_holder || 'CNC CAMPAS'}" placeholder="CNC CAMPAS" />
+                      <input type="text" id="accountHolder" value="${data.account_holder || "CNC CAMPAS"}" placeholder="CNC CAMPAS" />
                   </div>
                   <div class="form-group">
                       <label>RUC/Cédula</label>
-                      <input type="text" id="accountId" value="${data.account_id || '0992345678001'}" placeholder="0992345678001" />
+                      <input type="text" id="accountId" value="${data.account_id || "0992345678001"}" placeholder="0992345678001" />
                   </div>
                   <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
                       <i class="fas fa-save"></i> Guardar
@@ -4007,7 +4025,7 @@ async function loadAjustesCompleto() {
               <form id="whatsappForm">
                   <div class="form-group">
                       <label>Mensaje Automático al Cliente</label>
-                      <textarea id="whatsappMessage" rows="8" placeholder="Hola! Gracias por tu pedido...">${data.whatsapp_message || 'Hola! Gracias por tu pedido #{orderId}. Total: ${total}. Te contactaremos pronto.'}</textarea>
+                      <textarea id="whatsappMessage" rows="8" placeholder="Hola! Gracias por tu pedido...">${data.whatsapp_message || "Hola! Gracias por tu pedido #{orderId}. Total: ${total}. Te contactaremos pronto."}</textarea>
                       <small style="color: #6b7280; display: block; margin-top: 0.75rem; padding: 0.75rem; background: #f9fafb; border-radius: 8px; border-left: 3px solid #4a2f1a;">
                           <strong style="display: block; margin-bottom: 0.5rem;">📝 Variables disponibles:</strong>
                           <code style="background: white; padding: 0.25rem 0.5rem; border-radius: 4px; margin-right: 0.5rem;">#{orderId}</code> ID del pedido<br>
@@ -4088,27 +4106,31 @@ async function loadAjustesCompleto() {
         };
         await guardarSettings(payload);
       });
-      // Event listener para datos bancarios
-    document.getElementById("bankForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        bank_name: document.getElementById("bankName").value,
-        account_type: document.getElementById("accountType").value,
-        account_number: document.getElementById("accountNumber").value,
-        account_holder: document.getElementById("accountHolder").value,
-        account_id: document.getElementById("accountId").value,
-      };
-      await guardarSettings(payload);
-    });
+    // Event listener para datos bancarios
+    document
+      .getElementById("bankForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          bank_name: document.getElementById("bankName").value,
+          account_type: document.getElementById("accountType").value,
+          account_number: document.getElementById("accountNumber").value,
+          account_holder: document.getElementById("accountHolder").value,
+          account_id: document.getElementById("accountId").value,
+        };
+        await guardarSettings(payload);
+      });
 
     // Event listener para mensaje de WhatsApp
-    document.getElementById("whatsappForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        whatsapp_message: document.getElementById("whatsappMessage").value,
-      };
-      await guardarSettings(payload);
-    });
+    document
+      .getElementById("whatsappForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          whatsapp_message: document.getElementById("whatsappMessage").value,
+        };
+        await guardarSettings(payload);
+      });
 
     document
       .getElementById("socialMediaForm")
@@ -4280,8 +4302,8 @@ window.saveLegalDocs = saveLegalDocs;
 
 async function guardarSettings(payload) {
   try {
-    console.log('📤 Enviando payload:', payload); // DEBUG
-    
+    console.log("📤 Enviando payload:", payload); // DEBUG
+
     const response = await fetch(`${API_URL}/settings`, {
       method: "PUT",
       headers: {
@@ -4293,19 +4315,22 @@ async function guardarSettings(payload) {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('❌ Error del servidor:', errorData);
+      console.error("❌ Error del servidor:", errorData);
       throw new Error(errorData.error || "Error al guardar");
     }
 
     const result = await response.json();
-    console.log('✅ Respuesta del servidor:', result);
+    console.log("✅ Respuesta del servidor:", result);
 
     showToast("Configuración guardada exitosamente", "success", "Éxito");
-    
-    await loadAjustesCompleto();
 
+    await loadAjustesCompleto();
   } catch (error) {
     console.error("❌ Error al guardar settings:", error);
-    showToast(error.message || "Error al guardar configuración", "error", "Error");
+    showToast(
+      error.message || "Error al guardar configuración",
+      "error",
+      "Error",
+    );
   }
 }
