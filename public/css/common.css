@@ -265,12 +265,12 @@ nav a.active::after {
 }
 
 .btn-primary {
-  background: var(--brown-dark);
+  background: #2b4b8c;
   color: white;
 }
 
 .btn-primary:hover {
-  background: var(--brown-primary);
+  background: #2b4b8c77;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }

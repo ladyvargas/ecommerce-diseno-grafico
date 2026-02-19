@@ -63,7 +63,7 @@
 }
 
 .service-btn.primary {
-  background: #4a2f1a;
+  background: #2b4b8c;
   color: white;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .service-btn.primary:hover {
-  background: #6b4423;
+  background: #2b4b8c77;
 }
 
 .service-btn.secondary:hover {

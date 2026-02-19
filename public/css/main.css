@@ -664,7 +664,7 @@ nav a:hover {
 
 .services-subtitle {
   font-size: 1.4rem;
-  color: #243977;
+  color: #ffffff;
   font-weight: 300;
 }
 
@@ -1043,7 +1043,7 @@ nav a:hover {
 /* TESTIMONIOS */
 .testimonios-section {
   padding: 6rem 5%;
-  background: #ffffff;
+  background: #eee;
 }
 
 .testimonios-section h2 {
@@ -1064,7 +1064,7 @@ nav a:hover {
 }
 
 .testimonio-card {
-  background: #24397736;
+  background: #ffffff;
   padding: 2.5rem;
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -1104,7 +1104,7 @@ nav a:hover {
 }
 
 .testimonio-author span {
-  color: #ffffff;
+  color: #243977;
   font-size: 0.9rem;
 }
 
@@ -1158,7 +1158,7 @@ nav a:hover {
 }
 
 .porque-item p {
-  color: #243977;
+  color: #ffffff;
   line-height: 1.7;
 }
 
