@@ -43,8 +43,7 @@
             <div class="header-icons">
                 <!-- CARRITO -->
                 <button class="icon-btn" onclick="window.location.href='/cart'">
-                    <i class="fas fa-shopping-cart" <?=$cartCount> 0 ? 'style="padding: 10px 10px 10px 25px"' : ''
-                        ?>></i>
+                    <i class="fas fa-shopping-cart" id="cartIcon"></i>
                     <span id="cartCount" class="cart-count" style="display: none;">0</span>
                 </button>
 
@@ -335,7 +334,10 @@
         // ============================================
         // 🛠️ FUNCIONES AUXILIARES
         // ============================================
-
+        const cartCount = 0; // tu variable
+        if (cartCount > 0) {
+            document.getElementById('cartIcon').style.padding = '10px 10px 10px 25px';
+        }
         /**
          * Normaliza texto para comparaciones
          */
