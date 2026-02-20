@@ -334,10 +334,6 @@
         // ============================================
         // 🛠️ FUNCIONES AUXILIARES
         // ============================================
-        const cartCount = 0; // tu variable
-        if (cartCount > 0) {
-            document.getElementById('cartIcon').style.padding = '10px 10px 10px 25px';
-        }
         /**
          * Normaliza texto para comparaciones
          */
@@ -836,6 +832,7 @@
                 }
             }
         });
+        document.addEventListener("DOMContentLoaded", updateCartCount);
     </script>
 
     <!-- ✨ SCRIPTS EXTERNOS -->
