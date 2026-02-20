@@ -162,7 +162,6 @@ function toggleUserMenu() {
 // Actualizar contador del carrito
 function updateCartCount() {
   const cartCount = document.getElementById("cartCount");
-  const cartIcon = document.getElementById("cartIcon");
   if (!cartCount) return;
 
   const cart = JSON.parse(localStorage.getItem("cart") || "[]");
@@ -174,10 +173,8 @@ function updateCartCount() {
     );
     cartCount.textContent = totalItems;
     cartCount.style.display = "block";
-    if (cartIcon) cartIcon.style.padding = "10px 10px 10px 25px";
   } else {
     cartCount.style.display = "none";
-    if (cartIcon) cartIcon.style.padding = "";
   }
 }
 
