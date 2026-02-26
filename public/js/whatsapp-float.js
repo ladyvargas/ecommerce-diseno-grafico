@@ -2,11 +2,11 @@
 // BOTÓN FLOTANTE DE WHATSAPP DINÁMICO
 // ========================================
 
-const API_URL = '/api';
+window.API_URL = '/api';
 
 async function loadWhatsAppButton() {
     try {
-        const response = await fetch(`${API_URL}/settings`);
+        const response = await fetch(`${window.API_URL}/settings`);
         
         if (!response.ok) {
             throw new Error('Error cargando settings');
