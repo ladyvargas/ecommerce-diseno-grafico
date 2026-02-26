@@ -1719,7 +1719,7 @@ nav a:hover {
     position: relative;
     width: 100%;
     height: auto;
-    padding: 60px 10px 80px; /* Más espacio abajo para la curva */
+    padding: 150px 10px 80px; /* Más espacio abajo para la curva */
     background: #243977;
     display: flex;
     flex-direction: column;
