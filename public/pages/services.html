@@ -150,10 +150,7 @@
         let serviceRequests = JSON.parse(localStorage.getItem('serviceRequests')) || [];
         const WHATSAPP_NUMBER = '593964083585';
 
-        const API_URL =
-            window.location.hostname === 'localhost'
-                ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
-                : 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+        const API_URL = '/api';
 
         function requestService(service) {
             const exists = serviceRequests.find(s => s.id === service.id);

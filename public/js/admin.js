@@ -1,5 +1,5 @@
 // Admin Panel JavaScript
-const API_URL = 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+const API_URL = '/api';
 let currentToken = localStorage.getItem('token');
 let currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 let allProducts = [];

@@ -1,6 +1,5 @@
 async function loadCommonFooter() {
-  const API_URL =
-    "https://ecommerce-diseno-grafico-production.up.railway.app/api";
+  const API_URL ="/api";
   try {
     const res = await fetch(`${API_URL}/settings`);
     const settings = await res.json();

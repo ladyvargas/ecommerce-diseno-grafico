@@ -1,8 +1,5 @@
 // API Base URL
-const API_URL =
-  window.location.hostname === 'localhost'
-    ? 'https://ecommerce-diseno-grafico-production.up.railway.app/api'
-    : 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+const API_URL ='/api';
 
 // Estado global
 let currentUser = null;

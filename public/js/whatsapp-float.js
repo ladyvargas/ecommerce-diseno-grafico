@@ -2,7 +2,7 @@
 // BOTÓN FLOTANTE DE WHATSAPP DINÁMICO
 // ========================================
 
-const API_URL = 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+const API_URL = '/api';
 
 async function loadWhatsAppButton() {
     try {

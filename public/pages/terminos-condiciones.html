@@ -59,7 +59,7 @@
   </div>
 
   <script>
-    const API_BASE = "https://ecommerce-diseno-grafico-production.up.railway.app";
+    const API_BASE = "/api";
 
     async function loadLegalDoc() {
       const contentEl = document.getElementById("docContent");
@@ -67,7 +67,7 @@
       const titleEl = document.getElementById("docTitle");
 
       try {
-        const res = await fetch(`${API_BASE}/api/legal/terms`, { cache: "no-store" });
+        const res = await fetch(`/legal/terms`, { cache: "no-store" });
         const data = await res.json();
 
         if (!res.ok) throw new Error((data && data.error) || "Error cargando documento");

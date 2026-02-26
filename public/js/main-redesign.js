@@ -2,7 +2,7 @@
 // CNC CAMPAS PRO - FRONTEND REDESIGN FIXED
 // ========================================
 
-const API_URL = 'https://ecommerce-diseno-grafico-production.up.railway.app/api';
+const API_URL = '/api';
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentUser = JSON.parse(localStorage.getItem('user'));
 let allProducts = [];
