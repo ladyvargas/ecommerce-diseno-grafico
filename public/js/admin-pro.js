@@ -2173,13 +2173,13 @@ function renderCouponsTable(coupons) {
 }
 
 function openCouponModal(coupon = null) {
-  const discountType = coupon ? coupon.discount_type || coupon.type : "";
-  const discountValue = coupon ? coupon.discount_value || coupon.value : "";
-  const minPurchase = coupon ? coupon.min_purchase || coupon.minPurchase : "";
-  const maxUses = coupon ? coupon.max_uses || coupon.usageLimit : "100";
-  const expiresAtRaw = coupon ? coupon.expires_at || coupon.expiresAt : "";
+  document.getElementById("couponModal")?.remove();
 
-  // Procesar fecha correctamente
+  const discountType = coupon ? coupon.discount_type || coupon.type : "percentage";
+  const discountValue = coupon ? coupon.discount_value || coupon.value : "";
+  const minPurchase = coupon ? coupon.min_purchase || coupon.minPurchase || "" : "";
+  const maxUses = coupon ? coupon.max_uses || coupon.usageLimit || "" : "";
+  const expiresAtRaw = coupon ? coupon.expires_at || coupon.expiresAt : "";
   const expiresAt = expiresAtRaw
     ? typeof expiresAtRaw === "string"
       ? expiresAtRaw.split("T")[0]
@@ -2187,99 +2187,99 @@ function openCouponModal(coupon = null) {
     : "";
 
   const modalHTML = `
-        <div class="modal show" id="couponModal">
-            <div class="modal-content" style="max-width: 600px;">
-                <div class="modal-header">
-                    <h3>${coupon ? "Editar Cupón" : "Nuevo Cupón"}</h3>
-                    <button class="modal-close" onclick="closeModal('couponModal')">&times;</button>
-                </div>
-                <form id="couponForm" onsubmit="handleCouponSubmit(event)">
-                    <input type="hidden" id="couponId" value="${coupon ? coupon.id : ""}">
-                    
-                    <div class="form-group">
-                        <label>Código del Cupón *</label>
-                        <input type="text" id="couponCode" value="${coupon ? coupon.code : ""}" 
-                               required maxlength="20" placeholder="VERANO2024" 
-                               style="text-transform: uppercase;">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Descripción *</label>
-                        <input type="text" id="couponDescription" value="${coupon ? coupon.description || "" : ""}" 
-                               required placeholder="Descuento de verano">
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Tipo de Descuento *</label>
-                            <select id="couponType" required onchange="updateCouponTypeFields()">
-                                <option value="percentage" ${discountType === "percentage" ? "selected" : ""}>Porcentaje</option>
-                                <option value="fixed" ${discountType === "fixed" ? "selected" : ""}>Monto Fijo</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Valor *</label>
-                            <input type="number" id="couponValue" value="${discountValue}" 
-                                   required min="0" step="0.01" placeholder="20">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Compra Mínima ($)</label>
-                            <input type="number" id="couponMinPurchase" value="${minPurchase}" 
-                                   min="0" step="0.01" placeholder="50">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Límite de Uso</label>
-                            <input type="number" id="couponUsageLimit" value="${maxUses}" 
-                                   min="1" placeholder="100">
-                            <small>Dejar vacío para uso ilimitado</small>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Fecha de Expiración</label>
-                        <input type="date" id="couponExpiresAt" 
-                               value="${expiresAt}" 
-                               min="${new Date().toISOString().split("T")[0]}">
-                        <small>Dejar vacío para sin expiración</small>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                            <input type="checkbox" id="couponActive" 
-                                   ${coupon ? (coupon.active ? "checked" : "") : "checked"}
-                                   style="width: auto;">
-                            <span>Cupón activo</span>
-                        </label>
-                    </div>
-                    
-                    <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('couponModal')">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar
-                        </button>
-                    </div>
-                </form>
-            </div>
+    <div class="modal show" id="couponModal">
+      <div class="modal-content" style="max-width: 600px;">
+        <div class="modal-header">
+          <h3>${coupon ? "Editar Cupón" : "Nuevo Cupón"}</h3>
+          <button class="modal-close" onclick="document.getElementById('couponModal').remove()">&times;</button>
         </div>
-    `;
+        <div class="modal-body">
+          <form id="couponForm">
+            <input type="hidden" id="couponId" value="${coupon ? coupon.id : ""}">
+
+            <div class="form-group">
+              <label>Código del Cupón *</label>
+              <input type="text" id="couponCode" value="${coupon ? coupon.code : ""}"
+                     required maxlength="20" placeholder="VERANO2024"
+                     style="text-transform: uppercase;">
+            </div>
+
+            <div class="form-group">
+              <label>Descripción *</label>
+              <input type="text" id="couponDescription" value="${coupon ? coupon.description || "" : ""}"
+                     required placeholder="Descuento de verano">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Tipo de Descuento *</label>
+                <select id="couponType" required>
+                  <option value="percentage" ${discountType === "percentage" ? "selected" : ""}>Porcentaje</option>
+                  <option value="fixed" ${discountType === "fixed" ? "selected" : ""}>Monto Fijo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Valor *</label>
+                <input type="number" id="couponValue" value="${discountValue}"
+                       required min="0" step="0.01" placeholder="20">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Compra Mínima ($)</label>
+                <input type="number" id="couponMinPurchase" value="${minPurchase}"
+                       min="0" step="0.01" placeholder="50">
+              </div>
+              <div class="form-group">
+                <label>Límite de Uso</label>
+                <input type="number" id="couponUsageLimit" value="${maxUses}"
+                       min="1" placeholder="100">
+                <small>Dejar vacío para uso ilimitado</small>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Fecha de Expiración</label>
+              <input type="date" id="couponExpiresAt"
+                     value="${expiresAt}"
+                     min="${new Date().toISOString().split("T")[0]}">
+              <small>Dejar vacío para sin expiración</small>
+            </div>
+
+            <div class="form-group">
+              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="checkbox" id="couponActive"
+                       ${coupon ? (coupon.active ? "checked" : "") : "checked"}
+                       style="width: auto;">
+                <span>Cupón activo</span>
+              </label>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+              <button type="button" class="btn btn-secondary"
+                      onclick="document.getElementById('couponModal').remove()">Cancelar</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  `;
 
   document.body.insertAdjacentHTML("beforeend", modalHTML);
-  updateCouponTypeFields();
+
+  // Agregar el submit DESPUÉS de insertar el HTML
+  document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
 }
 
 function updateCouponTypeFields() {
-  const type = document.getElementById("couponType").value;
   const maxDiscountGroup = document.getElementById("maxDiscountGroup");
-
-  if (type === "percentage") {
-    maxDiscountGroup.style.display = "block";
-  } else {
-    maxDiscountGroup.style.display = "none";
+  if (maxDiscountGroup) {
+    const type = document.getElementById("couponType")?.value;
+    maxDiscountGroup.style.display = type === "percentage" ? "block" : "none";
   }
 }
 
@@ -2287,17 +2287,19 @@ async function handleCouponSubmit(e) {
   e.preventDefault();
 
   const id = document.getElementById("couponId").value;
+
+  const expiresAt = document.getElementById("couponExpiresAt").value;
+  const usageLimit = document.getElementById("couponUsageLimit").value;
+  const minPurchase = document.getElementById("couponMinPurchase").value;
+
   const formData = {
     code: document.getElementById("couponCode").value.toUpperCase(),
     description: document.getElementById("couponDescription").value,
-    type: document.getElementById("couponType").value,
-    value: parseFloat(document.getElementById("couponValue").value),
-    minPurchase:
-      parseFloat(document.getElementById("couponMinPurchase").value) || 0,
-    maxDiscount:
-      parseFloat(document.getElementById("couponMaxDiscount").value) || null,
-    usageLimit: parseInt(document.getElementById("couponUsageLimit").value),
-    expiresAt: document.getElementById("couponExpiresAt").value,
+    discount_type: document.getElementById("couponType").value,
+    discount_value: parseFloat(document.getElementById("couponValue").value),
+    min_purchase: minPurchase ? parseFloat(minPurchase) : 0,
+    max_uses: usageLimit ? parseInt(usageLimit) : null,
+    expires_at: expiresAt || null,
     active: document.getElementById("couponActive").checked,
   };
 
@@ -2314,15 +2316,17 @@ async function handleCouponSubmit(e) {
       body: JSON.stringify(formData),
     });
 
-    if (response.ok) {
-      showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
-      closeModal("couponModal");
-      loadCoupons();
-    } else {
-      throw new Error("Error al guardar cupón");
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || "Error al guardar cupón");
     }
+
+    showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
+    closeModal("couponModal");
+    loadCoupons();
   } catch (error) {
-    showToast("Error al guardar cupón", "error", "Error");
+    console.error("Error al guardar cupón:", error);
+    showToast(error.message || "Error al guardar cupón", "error", "Error");
   }
 }
 
@@ -2685,26 +2689,25 @@ async function handlePromotionSubmit(e) {
   const formData = {
     name: document.getElementById("promoName").value,
     description: document.getElementById("promoDescription").value,
-    discountType: document.getElementById("promoDiscountType").value,
-    discountValue: parseFloat(
-      document.getElementById("promoDiscountValue").value,
-    ),
-    type: type,
-    startDate: document.getElementById("promoStartDate").value,
-    endDate: document.getElementById("promoEndDate").value,
+    // Snake_case para el backend
+    discount_type: document.getElementById("promoDiscountType").value,
+    discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
+    applies_to: type,
+    start_date: document.getElementById("promoStartDate").value,
+    end_date: document.getElementById("promoEndDate").value,
     active: document.getElementById("promoActive").checked,
   };
 
-  if (type === "product") {
+  if (type === "products") {
     const selected = Array.from(
       document.getElementById("promoProducts").selectedOptions,
     );
-    formData.productIds = selected.map((opt) => parseInt(opt.value));
-  } else if (type === "category") {
+    formData.product_ids = selected.map((opt) => parseInt(opt.value));
+  } else if (type === "categories") {
     const selected = Array.from(
       document.getElementById("promoCategories").selectedOptions,
     );
-    formData.categoryIds = selected.map((opt) => opt.value);
+    formData.category_ids = selected.map((opt) => opt.value);
   }
 
   try {
@@ -2720,22 +2723,23 @@ async function handlePromotionSubmit(e) {
       body: JSON.stringify(formData),
     });
 
-    if (response.ok) {
-      showToast(
-        id ? "Promoción actualizada" : "Promoción creada",
-        "success",
-        "Éxito",
-      );
-      closeModal("promotionModal");
-      loadPromotions();
-    } else {
-      throw new Error("Error al guardar");
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || "Error al guardar");
     }
+
+    showToast(
+      id ? "Promoción actualizada" : "Promoción creada",
+      "success",
+      "Éxito",
+    );
+    closeModal("promotionModal");
+    loadPromotions();
   } catch (error) {
-    showToast("Error al guardar promoción", "error", "Error");
+    console.error("Error al guardar promoción:", error);
+    showToast(error.message || "Error al guardar promoción", "error", "Error");
   }
 }
-
 async function editPromotion(id) {
   const promo = promotions.find((p) => p.id === id);
   if (promo) {
