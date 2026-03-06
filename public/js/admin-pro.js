@@ -1300,32 +1300,205 @@ function renderCategories() {
   if (!container) return;
 
   container.innerHTML = `
-        <div class="stats-grid">
-            ${state.categories
-              .map(
-                (cat) => `
-                <div class="stat-card">
-                    <div class="stat-card-header">
-                        <div>
-                            <div class="stat-value">${cat.count}</div>
-                            <div class="stat-label">${cat.name}</div>
-                        </div>
-                        <div class="stat-icon" style="background: ${cat.color}20; color: ${cat.color};">
-                            <i class="fas ${cat.icon}"></i>
-                        </div>
-                    </div>
-                    <div class="stat-footer">
-                        <button class="btn btn-outline btn-sm" onclick="filterByCategory('${cat.name}')">
-                            Ver Productos
-                        </button>
-                    </div>
-                </div>
-            `,
-              )
-              .join("")}
+    <div class="filters-bar" style="justify-content: space-between; align-items: center;">
+      <h3 style="margin: 0;"><i class="fas fa-tags"></i> Gestión de Categorías</h3>
+      <button class="btn btn-primary" onclick="openCategoryModal()">
+        <i class="fas fa-plus"></i> Nueva Categoría
+      </button>
+    </div>
+
+    <div class="stats-grid" id="categoriesGrid">
+      ${state.categories.map((cat) => `
+        <div class="stat-card">
+          <div class="stat-card-header">
+            <div>
+              <div class="stat-value">${cat.count || 0}</div>
+              <div class="stat-label" title="${cat.name}">${cat.name}</div>
+            </div>
+            <div class="stat-icon" style="background: ${cat.color || "#e8d9a0"}30; color: ${cat.color || "#4a2f1a"}; flex-direction: column; gap: 0.5rem; width: auto; padding: 0.5rem; border-radius: 10px;">
+              <i class="fas ${cat.icon || "fa-tag"}" style="font-size: 1.5rem;"></i>
+            </div>
+          </div>
+          <div class="stat-footer" style="gap: 0.5rem;">
+            <button class="btn btn-outline btn-sm" onclick="filterByCategory('${cat.name}')">
+              <i class="fas fa-eye"></i> Ver
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="openCategoryModal(${cat.id})">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-sm" onclick="deleteCategory(${cat.id})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
         </div>
-    `;
+      `).join("")}
+    </div>
+  `;
 }
+// Iconos disponibles para categorías
+const CATEGORY_ICONS = [
+  "fa-tag", "fa-box", "fa-cog", "fa-cut", "fa-print", "fa-cube",
+  "fa-image", "fa-lightbulb", "fa-tools", "fa-palette", "fa-star",
+  "fa-fire", "fa-bolt", "fa-leaf", "fa-gem", "fa-briefcase",
+  "fa-camera", "fa-music", "fa-home", "fa-car", "fa-laptop",
+  "fa-mobile-alt", "fa-tshirt", "fa-utensils", "fa-paw"
+];
+
+function openCategoryModal(id = null) {
+  const category = id ? state.categories.find((c) => c.id === id) : null;
+
+  const modalHTML = `
+    <div class="modal show" id="categoryModal">
+      <div class="modal-content" style="max-width: 550px;">
+        <div class="modal-header">
+          <h3>${category ? "Editar Categoría" : "Nueva Categoría"}</h3>
+          <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="categoryForm" onsubmit="handleCategorySubmit(event)">
+            <input type="hidden" id="categoryId" value="${category ? category.id : ""}">
+
+            <div class="form-group">
+              <label>Nombre de la Categoría *</label>
+              <input type="text" id="categoryName" value="${category ? category.name : ""}"
+                     required placeholder="Ej: Router CNC, Impresión 3D..." maxlength="50">
+            </div>
+
+            <div class="form-group">
+              <label>Color</label>
+              <div style="display: flex; align-items: center; gap: 1rem;">
+                <input type="color" id="categoryColor" value="${category?.color || "#4a2f1a"}"
+                       style="width: 60px; height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid #e2e8f0; padding: 2px;">
+                <span style="color: #6b7280; font-size: 0.85rem;">Color del ícono y acento</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Ícono</label>
+              <div id="iconSelector" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; max-height: 180px; overflow-y: auto; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.75rem;">
+                ${CATEGORY_ICONS.map((icon) => `
+                  <div onclick="selectCategoryIcon('${icon}')"
+                       id="icon-opt-${icon.replace("fa-", "")}"
+                       style="
+                         width: 40px; height: 40px; border-radius: 8px;
+                         display: flex; align-items: center; justify-content: center;
+                         cursor: pointer; border: 2px solid ${(category?.icon || "fa-tag") === icon ? "#4a2f1a" : "#e2e8f0"};
+                         background: ${(category?.icon || "fa-tag") === icon ? "#e8d9a0" : "#f9fafb"};
+                         transition: all 0.2s; font-size: 1.1rem;
+                       " title="${icon}">
+                    <i class="fas ${icon}"></i>
+                  </div>
+                `).join("")}
+              </div>
+              <input type="hidden" id="categoryIcon" value="${category?.icon || "fa-tag"}">
+              <small style="color: #6b7280; margin-top: 0.5rem; display: block;">Ícono seleccionado: <i class="fas ${category?.icon || "fa-tag"}"></i> <span id="selectedIconLabel">${category?.icon || "fa-tag"}</span></small>
+            </div>
+
+            <div class="modal-actions" style="border-top: none; padding: 0; background: transparent;">
+              <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancelar</button>
+              <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+}
+
+function selectCategoryIcon(icon) {
+  // Deseleccionar anterior
+  document.querySelectorAll("#iconSelector > div").forEach((el) => {
+    el.style.border = "2px solid #e2e8f0";
+    el.style.background = "#f9fafb";
+  });
+
+  // Seleccionar nuevo
+  const key = icon.replace("fa-", "");
+  const el = document.getElementById(`icon-opt-${key}`);
+  if (el) {
+    el.style.border = "2px solid #4a2f1a";
+    el.style.background = "#e8d9a0";
+  }
+
+  document.getElementById("categoryIcon").value = icon;
+  document.getElementById("selectedIconLabel").textContent = icon;
+}
+
+function closeCategoryModal() {
+  document.getElementById("categoryModal")?.remove();
+}
+
+async function handleCategorySubmit(e) {
+  e.preventDefault();
+
+  const id = document.getElementById("categoryId").value;
+  const payload = {
+    name: document.getElementById("categoryName").value.trim(),
+    color: document.getElementById("categoryColor").value,
+    icon: document.getElementById("categoryIcon").value,
+  };
+
+  try {
+    const url = id ? `${API_URL}/categories/${id}` : `${API_URL}/categories`;
+    const method = id ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || "Error al guardar categoría");
+    }
+
+    showToast(
+      id ? "Categoría actualizada exitosamente" : "Categoría creada exitosamente",
+      "success", "Éxito"
+    );
+
+    closeCategoryModal();
+    await loadCategories();
+    renderCategories();
+  } catch (error) {
+    console.error("Error:", error);
+    showToast(error.message || "Error al guardar categoría", "error", "Error");
+  }
+}
+
+async function deleteCategory(id) {
+  const category = state.categories.find((c) => c.id === id);
+  if (!category) return;
+
+  if (!confirm(`¿Eliminar la categoría "${category.name}"?\nLos productos asociados quedarán sin categoría.`)) return;
+
+  try {
+    const response = await fetch(`${API_URL}/categories/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${currentToken}` },
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || "Error al eliminar");
+    }
+
+    showToast("Categoría eliminada", "success", "Éxito");
+    await loadCategories();
+    renderCategories();
+  } catch (error) {
+    showToast(error.message || "Error al eliminar categoría", "error", "Error");
+  }
+}
+
 
 function filterByCategory(category) {
   navigateToSection("productos");
@@ -4298,6 +4471,11 @@ async function saveLegalDocs(docType) {
 // Exportar función global
 window.loadAjustesCompleto = loadAjustesCompleto;
 window.saveLegalDocs = saveLegalDocs;
+window.openCategoryModal = openCategoryModal;
+window.closeCategoryModal = closeCategoryModal;
+window.handleCategorySubmit = handleCategorySubmit;
+window.selectCategoryIcon = selectCategoryIcon;
+window.deleteCategory = deleteCategory;
 
 async function guardarSettings(payload) {
   try {
