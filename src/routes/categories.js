@@ -65,43 +65,64 @@ router.get("/:slug", async (req, res) => {
 // POST /api/categories - Crear
 router.post("/", auth, adminAuth, async (req, res) => {
   console.log("📥 POST /api/categories hit", req.body);
-  const { name, color, icon } = req.body;
-  const slug = name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+  try {
+    const { name, color, icon } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "El nombre es obligatorio" });
+    }
+    const slug = name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
 
-  const [result] = await pool.query(
-    "INSERT INTO categories (name, slug, color, icon) VALUES (?, ?, ?, ?)",
-    [name, slug, color || "#4a2f1a", icon || "fa-tag"],
-  );
-  res.json({ id: result.insertId, name, slug, color, icon });
+    const [result] = await pool.query(
+      "INSERT INTO categories (name, slug, color, icon) VALUES (?, ?, ?, ?)",
+      [name, slug, color || "#4a2f1a", icon || "fa-tag"],
+    );
+    res.json({ id: result.insertId, name, slug, color, icon });
+  } catch (error) {
+    console.error("❌ Error en POST /api/categories:", error.message);
+    res.status(500).json({ error: error.message || "Error al crear categoría" });
+  }
 });
 
 // PUT /api/categories/:id - Editar
 router.put("/:id", auth, adminAuth, async (req, res) => {
   console.log(`📥 PUT /api/categories/${req.params.id} hit`, req.body);
-  const { name, color, icon } = req.body;
-  const slug = name
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+  try {
+    const { name, color, icon } = req.body;
+    if (!name) {
+      return res.status(400).json({ error: "El nombre es obligatorio" });
+    }
+    const slug = name
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
 
-  await pool.query(
-    "UPDATE categories SET name=?, slug=?, color=?, icon=? WHERE id=?",
-    [name, slug, color, icon, req.params.id],
-  );
-  res.json({ success: true });
+    await pool.query(
+      "UPDATE categories SET name=?, slug=?, color=?, icon=? WHERE id=?",
+      [name, slug, color, icon, req.params.id],
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.error("❌ Error en PUT /api/categories:", error.message);
+    res.status(500).json({ error: error.message || "Error al actualizar categoría" });
+  }
 });
 
 // DELETE /api/categories/:id - Eliminar
 router.delete("/:id", auth, adminAuth, async (req, res) => {
-  await pool.query("DELETE FROM categories WHERE id=?", [req.params.id]);
-  res.json({ success: true });
+  try {
+    await pool.query("DELETE FROM categories WHERE id=?", [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    console.error("❌ Error en DELETE /api/categories:", error.message);
+    res.status(500).json({ error: error.message || "Error al eliminar categoría" });
+  }
 });
 
 module.exports = router;
