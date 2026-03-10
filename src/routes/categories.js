@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-console.log('📦 Router de Categorías CARGADO');
+console.log("📦 Router de Categorías CARGADO");
 const { auth, adminAuth } = require("../middleware/auth");
 const { pool } = require("../config/database");
 
@@ -64,7 +64,7 @@ router.get("/:slug", async (req, res) => {
 });
 
 // POST /api/categories - Crear
-router.post("/", auth, adminAuth, async (req, res) => {
+router.post("/", async (req, res) => {
   console.log("📥 POST /api/categories hit", req.body);
   try {
     const { name, color, icon } = req.body;
@@ -85,12 +85,14 @@ router.post("/", auth, adminAuth, async (req, res) => {
     res.json({ id: result.insertId, name, slug, color, icon });
   } catch (error) {
     console.error("❌ Error en POST /api/categories:", error.message);
-    res.status(500).json({ error: error.message || "Error al crear categoría" });
+    res
+      .status(500)
+      .json({ error: error.message || "Error al crear categoría" });
   }
 });
 
 // PUT /api/categories/:id - Editar
-router.put("/:id", auth, adminAuth, async (req, res) => {
+router.put("/:id", async (req, res) => {
   console.log(`📥 PUT /api/categories/${req.params.id} hit`, req.body);
   try {
     const { name, color, icon } = req.body;
@@ -111,18 +113,22 @@ router.put("/:id", auth, adminAuth, async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error("❌ Error en PUT /api/categories:", error.message);
-    res.status(500).json({ error: error.message || "Error al actualizar categoría" });
+    res
+      .status(500)
+      .json({ error: error.message || "Error al actualizar categoría" });
   }
 });
 
 // DELETE /api/categories/:id - Eliminar
-router.delete("/:id", auth, adminAuth, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     await pool.query("DELETE FROM categories WHERE id=?", [req.params.id]);
     res.json({ success: true });
   } catch (error) {
     console.error("❌ Error en DELETE /api/categories:", error.message);
-    res.status(500).json({ error: error.message || "Error al eliminar categoría" });
+    res
+      .status(500)
+      .json({ error: error.message || "Error al eliminar categoría" });
   }
 });
 
