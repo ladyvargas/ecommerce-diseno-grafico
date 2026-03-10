@@ -5,6 +5,7 @@ const { pool } = require('../config/database');
 
 // Obtener todos los cupones
 router.get('/', async (req, res) => {
+    console.log("📥 GET /api/coupons hit");
     try {
         const [coupons] = await pool.query(`
             SELECT * FROM coupons 
@@ -87,7 +88,16 @@ router.post('/', auth, adminAuth, async (req, res) => {
             INSERT INTO coupons 
             (code, description, discount_type, discount_value, min_purchase, max_uses, expires_at, active)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `, [code, description, discount_type, discount_value, min_purchase || 0, max_uses, expires_at, active !== false]);
+        `, [
+            code,
+            description,
+            discount_type,
+            parseFloat(discount_value),
+            parseFloat(min_purchase || 0),
+            max_uses ? parseInt(max_uses) : null,
+            expires_at || null,
+            active !== false
+        ]);
 
         res.status(201).json({
             success: true,
@@ -99,13 +109,14 @@ router.post('/', auth, adminAuth, async (req, res) => {
         if (error.code === 'ER_DUP_ENTRY') {
             res.status(400).json({ error: 'El código del cupón ya existe' });
         } else {
-            res.status(500).json({ error: 'Error al crear cupón' });
+            res.status(500).json({ error: 'Error al crear cupón', details: error.message });
         }
     }
 });
 
 // Actualizar cupón
 router.put('/:id', auth, adminAuth, async (req, res) => {
+    console.log(`📥 PUT /api/coupons/${req.params.id} hit`, req.body);
     try {
         const {
             code,
@@ -123,12 +134,22 @@ router.put('/:id', auth, adminAuth, async (req, res) => {
             SET code = ?, description = ?, discount_type = ?, discount_value = ?, 
                 min_purchase = ?, max_uses = ?, expires_at = ?, active = ?
             WHERE id = ?
-        `, [code, description, discount_type, discount_value, min_purchase, max_uses, expires_at, active, req.params.id]);
+        `, [
+            code,
+            description,
+            discount_type,
+            parseFloat(discount_value),
+            parseFloat(min_purchase || 0),
+            max_uses ? parseInt(max_uses) : null,
+            expires_at || null,
+            active,
+            req.params.id
+        ]);
 
         res.json({ success: true, message: 'Cupón actualizado' });
     } catch (error) {
         console.error('Error al actualizar cupón:', error);
-        res.status(500).json({ error: 'Error al actualizar cupón' });
+        res.status(500).json({ error: 'Error al actualizar cupón', details: error.message });
     }
 });
 

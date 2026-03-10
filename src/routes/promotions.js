@@ -5,6 +5,7 @@ const { pool } = require('../config/database');
 
 // Obtener todas las promociones
 router.get('/', async (req, res) => {
+    console.log("📥 GET /api/promotions hit");
     try {
         const [promotions] = await pool.query(`
             SELECT * FROM promotions 
@@ -80,6 +81,7 @@ router.post('/', auth, adminAuth, async (req, res) => {
 
 // Actualizar promoción
 router.put('/:id', auth, adminAuth, async (req, res) => {
+    console.log(`📥 PUT /api/promotions/${req.params.id} hit`, req.body);
     try {
         const {
             name,
