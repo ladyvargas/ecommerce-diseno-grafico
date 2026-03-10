@@ -152,6 +152,7 @@ nav a:hover {
   font-size: 13px;
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
 }
+
 /* CONTENEDOR DE LA IMAGEN */
 .machine-box {
   position: absolute;
@@ -221,6 +222,7 @@ nav a:hover {
   border-radius: 50% / 50%;
   z-index: 1;
 }
+
 /* MÁQUINA */
 .machine-box {
   position: absolute;
@@ -264,6 +266,7 @@ nav a:hover {
 .tag:hover {
   background-color: #7a553a;
 }
+
 /* Este es el estilo único para el botón activo */
 .tag.active {
   /* Creamos el fondo clarito mezclando el color acento con blanco */
@@ -278,12 +281,14 @@ nav a:hover {
 
 /* Cuando los botones estén dentro de la sección de Corte Láser */
 .container-laser {
-  --accent: #243977; /* Tu azul */
+  --accent: #243977;
+  /* Tu azul */
 }
 
 /* Cuando los botones estén dentro de la sección de Sublimación */
 .container-sublimacion {
-  --accent: #cda870; /* Tu café/dorado */
+  --accent: #cda870;
+  /* Tu café/dorado */
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -324,11 +329,13 @@ nav a:hover {
   .tag {
     font-size: 10px;
   }
+
   .oval-mask,
   .oval-line {
     width: 750px;
     height: 700px;
   }
+
   .main-banner {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto auto;
@@ -383,7 +390,8 @@ nav a:hover {
   }
 
   .oval-line {
-    border-left-width: 10px; /* Línea más fina */
+    border-left-width: 10px;
+    /* Línea más fina */
   }
 
   .tags-side {
@@ -615,12 +623,13 @@ nav a:hover {
   box-shadow: 0 8px 20px rgba(107, 68, 35, 0.3);
 }
 
-/* SERVICIOS SECTION - DISEÑO DINÁMICO MEJORADO */
+/* SERVICIOS SECTION - GLASSMORPHISM MODERN DESIGN */
 .services-section {
-  background: linear-gradient(180deg, #2b4b8c 0%, #2b4b8c 100%);
-  padding: 8rem 5%;
+  background: radial-gradient(circle at center, #1a2a4a 0%, #0a0f1d 100%);
+  padding: 10rem 5%;
   position: relative;
   overflow: hidden;
+  color: white;
 }
 
 /* Patrón decorativo de fondo */
@@ -632,17 +641,59 @@ nav a:hover {
   right: 0;
   bottom: 0;
   background-image:
-    radial-gradient(
-      circle at 20% 50%,
+    radial-gradient(circle at 20% 50%,
       rgba(255, 255, 255, 0.05) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
+      transparent 50%),
+    radial-gradient(circle at 80% 80%,
       rgba(255, 255, 255, 0.05) 0%,
-      transparent 50%
-    );
+      transparent 50%);
   pointer-events: none;
+}
+
+.glass-shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.shape-1 {
+  width: 400px;
+  height: 400px;
+  background: #d4a574;
+  top: -100px;
+  left: -100px;
+  animation: float 20s infinite alternate;
+}
+
+.shape-2 {
+  width: 500px;
+  height: 500px;
+  background: #2b4b8c;
+  bottom: -200px;
+  right: -100px;
+  animation: float 25s infinite alternate-reverse;
+}
+
+.shape-3 {
+  width: 300px;
+  height: 300px;
+  background: #b8860b;
+  top: 40%;
+  right: 15%;
+  animation: float 18s infinite alternate;
+}
+
+@keyframes float {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(50px, 50px) scale(1.1);
+  }
 }
 
 .services-header {
@@ -653,19 +704,24 @@ nav a:hover {
 }
 
 .services-header h2 {
-  font-size: 4rem;
-  color: white;
+  font-size: 4.5rem;
+  color: #fff;
   margin-bottom: 1rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  letter-spacing: 5px;
+  background: linear-gradient(to right, #fff, #d4a574);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 15px rgba(212, 165, 116, 0.3));
 }
 
 .services-subtitle {
   font-size: 1.4rem;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 300;
+  letter-spacing: 2px;
 }
 
 /* SERVICIOS DESTACADOS - 2 GRANDES */
@@ -680,13 +736,16 @@ nav a:hover {
 }
 
 .service-card-large {
-  background: white;
-  border-radius: 30px;
-  padding: 3.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 40px;
+  padding: 4rem;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .service-card-large:hover {
@@ -712,14 +771,15 @@ nav a:hover {
 }
 
 .service-number {
-  font-size: 5rem;
+  font-size: 6rem;
   font-weight: 900;
-  color: #0c0a00;
-  opacity: 0.3;
+  color: #fff;
+  opacity: 0.05;
   position: absolute;
-  top: 1rem;
-  right: 2rem;
+  top: -1rem;
+  right: 1rem;
   line-height: 1;
+  pointer-events: none;
 }
 
 .service-card-content {
@@ -730,15 +790,15 @@ nav a:hover {
 .service-icon-large {
   width: 100px;
   height: 100px;
-  background: linear-gradient(135deg, var(--brown-dark), var(--brown-primary));
-  border-radius: 25px;
+  background: linear-gradient(135deg, #d4a574, #b8860b);
+  border-radius: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 3rem;
-  color: white;
-  margin-bottom: 2rem;
-  box-shadow: 0 10px 30px rgba(107, 68, 35, 0.4);
+  font-size: 3.2rem;
+  color: #0a0f1d;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 15px 35px rgba(212, 165, 116, 0.4);
   transition: all 0.4s;
 }
 
@@ -748,17 +808,18 @@ nav a:hover {
 }
 
 .service-card-large h3 {
-  font-size: 2rem;
-  color: var(--brown-dark);
+  font-size: 2.2rem;
+  color: #fff;
   margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .service-card-large p {
   font-size: 1.1rem;
-  color: #555;
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.8;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .service-tags {
@@ -768,13 +829,21 @@ nav a:hover {
 }
 
 .service-tags span {
-  background: #243977;
-  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(5px);
+  color: #d4a574;
   padding: 0.6rem 1.3rem;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 0.9rem;
-  font-weight: 600;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  font-weight: 700;
+  border: 1px solid rgba(212, 165, 116, 0.3);
+  transition: all 0.3s;
+}
+
+.service-tags span:hover {
+  background: #d4a574;
+  color: #0a0f1d;
+  transform: translateY(-3px);
 }
 
 /* SERVICIOS SECUNDARIOS - 4 MEDIANAS */
@@ -789,12 +858,15 @@ nav a:hover {
 }
 
 .service-card-medium {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 25px;
-  padding: 2.5rem 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 35px;
+  padding: 3rem 2rem;
   text-align: center;
-  transition: all 0.4s;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -805,10 +877,9 @@ nav a:hover {
   top: 0;
   left: 0;
   right: 0;
-  height: 5px;
-  background: linear-gradient(90deg, var(--brown-primary), var(--beige));
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #d4a574, transparent);
   transform: scaleX(0);
-  transform-origin: left;
   transition: transform 0.4s;
 }
 
@@ -822,37 +893,39 @@ nav a:hover {
 }
 
 .service-icon-medium {
-  width: 75px;
-  height: 75px;
-  background: #243977;
-  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: #ffffff;
+  font-size: 2.2rem;
+  color: #d4a574;
   margin: 0 auto 1.5rem;
   transition: all 0.4s;
 }
 
 .service-card-medium:hover .service-icon-medium {
-  transform: scale(1.15) rotate(10deg);
-  background: linear-gradient(135deg, var(--brown-primary), var(--beige));
-  color: white;
+  transform: scale(1.1) translateY(-5px);
+  background: #d4a574;
+  color: #0a0f1d;
+  box-shadow: 0 10px 25px rgba(212, 165, 116, 0.3);
 }
 
 .service-card-medium h3 {
-  font-size: 1.4rem;
-  color: var(--brown-dark);
+  font-size: 1.5rem;
+  color: #fff;
   margin-bottom: 1rem;
   font-weight: 700;
 }
 
 .service-card-medium p {
   font-size: 0.95rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.6);
   line-height: 1.7;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .service-link {
@@ -1278,6 +1351,7 @@ nav a:hover {
 
 /* RESPONSIVE */
 @media (max-width: 1024px) {
+
   /* Hero en tablet: Vertical */
   .hero {
     grid-template-columns: 1fr;
@@ -1507,7 +1581,7 @@ nav a:hover {
   border-radius: 10px;
   min-width: 18px;
   text-align: center;
-  position:relative;
+  position: relative;
 }
 
 .contacto-section {
@@ -1591,6 +1665,7 @@ nav a:hover {
   background: var(--brown-primary);
   border-radius: 2px;
 }
+
 .mobile-user-menu {
   display: none;
   flex-direction: column;
@@ -1642,11 +1717,14 @@ nav a:hover {
 
   /* Ajustamos el óvalo para que no ocupe tanto espacio horizontal */
   .oval-mask {
-    right: 10%; /* Lo movemos más a la derecha */
+    right: 10%;
+    /* Lo movemos más a la derecha */
     width: 850px;
     height: 700px;
-    transform: translate(450px, -50%); /* Reducimos el desplazamiento */
-    border-radius: 50%; /* Mantenemos tu curvatura */
+    transform: translate(450px, -50%);
+    /* Reducimos el desplazamiento */
+    border-radius: 50%;
+    /* Mantenemos tu curvatura */
   }
 
   .oval-line {
@@ -1655,14 +1733,16 @@ nav a:hover {
     height: 700px;
     transform: translate(450px, -50%);
     border-radius: 50%;
-    border-left: 15px solid rgba(0, 0, 0, 0.8); /* Línea un poco más delgada */
+    border-left: 15px solid rgba(0, 0, 0, 0.8);
+    /* Línea un poco más delgada */
   }
 
   .machine-box {
     /* Ajustamos la posición para que no se amontone con el texto */
     left: 65%;
     top: 55%;
-    transform: translate(-50%, -50%); /* Centramos mejor */
+    transform: translate(-50%, -50%);
+    /* Centramos mejor */
 
     /* Redimensionamos el contenedor para pantallas medianas */
     width: 400px;
@@ -1697,13 +1777,16 @@ nav a:hover {
    OPTIMIZACIÓN MÓVIL TOTAL (768px o menos)
    ========================================================================== */
 @media (max-width: 768px) {
+
   /* 1. Reset del Contenedor Principal */
   .main-banner {
-    display: flex !important; /* Cambiamos de grid a flex para control total */
+    display: flex !important;
+    /* Cambiamos de grid a flex para control total */
     flex-direction: column;
     height: auto !important;
     min-height: 100vh;
-    padding: 0 !important; /* El color café debe tocar los bordes */
+    padding: 0 !important;
+    /* El color café debe tocar los bordes */
     background-color: var(--bg-crema);
     text-align: center;
   }
@@ -1719,7 +1802,8 @@ nav a:hover {
     position: relative;
     width: 100%;
     height: auto;
-    padding: 150px 10px 80px; /* Más espacio abajo para la curva */
+    padding: 150px 10px 80px;
+    /* Más espacio abajo para la curva */
     background: #243977;
     display: flex;
     flex-direction: column;
@@ -1756,7 +1840,8 @@ nav a:hover {
     position: relative;
     width: 100%;
     max-width: 250px;
-    height: 280px; /* Altura fija para móvil */
+    height: 280px;
+    /* Altura fija para móvil */
     margin: -40px auto 20px;
     left: auto;
     top: auto;
@@ -1777,7 +1862,8 @@ nav a:hover {
     margin: 0 auto 40px;
     padding: 0 15px;
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 botones por fila */
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 botones por fila */
     gap: 10px;
     right: auto;
     height: auto;
@@ -1789,7 +1875,7 @@ nav a:hover {
     max-width: 200px;
     white-space: nowrap;
     box-sizing: border-box;
-        padding: 5px;
+    padding: 5px;
     border-radius: 12px;
     background-color: var(--primary-dark);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1822,16 +1908,19 @@ nav a:hover {
   .hamburger.is-active span:nth-child(1) {
     transform: translateY(9px) rotate(45deg);
   }
+
   .hamburger.is-active span:nth-child(2) {
     opacity: 0;
   }
+
   .hamburger.is-active span:nth-child(3) {
     transform: translateY(-9px) rotate(-45deg);
   }
 
   /* Menú de navegación móvil */
   nav {
-    display: none; /* Oculto por defecto */
+    display: none;
+    /* Oculto por defecto */
     position: absolute;
     top: 100%;
     left: 0;
@@ -1855,6 +1944,7 @@ nav a:hover {
     display: none !important;
   }
 }
+
 .tags-side .tag {
   padding: 10px 5px;
   border-radius: 999px;
