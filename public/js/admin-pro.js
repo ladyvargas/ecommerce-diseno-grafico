@@ -458,8 +458,8 @@ function renderRecentOrders() {
         </thead>
         <tbody>
           ${orders
-      .map(
-        (order) => `
+            .map(
+              (order) => `
                 <tr>
                   <td><strong>#${order.id}</strong></td>
                   <td>${order.customer_name || order.userName || "Sin nombre"}</td>
@@ -474,8 +474,8 @@ function renderRecentOrders() {
                   </td>
                 </tr>
               `,
-      )
-      .join("")}
+            )
+            .join("")}
         </tbody>
       </table>
     </div>
@@ -534,8 +534,8 @@ function renderProductsTable(products) {
             </thead>
             <tbody>
                 ${products
-      .map(
-        (product) => `
+                  .map(
+                    (product) => `
                     <tr>
                         <td><img src="${product.image}" alt="${product.name}"></td>
                         <td>
@@ -546,29 +546,32 @@ function renderProductsTable(products) {
                             <span class="badge info">${product.category}</span>
                         </td>
                         <td>
-                            ${product.salePrice
-            ? `
+                            ${
+                              product.salePrice
+                                ? `
                                 <strong style="color: var(--success);">$${product.salePrice}</strong><br>
                                 <small style="text-decoration: line-through; color: var(--gray);">$${product.price}</small>
                             `
-            : `<strong>$${product.price}</strong>`
-          }
+                                : `<strong>$${product.price}</strong>`
+                            }
                         </td>
                         <td>
-                            ${product.stock === 0
-            ? '<span class="badge" style="background: #ef4444; color: white;">❌ Sin stock</span>'
-            : product.stock <=
-              (product.lowStockThreshold || 10)
-              ? `<span class="badge" style="background: #f59e0b; color: white;">⚠️ ${product.stock}</span>`
-              : `<span class="badge success">✅ ${product.stock}</span>`
-          }
+                            ${
+                              product.stock === 0
+                                ? '<span class="badge" style="background: #ef4444; color: white;">❌ Sin stock</span>'
+                                : product.stock <=
+                                    (product.lowStockThreshold || 10)
+                                  ? `<span class="badge" style="background: #f59e0b; color: white;">⚠️ ${product.stock}</span>`
+                                  : `<span class="badge success">✅ ${product.stock}</span>`
+                            }
                         </td>
                         <td>${product.downloads || 0}</td>
                         <td>
-                            ${product.active === false
-            ? '<span class="badge" style="background: #6b7280; color: white;">🔒 Inactivo</span>'
-            : '<span class="badge success">✅ Activo</span>'
-          }
+                            ${
+                              product.active === false
+                                ? '<span class="badge" style="background: #6b7280; color: white;">🔒 Inactivo</span>'
+                                : '<span class="badge success">✅ Activo</span>'
+                            }
                             ${product.featured ? '<span class="badge primary">⭐ Destacado</span>' : ""}
                         </td>
                         <td>
@@ -581,8 +584,8 @@ function renderProductsTable(products) {
                         </td>
                     </tr>
                 `,
-      )
-      .join("")}
+                  )
+                  .join("")}
             </tbody>
         </table>
     `;
@@ -716,7 +719,8 @@ async function editProduct(id) {
 async function deleteProduct(id) {
   confirmAction({
     title: "Eliminar Producto",
-    message: "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
+    message:
+      "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
     type: "danger",
     confirmText: "Eliminar",
     onConfirm: async () => {
@@ -736,7 +740,7 @@ async function deleteProduct(id) {
       } catch (error) {
         showToast("Error al eliminar el producto", "error", "Error");
       }
-    }
+    },
   });
 }
 
@@ -947,8 +951,8 @@ function renderOrdersTable(orders) {
             </thead>
             <tbody>
                 ${orders
-      .map(
-        (order) => `
+                  .map(
+                    (order) => `
                     <tr>
                         <td><strong>#${order.id}</strong></td>
                         <td>${order.customer_name || order.userName || "N/A"}</td>
@@ -971,8 +975,8 @@ function renderOrdersTable(orders) {
                         </td>
                     </tr>
                 `,
-      )
-      .join("")}
+                  )
+                  .join("")}
             </tbody>
         </table>
     `;
@@ -1095,8 +1099,8 @@ function viewOrderDetail(orderId) {
                         </thead>
                         <tbody>
                             ${order.items
-      .map(
-        (item) => `
+                              .map(
+                                (item) => `
                                 <tr>
                                     <td>
                                         <strong>${item.productName || item.name}</strong>
@@ -1106,8 +1110,8 @@ function viewOrderDetail(orderId) {
                                     <td><strong>$${(parseFloat(item.salePrice || item.price || 0) * item.quantity).toFixed(2)}</strong></td>
                                 </tr>
                             `,
-      )
-      .join("")}
+                              )
+                              .join("")}
                         </tbody>
                     </table>
                     
@@ -1116,15 +1120,16 @@ function viewOrderDetail(orderId) {
                             <span>Subtotal:</span>
                             <strong>$${parseFloat(order.subtotal || 0).toFixed(2)}</strong>
                         </div>
-                        ${order.discount
-      ? `
+                        ${
+                          order.discount
+                            ? `
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #10b981;">
                             <span><i class="fas fa-tag"></i> Descuento ${order.couponCode ? `(${order.couponCode})` : ""}:</span>
                             <strong>-$${parseFloat(order.discount || 0).toFixed(2)}</strong>
                         </div>
                         `
-      : ""
-    }
+                            : ""
+                        }
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <span>IVA (12%):</span>
                             <strong>$${parseFloat(order.tax || 0).toFixed(2)}</strong>
@@ -1137,14 +1142,15 @@ function viewOrderDetail(orderId) {
                 </div>
                 <div class="modal-footer" style="display: flex; gap: 1rem; justify-content: flex-end;">
                     <button class="btn btn-secondary" onclick="closeModal('orderDetailModal')">Cerrar</button>
-                    ${order.status !== "cancelled"
-      ? `
+                    ${
+                      order.status !== "cancelled"
+                        ? `
                     <button class="btn btn-danger" onclick="cancelOrder(${order.id})">
                         <i class="fas fa-ban"></i> Cancelar Pedido
                     </button>
                     `
-      : ""
-    }
+                        : ""
+                    }
                 </div>
             </div>
         </div>
@@ -1176,7 +1182,7 @@ async function updateOrderStatus(orderId) {
       const data = await response.json();
       showToast(
         `Estado actualizado a "${newStatus}"` +
-        (data.stockRestored ? " (Stock restaurado)" : ""),
+          (data.stockRestored ? " (Stock restaurado)" : ""),
         "success",
         "Éxito",
       );
@@ -1241,7 +1247,8 @@ async function updatePaymentStatus(orderId) {
 async function cancelOrder(orderId) {
   confirmAction({
     title: "Cancelar Pedido",
-    message: "¿Estás seguro de cancelar este pedido? Se restaurará el stock de los productos.",
+    message:
+      "¿Estás seguro de cancelar este pedido? Se restaurará el stock de los productos.",
     type: "danger",
     confirmText: "Confirmar Cancelación",
     onConfirm: async () => {
@@ -1263,7 +1270,7 @@ async function cancelOrder(orderId) {
       } catch (error) {
         showToast("Error al cancelar pedido", "error", "Error");
       }
-    }
+    },
   });
 }
 
@@ -1312,7 +1319,9 @@ function renderCategories() {
     </div>
 
     <div class="stats-grid" id="categoriesGrid">
-      ${state.categories.map((cat) => `
+      ${state.categories
+        .map(
+          (cat) => `
         <div class="stat-card">
           <div class="stat-card-header">
             <div>
@@ -1335,17 +1344,39 @@ function renderCategories() {
             </button>
           </div>
         </div>
-      `).join("")}
+      `,
+        )
+        .join("")}
     </div>
   `;
 }
 // Iconos disponibles para categorías
 const CATEGORY_ICONS = [
-  "fa-tag", "fa-box", "fa-cog", "fa-cut", "fa-print", "fa-cube",
-  "fa-image", "fa-lightbulb", "fa-tools", "fa-palette", "fa-star",
-  "fa-fire", "fa-bolt", "fa-leaf", "fa-gem", "fa-briefcase",
-  "fa-camera", "fa-music", "fa-home", "fa-car", "fa-laptop",
-  "fa-mobile-alt", "fa-tshirt", "fa-utensils", "fa-paw"
+  "fa-tag",
+  "fa-box",
+  "fa-cog",
+  "fa-cut",
+  "fa-print",
+  "fa-cube",
+  "fa-image",
+  "fa-lightbulb",
+  "fa-tools",
+  "fa-palette",
+  "fa-star",
+  "fa-fire",
+  "fa-bolt",
+  "fa-leaf",
+  "fa-gem",
+  "fa-briefcase",
+  "fa-camera",
+  "fa-music",
+  "fa-home",
+  "fa-car",
+  "fa-laptop",
+  "fa-mobile-alt",
+  "fa-tshirt",
+  "fa-utensils",
+  "fa-paw",
 ];
 
 function openCategoryModal(id = null) {
@@ -1380,7 +1411,8 @@ function openCategoryModal(id = null) {
             <div class="form-group">
               <label>Seleccionar Ícono</label>
               <div id="iconSelector" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1rem; background: #f8fafc;">
-                ${CATEGORY_ICONS.map((icon) => `
+                ${CATEGORY_ICONS.map(
+                  (icon) => `
                   <div onclick="selectCategoryIcon('${icon}')"
                        id="icon-opt-${icon.replace("fa-", "")}"
                        style="
@@ -1394,7 +1426,8 @@ function openCategoryModal(id = null) {
                        " title="${icon}">
                     <i class="fas ${icon}"></i>
                   </div>
-                `).join("")}
+                `,
+                ).join("")}
               </div>
               <input type="hidden" id="categoryIcon" value="${category?.icon || "fa-tag"}">
               <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; color: #475569; font-size: 0.85rem; padding-left: 0.5rem;">
@@ -1458,7 +1491,9 @@ async function handleCategorySubmit(e) {
 
     const response = await fetch(url, {
       method,
-      headers: getAuthHeaders({ "Content-Type": "application/json" }),
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(payload),
     });
 
@@ -1468,8 +1503,11 @@ async function handleCategorySubmit(e) {
     }
 
     showToast(
-      id ? "Categoría actualizada exitosamente" : "Categoría creada exitosamente",
-      "success", "Éxito"
+      id
+        ? "Categoría actualizada exitosamente"
+        : "Categoría creada exitosamente",
+      "success",
+      "Éxito",
     );
 
     closeCategoryModal();
@@ -1506,12 +1544,15 @@ async function deleteCategory(id) {
         await loadCategories();
         renderCategories();
       } catch (error) {
-        showToast(error.message || "Error al eliminar categoría", "error", "Error");
+        showToast(
+          error.message || "Error al eliminar categoría",
+          "error",
+          "Error",
+        );
       }
-    }
+    },
   });
 }
-
 
 function filterByCategory(category) {
   navigateToSection("productos");
@@ -1561,7 +1602,14 @@ function closeModal(modalId) {
     modal.classList.remove("show");
     setTimeout(() => {
       // Si fue inyectado dinámicamente o es un modal especial, lo removemos
-      const dynamicModals = ["categoryModal", "couponModal", "promotionModal", "confirmModal", "teamMemberModal", "orderDetailModal"];
+      const dynamicModals = [
+        "categoryModal",
+        "couponModal",
+        "promotionModal",
+        "confirmModal",
+        "teamMemberModal",
+        "orderDetailModal",
+      ];
       if (dynamicModals.includes(modalId)) {
         modal.remove();
       }
@@ -1580,7 +1628,7 @@ function confirmAction(options) {
     confirmText = "Confirmar",
     cancelText = "Cancelar",
     type = "primary", // primary, danger, warning
-    onConfirm = () => { }
+    onConfirm = () => {},
   } = options;
 
   const modalId = "confirmModal";
@@ -1589,13 +1637,13 @@ function confirmAction(options) {
   const iconMap = {
     primary: "fa-question-circle",
     danger: "fa-exclamation-triangle",
-    warning: "fa-exclamation-circle"
+    warning: "fa-exclamation-circle",
   };
 
   const colorMap = {
     primary: "#4a2f1a",
     danger: "#ef4444",
-    warning: "#f59e0b"
+    warning: "#f59e0b",
   };
 
   const modalHTML = `
@@ -1612,7 +1660,7 @@ function confirmAction(options) {
             <button class="btn btn-outline" onclick="closeModal('${modalId}')" style="min-width: 120px;">
               ${cancelText}
             </button>
-            <button class="btn ${type === 'danger' ? 'btn-danger' : 'btn-primary'}" id="confirmModalBtn" style="min-width: 120px;">
+            <button class="btn ${type === "danger" ? "btn-danger" : "btn-primary"}" id="confirmModalBtn" style="min-width: 120px;">
               ${confirmText}
             </button>
           </div>
@@ -1639,7 +1687,7 @@ function logout() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/";
-    }
+    },
   });
 }
 
@@ -1828,18 +1876,19 @@ function loadClientes() {
                         </tr>
                     </thead>
                     <tbody>
-                        ${customers.length > 0
-      ? customers
-        .map((customer) => {
-          const customerOrders = state.orders.filter(
-            (o) => o.userId === customer.id,
-          );
-          const totalSpent = customerOrders.reduce(
-            (sum, o) => sum + o.total,
-            0,
-          );
+                        ${
+                          customers.length > 0
+                            ? customers
+                                .map((customer) => {
+                                  const customerOrders = state.orders.filter(
+                                    (o) => o.userId === customer.id,
+                                  );
+                                  const totalSpent = customerOrders.reduce(
+                                    (sum, o) => sum + o.total,
+                                    0,
+                                  );
 
-          return `
+                                  return `
                                 <tr>
                                     <td><strong>#${customer.id}</strong></td>
                                     <td>${customer.name}</td>
@@ -1854,16 +1903,16 @@ function loadClientes() {
                                     </td>
                                 </tr>
                             `;
-        })
-        .join("")
-      : `
+                                })
+                                .join("")
+                            : `
                             <tr>
                                 <td colspan="7" style="text-align: center; padding: 3rem;">
                                     No hay clientes registrados
                                 </td>
                             </tr>
                         `
-    }
+                        }
                     </tbody>
                 </table>
             </div>
@@ -2193,35 +2242,36 @@ function renderCouponsTable(coupons) {
             </thead>
             <tbody>
                 ${coupons
-      .map((coupon) => {
-        const expiresAt = coupon.expires_at || coupon.expiresAt;
-        const usedCount = parseInt(
-          coupon.used_count || coupon.usedCount || 0,
-        );
-        const maxUses = parseInt(
-          coupon.max_uses || coupon.usageLimit || 0,
-        );
-        const discountType = coupon.discount_type || coupon.type;
-        const discountValue = coupon.discount_value || coupon.value;
-        const minPurchase =
-          coupon.min_purchase || coupon.minPurchase;
+                  .map((coupon) => {
+                    const expiresAt = coupon.expires_at || coupon.expiresAt;
+                    const usedCount = parseInt(
+                      coupon.used_count || coupon.usedCount || 0,
+                    );
+                    const maxUses = parseInt(
+                      coupon.max_uses || coupon.usageLimit || 0,
+                    );
+                    const discountType = coupon.discount_type || coupon.type;
+                    const discountValue = coupon.discount_value || coupon.value;
+                    const minPurchase =
+                      coupon.min_purchase || coupon.minPurchase;
 
-        const isExpired =
-          expiresAt && new Date(expiresAt) < new Date();
-        const isExhausted = maxUses && usedCount >= maxUses;
-        const usagePercent = maxUses
-          ? ((usedCount / maxUses) * 100).toFixed(0)
-          : 0;
+                    const isExpired =
+                      expiresAt && new Date(expiresAt) < new Date();
+                    const isExhausted = maxUses && usedCount >= maxUses;
+                    const usagePercent = maxUses
+                      ? ((usedCount / maxUses) * 100).toFixed(0)
+                      : 0;
 
-        return `
+                    return `
                     <tr>
                         <td><strong>${coupon.code}</strong></td>
                         <td>${coupon.description || ""}</td>
                         <td>
-                            ${discountType === "percentage"
-            ? '<span class="badge info">Porcentaje</span>'
-            : '<span class="badge primary">Fijo</span>'
-          }
+                            ${
+                              discountType === "percentage"
+                                ? '<span class="badge info">Porcentaje</span>'
+                                : '<span class="badge primary">Fijo</span>'
+                            }
                         </td>
                         <td>
                             <strong>${discountType === "percentage" ? discountValue + "%" : "$" + parseFloat(discountValue).toFixed(2)}</strong>
@@ -2230,14 +2280,15 @@ function renderCouponsTable(coupons) {
                         <td>
                             <div style="font-size: 0.875rem;">
                                 ${usedCount} / ${maxUses || "∞"}
-                                ${maxUses
-            ? `
+                                ${
+                                  maxUses
+                                    ? `
                                 <div style="background: #e5e7eb; border-radius: 4px; height: 4px; margin-top: 4px;">
                                     <div style="background: ${usagePercent >= 90 ? "#ef4444" : "#10b981"}; width: ${usagePercent}%; height: 100%; border-radius: 4px;"></div>
                                 </div>
                                 `
-            : ""
-          }
+                                    : ""
+                                }
                             </div>
                         </td>
                         <td>
@@ -2245,14 +2296,15 @@ function renderCouponsTable(coupons) {
                             ${isExpired ? '<br><span class="badge" style="background: #ef4444;">Expirado</span>' : ""}
                         </td>
                         <td>
-                            ${!coupon.active
-            ? '<span class="badge" style="background: #6b7280;">Inactivo</span>'
-            : isExpired
-              ? '<span class="badge" style="background: #ef4444;">Expirado</span>'
-              : isExhausted
-                ? '<span class="badge" style="background: #f59e0b;">Agotado</span>'
-                : '<span class="badge success">Activo</span>'
-          }
+                            ${
+                              !coupon.active
+                                ? '<span class="badge" style="background: #6b7280;">Inactivo</span>'
+                                : isExpired
+                                  ? '<span class="badge" style="background: #ef4444;">Expirado</span>'
+                                  : isExhausted
+                                    ? '<span class="badge" style="background: #f59e0b;">Agotado</span>'
+                                    : '<span class="badge success">Activo</span>'
+                            }
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="editCoupon(${coupon.id})" title="Editar">
@@ -2269,20 +2321,23 @@ function renderCouponsTable(coupons) {
                         </td>
                     </tr>
                 `;
-      })
-      .join("")}
+                  })
+                  .join("")}
             </tbody>
         </table>
     `;
 }
 
-
 function openCouponModal(coupon = null) {
   document.getElementById("couponModal")?.remove();
 
-  const discountType = coupon ? coupon.discount_type || coupon.type : "percentage";
+  const discountType = coupon
+    ? coupon.discount_type || coupon.type
+    : "percentage";
   const discountValue = coupon ? coupon.discount_value || coupon.value : "";
-  const minPurchase = coupon ? coupon.min_purchase || coupon.minPurchase || "" : "";
+  const minPurchase = coupon
+    ? coupon.min_purchase || coupon.minPurchase || ""
+    : "";
   const maxUses = coupon ? coupon.max_uses || coupon.usageLimit || "" : "";
   const expiresAtRaw = coupon ? coupon.expires_at || coupon.expiresAt : "";
   const expiresAt = expiresAtRaw
@@ -2373,7 +2428,9 @@ function openCouponModal(coupon = null) {
   document.body.insertAdjacentHTML("beforeend", modalHTML);
 
   // Agregar el submit DESPUÉS de insertar el HTML
-  document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
+  document
+    .getElementById("couponForm")
+    .addEventListener("submit", handleCouponSubmit);
 }
 
 function updateCouponTypeFields() {
@@ -2468,7 +2525,8 @@ async function toggleCouponStatus(id) {
 async function deleteCoupon(id) {
   confirmAction({
     title: "Eliminar Cupón",
-    message: "¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.",
+    message:
+      "¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.",
     type: "danger",
     confirmText: "Eliminar Cupón",
     onConfirm: async () => {
@@ -2485,7 +2543,7 @@ async function deleteCoupon(id) {
       } catch (error) {
         showToast("Error al eliminar cupón", "error", "Error");
       }
-    }
+    },
   });
 }
 
@@ -2577,25 +2635,25 @@ function renderPromotionsTable(promotions) {
             </thead>
             <tbody>
                 ${promotions
-      .map((promo) => {
-        const isActive =
-          promo.active &&
-          new Date(promo.start_date || promo.startDate) <= now &&
-          new Date(promo.end_date || promo.endDate) >= now;
+                  .map((promo) => {
+                    const isActive =
+                      promo.active &&
+                      new Date(promo.start_date || promo.startDate) <= now &&
+                      new Date(promo.end_date || promo.endDate) >= now;
 
-        const typeLabels = {
-          all: "Todos los productos",
-          products: "Productos específicos",
-          categories: "Por categoría",
-        };
+                    const typeLabels = {
+                      all: "Todos los productos",
+                      products: "Productos específicos",
+                      categories: "Por categoría",
+                    };
 
-        const discountType =
-          promo.discount_type || promo.discountType;
-        const discountValue =
-          promo.discount_value || promo.discountValue;
-        const appliesTo = promo.applies_to || promo.type || "all";
+                    const discountType =
+                      promo.discount_type || promo.discountType;
+                    const discountValue =
+                      promo.discount_value || promo.discountValue;
+                    const appliesTo = promo.applies_to || promo.type || "all";
 
-        return `
+                    return `
                     <tr>
                         <td>
                             <strong>${promo.name}</strong>
@@ -2612,12 +2670,13 @@ function renderPromotionsTable(promotions) {
                             </small>
                         </td>
                         <td>
-                            ${isActive
-            ? '<span class="badge success">Activa</span>'
-            : promo.active
-              ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
-              : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
-          }
+                            ${
+                              isActive
+                                ? '<span class="badge success">Activa</span>'
+                                : promo.active
+                                  ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
+                                  : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
+                            }
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="editPromotion(${promo.id})">
@@ -2629,8 +2688,8 @@ function renderPromotionsTable(promotions) {
                         </td>
                     </tr>
                 `;
-      })
-      .join("")}
+                  })
+                  .join("")}
             </tbody>
         </table>
     `;
@@ -2708,14 +2767,14 @@ function openPromotionModal(promo = null) {
                         <label>Seleccionar Productos</label>
                         <select id="promoProducts" multiple style="height: 150px;">
                             ${allProductsForPromo
-      .map(
-        (p) => `
+                              .map(
+                                (p) => `
                                 <option value="${p.id}" ${promo?.product_ids?.includes(p.id) ? "selected" : ""}>
                                     ${p.name}
                                 </option>
                             `,
-      )
-      .join("")}
+                              )
+                              .join("")}
                         </select>
                         <small>Mantén Ctrl (Cmd en Mac) para seleccionar múltiples</small>
                     </div>
@@ -2724,18 +2783,18 @@ function openPromotionModal(promo = null) {
                         <label>Seleccionar Categorías</label>
                         <select id="promoCategories" multiple style="height: 100px;">
                             ${[
-      ...new Set(
-        allProductsForPromo.map((p) => p.category),
-      ),
-    ]
-      .map(
-        (cat) => `
+                              ...new Set(
+                                allProductsForPromo.map((p) => p.category),
+                              ),
+                            ]
+                              .map(
+                                (cat) => `
                                 <option value="${cat}" ${promo?.category_ids?.includes(cat) ? "selected" : ""}>
                                     ${cat}
                                 </option>
                             `,
-      )
-      .join("")}
+                              )
+                              .join("")}
                         </select>
                     </div>
                     
@@ -2799,7 +2858,9 @@ async function handlePromotionSubmit(e) {
     description: document.getElementById("promoDescription").value,
     // Snake_case para el backend
     discount_type: document.getElementById("promoDiscountType").value,
-    discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
+    discount_value: parseFloat(
+      document.getElementById("promoDiscountValue").value,
+    ),
     applies_to: type,
     start_date: document.getElementById("promoStartDate").value,
     end_date: document.getElementById("promoEndDate").value,
@@ -2875,7 +2936,7 @@ async function deletePromotion(id) {
       } catch (error) {
         showToast("Error al eliminar", "error", "Error");
       }
-    }
+    },
   });
 }
 
@@ -2984,14 +3045,15 @@ function loadClientes() {
             <h2><i class="fas fa-users"></i> Clientes</h2>
         </div>
         
-        ${clientes.length === 0
-      ? `
+        ${
+          clientes.length === 0
+            ? `
             <div class="empty-state">
                 <i class="fas fa-users" style="font-size: 3rem; color: #ccc;"></i>
                 <p>No hay clientes registrados aún</p>
             </div>
         `
-      : `
+            : `
             <table class="data-table">
                 <thead>
                     <tr>
@@ -3004,8 +3066,8 @@ function loadClientes() {
                 </thead>
                 <tbody>
                     ${clientes
-        .map(
-          (cliente) => `
+                      .map(
+                        (cliente) => `
                         <tr>
                             <td><strong>${cliente.name}</strong></td>
                             <td>${cliente.email}</td>
@@ -3014,12 +3076,12 @@ function loadClientes() {
                             <td><strong>$${parseFloat(cliente.total || 0).toFixed(2)}</strong></td>
                         </tr>
                     `,
-        )
-        .join("")}
+                      )
+                      .join("")}
                 </tbody>
             </table>
         `
-    }
+        }
     `;
 }
 
@@ -3192,14 +3254,15 @@ function loadVentas() {
                 <h3>Ventas de los Últimos 7 Días</h3>
             </div>
             <div style="padding: 2rem;">
-                ${dias.length === 0
-      ? `
+                ${
+                  dias.length === 0
+                    ? `
                     <div style="text-align: center; padding: 3rem; color: #6b7280;">
                         <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                         <p>No hay ventas registradas aún</p>
                     </div>
                 `
-      : `
+                    : `
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -3211,10 +3274,10 @@ function loadVentas() {
                         </thead>
                         <tbody>
                             ${dias
-        .map((dia) => {
-          const datos = ventasPorDia[dia];
-          const promedio = datos.total / datos.cantidad;
-          return `
+                              .map((dia) => {
+                                const datos = ventasPorDia[dia];
+                                const promedio = datos.total / datos.cantidad;
+                                return `
                                     <tr>
                                         <td><strong>${dia}</strong></td>
                                         <td><span class="badge info">${datos.cantidad}</span></td>
@@ -3222,12 +3285,12 @@ function loadVentas() {
                                         <td>$${parseFloat(promedio || 0).toFixed(2)}</td>
                                     </tr>
                                 `;
-        })
-        .join("")}
+                              })
+                              .join("")}
                         </tbody>
                     </table>
                 `
-    }
+                }
             </div>
         </div>
     `;
@@ -3254,8 +3317,9 @@ function loadInventario() {
         </div>
         
         <div style="display: grid; gap: 1.5rem;">
-            ${lowStock.length > 0
-      ? `
+            ${
+              lowStock.length > 0
+                ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Productos con Stock Bajo</h3>
@@ -3271,8 +3335,8 @@ function loadInventario() {
                         </thead>
                         <tbody>
                             ${lowStock
-        .map(
-          (p) => `
+                              .map(
+                                (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge" style="background: #f59e0b;">${p.stock}</span></td>
@@ -3280,17 +3344,18 @@ function loadInventario() {
                                     <td><span class="badge" style="background: #f59e0b;">⚠️ Stock Bajo</span></td>
                                 </tr>
                             `,
-        )
-        .join("")}
+                              )
+                              .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-      : ""
-    }
+                : ""
+            }
             
-            ${outOfStock.length > 0
-      ? `
+            ${
+              outOfStock.length > 0
+                ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #ef4444;"><i class="fas fa-times-circle"></i> Productos Sin Stock</h3>
@@ -3305,25 +3370,26 @@ function loadInventario() {
                         </thead>
                         <tbody>
                             ${outOfStock
-        .map(
-          (p) => `
+                              .map(
+                                (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge info">${p.category}</span></td>
                                     <td><span class="badge" style="background: #ef4444;">❌ Sin Stock</span></td>
                                 </tr>
                             `,
-        )
-        .join("")}
+                              )
+                              .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-      : ""
-    }
+                : ""
+            }
             
-            ${lowStock.length === 0 && outOfStock.length === 0
-      ? `
+            ${
+              lowStock.length === 0 && outOfStock.length === 0
+                ? `
                 <div class="card">
                     <div style="padding: 3rem; text-align: center;">
                         <i class="fas fa-check-circle" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"></i>
@@ -3334,8 +3400,8 @@ function loadInventario() {
                     </div>
                 </div>
             `
-      : ""
-    }
+                : ""
+            }
         </div>
     `;
 }
@@ -3622,7 +3688,7 @@ function clearCache() {
     confirmText: "Limpiar",
     onConfirm: () => {
       showToast("Caché limpiado", "success", "Éxito");
-    }
+    },
   });
 }
 
@@ -3636,20 +3702,22 @@ function exportDatabase() {
 function confirmReset() {
   confirmAction({
     title: "⚠️ RESET TOTAL",
-    message: "Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
+    message:
+      "Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
     type: "danger",
     confirmText: "Continuar",
     onConfirm: () => {
       confirmAction({
         title: "⚠️ ÚLTIMO AVISO",
-        message: "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
+        message:
+          "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
         type: "danger",
         confirmText: "RESET TOTAL",
         onConfirm: () => {
           showToast("Sistema reseteado", "success", "Completado");
-        }
+        },
       });
-    }
+    },
   });
 }
 
@@ -3804,8 +3872,8 @@ function renderAboutTeam() {
   container.innerHTML = `
     <div style="display:grid; gap:1rem;">
       ${members
-      .map(
-        (m) => `
+        .map(
+          (m) => `
         <div style="border:1px solid #e2e8f0; padding:1rem; border-radius:12px; display:flex; justify-content:space-between; gap:1rem;">
           <div>
             <div style="font-weight:700;">${m.name}</div>
@@ -3818,8 +3886,8 @@ function renderAboutTeam() {
           </div>
         </div>
       `,
-      )
-      .join("")}
+        )
+        .join("")}
     </div>
   `;
 }
@@ -3914,7 +3982,7 @@ async function deleteTeamMember(id) {
         console.error(e);
         showToast("No se pudo eliminar miembro", "error", "Error");
       }
-    }
+    },
   });
 }
 
@@ -4644,4 +4712,3 @@ async function guardarSettings(payload) {
     );
   }
 }
-
