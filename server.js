@@ -114,13 +114,13 @@ app.use('/api/promotions', require('./src/routes/promotions'));
 app.use('/api/settings', require('./src/routes/settings'));
 app.use('/api/export', require('./src/routes/export'));
 app.use('/api/legal', require('./src/routes/legal'));
+app.use('/api/categories', require('./src/routes/categories'));
 
 // Ruta de TEST para ver si el API responde
 app.get('/api/test-server', (req, res) => {
     res.json({ status: 'OK', message: 'El servidor está respondiendo correctamente' });
 });
 
-app.use('/api/categories', require('./src/routes/categories'));
 
 console.log('✅ APIs adicionales cargadas');
 

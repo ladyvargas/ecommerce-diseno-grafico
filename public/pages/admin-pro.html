@@ -738,7 +738,7 @@
             border-color: var(--brown-dark);
         }
 
-        /* Modal Mejorado */
+        /* Modal Premium Redesign */
         .modal {
             display: none;
             position: fixed;
@@ -746,70 +746,79 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 2000;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .modal.show {
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.3s;
+            opacity: 1;
         }
 
-        .modal-dialog {
+        .modal-dialog,
+        .modal-content {
             background: white;
-            border-radius: 20px;
+            border-radius: 24px;
             width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
+            max-width: 650px;
+            max-height: 85vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(50px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .modal.show .modal-dialog,
+        .modal.show .modal-content {
+            transform: scale(1) translateY(0);
         }
 
         .modal-header {
-            padding: 2rem;
-            border-bottom: 2px solid var(--border);
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(249, 250, 251, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(4px);
         }
 
         .modal-title {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--dark);
+            letter-spacing: -0.02em;
         }
 
         .modal-close {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
             background: var(--light);
-            border: none;
+            border: 1px solid var(--border);
             cursor: pointer;
-            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
             color: var(--gray);
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .modal-close:hover {
-            background: var(--danger);
-            color: white;
+            background: #fee2e2;
+            color: #ef4444;
+            border-color: #fecaca;
             transform: rotate(90deg);
         }
 
@@ -817,35 +826,18 @@
             padding: 2rem;
         }
 
-        .modal-content {
-            background: white;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: slideUp 0.3s;
-        }
-
+        .modal-footer,
         .modal-actions {
             padding: 1.5rem 2rem;
-            border-top: 2px solid var(--border);
+            border-top: 1px solid var(--border);
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
-            background: var(--light);
-            border-radius: 0 0 20px 20px;
-        }
-
-        .modal-footer {
-            padding: 1.5rem 2rem;
-            border-top: 2px solid var(--border);
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-            background: var(--light);
-            border-radius: 0 0 20px 20px;
+            background: #f9fafb;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+            border-radius: 0 0 24px 24px;
         }
 
         .form-grid {

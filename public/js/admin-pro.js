@@ -2,7 +2,7 @@
 // ADMIN PRO - JAVASCRIPT COMPLETO
 // ========================================
 
-const API_URL ="/api";
+const API_URL = "/api";
 let currentToken =
   localStorage.getItem("token") ||
   localStorage.getItem("adminToken") ||
@@ -458,8 +458,8 @@ function renderRecentOrders() {
         </thead>
         <tbody>
           ${orders
-            .map(
-              (order) => `
+      .map(
+        (order) => `
                 <tr>
                   <td><strong>#${order.id}</strong></td>
                   <td>${order.customer_name || order.userName || "Sin nombre"}</td>
@@ -474,8 +474,8 @@ function renderRecentOrders() {
                   </td>
                 </tr>
               `,
-            )
-            .join("")}
+      )
+      .join("")}
         </tbody>
       </table>
     </div>
@@ -534,8 +534,8 @@ function renderProductsTable(products) {
             </thead>
             <tbody>
                 ${products
-                  .map(
-                    (product) => `
+      .map(
+        (product) => `
                     <tr>
                         <td><img src="${product.image}" alt="${product.name}"></td>
                         <td>
@@ -546,32 +546,29 @@ function renderProductsTable(products) {
                             <span class="badge info">${product.category}</span>
                         </td>
                         <td>
-                            ${
-                              product.salePrice
-                                ? `
+                            ${product.salePrice
+            ? `
                                 <strong style="color: var(--success);">$${product.salePrice}</strong><br>
                                 <small style="text-decoration: line-through; color: var(--gray);">$${product.price}</small>
                             `
-                                : `<strong>$${product.price}</strong>`
-                            }
+            : `<strong>$${product.price}</strong>`
+          }
                         </td>
                         <td>
-                            ${
-                              product.stock === 0
-                                ? '<span class="badge" style="background: #ef4444; color: white;">❌ Sin stock</span>'
-                                : product.stock <=
-                                    (product.lowStockThreshold || 10)
-                                  ? `<span class="badge" style="background: #f59e0b; color: white;">⚠️ ${product.stock}</span>`
-                                  : `<span class="badge success">✅ ${product.stock}</span>`
-                            }
+                            ${product.stock === 0
+            ? '<span class="badge" style="background: #ef4444; color: white;">❌ Sin stock</span>'
+            : product.stock <=
+              (product.lowStockThreshold || 10)
+              ? `<span class="badge" style="background: #f59e0b; color: white;">⚠️ ${product.stock}</span>`
+              : `<span class="badge success">✅ ${product.stock}</span>`
+          }
                         </td>
                         <td>${product.downloads || 0}</td>
                         <td>
-                            ${
-                              product.active === false
-                                ? '<span class="badge" style="background: #6b7280; color: white;">🔒 Inactivo</span>'
-                                : '<span class="badge success">✅ Activo</span>'
-                            }
+                            ${product.active === false
+            ? '<span class="badge" style="background: #6b7280; color: white;">🔒 Inactivo</span>'
+            : '<span class="badge success">✅ Activo</span>'
+          }
                             ${product.featured ? '<span class="badge primary">⭐ Destacado</span>' : ""}
                         </td>
                         <td>
@@ -584,8 +581,8 @@ function renderProductsTable(products) {
                         </td>
                     </tr>
                 `,
-                  )
-                  .join("")}
+      )
+      .join("")}
             </tbody>
         </table>
     `;
@@ -717,24 +714,30 @@ async function editProduct(id) {
 }
 
 async function deleteProduct(id) {
-  if (!confirm("¿Estás seguro de eliminar este producto?")) return;
+  confirmAction({
+    title: "Eliminar Producto",
+    message: "¿Estás seguro de que deseas eliminar este producto? Esta acción no se puede deshacer.",
+    type: "danger",
+    confirmText: "Eliminar",
+    onConfirm: async () => {
+      try {
+        const response = await fetch(`${API_URL}/products/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${currentToken}` },
+        });
 
-  try {
-    const response = await fetch(`${API_URL}/products/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${currentToken}` },
-    });
-
-    if (response.ok) {
-      showToast("Producto eliminado exitosamente", "success", "Éxito");
-      await loadProducts();
-      await loadDashboardData();
-    } else {
-      throw new Error("Error al eliminar");
+        if (response.ok) {
+          showToast("Producto eliminado exitosamente", "success", "Éxito");
+          await loadProducts();
+          await loadDashboardData();
+        } else {
+          throw new Error("Error al eliminar");
+        }
+      } catch (error) {
+        showToast("Error al eliminar el producto", "error", "Error");
+      }
     }
-  } catch (error) {
-    showToast("Error al eliminar el producto", "error", "Error");
-  }
+  });
 }
 
 function validateProductImage() {
@@ -944,8 +947,8 @@ function renderOrdersTable(orders) {
             </thead>
             <tbody>
                 ${orders
-                  .map(
-                    (order) => `
+      .map(
+        (order) => `
                     <tr>
                         <td><strong>#${order.id}</strong></td>
                         <td>${order.customer_name || order.userName || "N/A"}</td>
@@ -968,8 +971,8 @@ function renderOrdersTable(orders) {
                         </td>
                     </tr>
                 `,
-                  )
-                  .join("")}
+      )
+      .join("")}
             </tbody>
         </table>
     `;
@@ -1092,8 +1095,8 @@ function viewOrderDetail(orderId) {
                         </thead>
                         <tbody>
                             ${order.items
-                              .map(
-                                (item) => `
+      .map(
+        (item) => `
                                 <tr>
                                     <td>
                                         <strong>${item.productName || item.name}</strong>
@@ -1103,8 +1106,8 @@ function viewOrderDetail(orderId) {
                                     <td><strong>$${(parseFloat(item.salePrice || item.price || 0) * item.quantity).toFixed(2)}</strong></td>
                                 </tr>
                             `,
-                              )
-                              .join("")}
+      )
+      .join("")}
                         </tbody>
                     </table>
                     
@@ -1113,16 +1116,15 @@ function viewOrderDetail(orderId) {
                             <span>Subtotal:</span>
                             <strong>$${parseFloat(order.subtotal || 0).toFixed(2)}</strong>
                         </div>
-                        ${
-                          order.discount
-                            ? `
+                        ${order.discount
+      ? `
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; color: #10b981;">
                             <span><i class="fas fa-tag"></i> Descuento ${order.couponCode ? `(${order.couponCode})` : ""}:</span>
                             <strong>-$${parseFloat(order.discount || 0).toFixed(2)}</strong>
                         </div>
                         `
-                            : ""
-                        }
+      : ""
+    }
                         <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
                             <span>IVA (12%):</span>
                             <strong>$${parseFloat(order.tax || 0).toFixed(2)}</strong>
@@ -1135,15 +1137,14 @@ function viewOrderDetail(orderId) {
                 </div>
                 <div class="modal-footer" style="display: flex; gap: 1rem; justify-content: flex-end;">
                     <button class="btn btn-secondary" onclick="closeModal('orderDetailModal')">Cerrar</button>
-                    ${
-                      order.status !== "cancelled"
-                        ? `
+                    ${order.status !== "cancelled"
+      ? `
                     <button class="btn btn-danger" onclick="cancelOrder(${order.id})">
                         <i class="fas fa-ban"></i> Cancelar Pedido
                     </button>
                     `
-                        : ""
-                    }
+      : ""
+    }
                 </div>
             </div>
         </div>
@@ -1175,7 +1176,7 @@ async function updateOrderStatus(orderId) {
       const data = await response.json();
       showToast(
         `Estado actualizado a "${newStatus}"` +
-          (data.stockRestored ? " (Stock restaurado)" : ""),
+        (data.stockRestored ? " (Stock restaurado)" : ""),
         "success",
         "Éxito",
       );
@@ -1238,29 +1239,32 @@ async function updatePaymentStatus(orderId) {
 }
 
 async function cancelOrder(orderId) {
-  if (
-    !confirm("¿Estás seguro de cancelar este pedido? Se restaurará el stock.")
-  )
-    return;
+  confirmAction({
+    title: "Cancelar Pedido",
+    message: "¿Estás seguro de cancelar este pedido? Se restaurará el stock de los productos.",
+    type: "danger",
+    confirmText: "Confirmar Cancelación",
+    onConfirm: async () => {
+      try {
+        const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${currentToken}`,
+          },
+          body: JSON.stringify({ status: "cancelled" }),
+        });
 
-  try {
-    const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ status: "cancelled" }),
-    });
-
-    if (response.ok) {
-      showToast("Pedido cancelado y stock restaurado", "success", "Éxito");
-      closeModal("orderDetailModal");
-      loadOrders();
+        if (response.ok) {
+          showToast("Pedido cancelado y stock restaurado", "success", "Éxito");
+          closeModal("orderDetailModal");
+          loadOrders();
+        }
+      } catch (error) {
+        showToast("Error al cancelar pedido", "error", "Error");
+      }
     }
-  } catch (error) {
-    showToast("Error al cancelar pedido", "error", "Error");
-  }
+  });
 }
 
 // ========================================
@@ -1349,9 +1353,9 @@ function openCategoryModal(id = null) {
 
   const modalHTML = `
     <div class="modal show" id="categoryModal">
-      <div class="modal-content" style="max-width: 550px;">
+      <div class="modal-content" style="max-width: 500px;">
         <div class="modal-header">
-          <h3>${category ? "Editar Categoría" : "Nueva Categoría"}</h3>
+          <h3 class="modal-title">${category ? "Editar Categoría" : "Nueva Categoría"}</h3>
           <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
         </div>
         <div class="modal-body">
@@ -1365,39 +1369,45 @@ function openCategoryModal(id = null) {
             </div>
 
             <div class="form-group">
-              <label>Color</label>
-              <div style="display: flex; align-items: center; gap: 1rem;">
+              <label>Color de Acento</label>
+              <div style="display: flex; align-items: center; gap: 1rem; background: #f8fafc; padding: 0.75rem; border-radius: 12px; border: 1px solid #e2e8f0;">
                 <input type="color" id="categoryColor" value="${category?.color || "#4a2f1a"}"
-                       style="width: 60px; height: 40px; border-radius: 8px; cursor: pointer; border: 2px solid #e2e8f0; padding: 2px;">
-                <span style="color: #6b7280; font-size: 0.85rem;">Color del ícono y acento</span>
+                       style="width: 50px; height: 36px; border-radius: 6px; cursor: pointer; border: 1px solid #cbd5e1; padding: 2px; background: white;">
+                <span style="color: #64748b; font-size: 0.85rem; font-weight: 500;">Este color se usará en íconos y detalles</span>
               </div>
             </div>
 
             <div class="form-group">
-              <label>Ícono</label>
-              <div id="iconSelector" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; max-height: 180px; overflow-y: auto; border: 2px solid #e2e8f0; border-radius: 10px; padding: 0.75rem;">
+              <label>Seleccionar Ícono</label>
+              <div id="iconSelector" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5rem; max-height: 200px; overflow-y: auto; border: 1px solid #e2e8f0; border-radius: 16px; padding: 1rem; background: #f8fafc;">
                 ${CATEGORY_ICONS.map((icon) => `
                   <div onclick="selectCategoryIcon('${icon}')"
                        id="icon-opt-${icon.replace("fa-", "")}"
                        style="
-                         width: 40px; height: 40px; border-radius: 8px;
+                         width: 44px; height: 44px; border-radius: 10px;
                          display: flex; align-items: center; justify-content: center;
-                         cursor: pointer; border: 2px solid ${(category?.icon || "fa-tag") === icon ? "#4a2f1a" : "#e2e8f0"};
-                         background: ${(category?.icon || "fa-tag") === icon ? "#e8d9a0" : "#f9fafb"};
-                         transition: all 0.2s; font-size: 1.1rem;
+                         cursor: pointer; border: 2px solid ${(category?.icon || "fa-tag") === icon ? "#4a2f1a" : "transparent"};
+                         background: ${(category?.icon || "fa-tag") === icon ? "#fff" : "transparent"};
+                         box-shadow: ${(category?.icon || "fa-tag") === icon ? "0 4px 12px rgba(0,0,0,0.1)" : "none"};
+                         color: ${(category?.icon || "fa-tag") === icon ? "#4a2f1a" : "#94a3b8"};
+                         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); font-size: 1.1rem;
                        " title="${icon}">
                     <i class="fas ${icon}"></i>
                   </div>
                 `).join("")}
               </div>
               <input type="hidden" id="categoryIcon" value="${category?.icon || "fa-tag"}">
-              <small style="color: #6b7280; margin-top: 0.5rem; display: block;">Ícono seleccionado: <i class="fas ${category?.icon || "fa-tag"}"></i> <span id="selectedIconLabel">${category?.icon || "fa-tag"}</span></small>
+              <div style="margin-top: 0.75rem; display: flex; align-items: center; gap: 0.5rem; color: #475569; font-size: 0.85rem; padding-left: 0.5rem;">
+                <span>Vista previa:</span>
+                <i class="fas ${category?.icon || "fa-tag"}" style="color: ${category?.color || "#4a2f1a"}; font-size: 1rem;" id="modalSelectedIcon"></i>
+                <span id="selectedIconLabel" style="font-weight: 600;">${category?.icon || "fa-tag"}</span>
+              </div>
             </div>
 
-            <div class="modal-actions" style="border-top: none; padding: 0; background: transparent;">
-              <button type="button" class="btn btn-secondary" onclick="closeCategoryModal()">Cancelar</button>
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" onclick="closeCategoryModal()">Cancelar</button>
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Guardar
+                <i class="fas fa-save"></i> Guardar Categoría
               </button>
             </div>
           </form>
@@ -1478,25 +1488,31 @@ async function deleteCategory(id) {
   const category = state.categories.find((c) => c.id === id);
   if (!category) return;
 
-  if (!confirm(`¿Eliminar la categoría "${category.name}"?\nLos productos asociados quedarán sin categoría.`)) return;
+  confirmAction({
+    title: "Eliminar Categoría",
+    message: `¿Estás seguro de eliminar la categoría "${category.name}"? Los productos asociados quedarán sin categoría.`,
+    type: "danger",
+    confirmText: "Eliminar",
+    onConfirm: async () => {
+      try {
+        const response = await fetch(`${API_URL}/categories/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${currentToken}` },
+        });
 
-  try {
-    const response = await fetch(`${API_URL}/categories/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${currentToken}` },
-    });
+        if (!response.ok) {
+          const err = await response.json().catch(() => ({}));
+          throw new Error(err.error || "Error al eliminar");
+        }
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error || "Error al eliminar");
+        showToast("Categoría eliminada ✅", "success", "Éxito");
+        await loadCategories();
+        renderCategories();
+      } catch (error) {
+        showToast(error.message || "Error al eliminar categoría", "error", "Error");
+      }
     }
-
-    showToast("Categoría eliminada", "success", "Éxito");
-    await loadCategories();
-    renderCategories();
-  } catch (error) {
-    showToast(error.message || "Error al eliminar categoría", "error", "Error");
-  }
+  });
 }
 
 
@@ -1546,19 +1562,88 @@ function closeModal(modalId) {
   const modal = document.getElementById(modalId);
   if (modal) {
     modal.classList.remove("show");
-    // Si es el modal de detalle de orden, eliminarlo del DOM
-    if (modalId === "orderDetailModal") {
-      setTimeout(() => modal.remove(), 300);
-    }
+    setTimeout(() => {
+      // Si fue inyectado dinámicamente o es un modal especial, lo removemos
+      const dynamicModals = ["categoryModal", "couponModal", "promotionModal", "confirmModal", "teamMemberModal", "orderDetailModal"];
+      if (dynamicModals.includes(modalId)) {
+        modal.remove();
+      }
+    }, 300);
   }
 }
 
+/**
+ * Muestra un modal de confirmación premium
+ * @param {Object} options - { title, message, confirmText, cancelText, type, onConfirm }
+ */
+function confirmAction(options) {
+  const {
+    title = "Confirmar Acción",
+    message = "¿Estás seguro de realizar esta acción?",
+    confirmText = "Confirmar",
+    cancelText = "Cancelar",
+    type = "primary", // primary, danger, warning
+    onConfirm = () => { }
+  } = options;
+
+  const modalId = "confirmModal";
+  document.getElementById(modalId)?.remove();
+
+  const iconMap = {
+    primary: "fa-question-circle",
+    danger: "fa-exclamation-triangle",
+    warning: "fa-exclamation-circle"
+  };
+
+  const colorMap = {
+    primary: "#4a2f1a",
+    danger: "#ef4444",
+    warning: "#f59e0b"
+  };
+
+  const modalHTML = `
+    <div class="modal show" id="${modalId}">
+      <div class="modal-content" style="max-width: 450px; text-align: center;">
+        <div class="modal-body" style="padding: 3rem 2rem;">
+          <div style="width: 80px; height: 80px; background: ${colorMap[type]}15; color: ${colorMap[type]}; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem;">
+            <i class="fas ${iconMap[type]}"></i>
+          </div>
+          <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--dark); margin-bottom: 1rem;">${title}</h2>
+          <p style="color: var(--gray); font-size: 1rem; line-height: 1.6; margin-bottom: 2rem;">${message}</p>
+          
+          <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button class="btn btn-outline" onclick="closeModal('${modalId}')" style="min-width: 120px;">
+              ${cancelText}
+            </button>
+            <button class="btn ${type === 'danger' ? 'btn-danger' : 'btn-primary'}" id="confirmModalBtn" style="min-width: 120px;">
+              ${confirmText}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+
+  document.getElementById("confirmModalBtn").onclick = () => {
+    onConfirm();
+    closeModal(modalId);
+  };
+}
+
 function logout() {
-  if (confirm("¿Cerrar sesión?")) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.location.href = "/";
-  }
+  confirmAction({
+    title: "Cerrar Sesión",
+    message: "¿Estás seguro de que deseas salir del panel de administración?",
+    type: "warning",
+    confirmText: "Cerrar Sesión",
+    onConfirm: () => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/";
+    }
+  });
 }
 
 function showToast(message, type = "info", title = "") {
@@ -1720,19 +1805,18 @@ function loadClientes() {
                         </tr>
                     </thead>
                     <tbody>
-                        ${
-                          customers.length > 0
-                            ? customers
-                                .map((customer) => {
-                                  const customerOrders = state.orders.filter(
-                                    (o) => o.userId === customer.id,
-                                  );
-                                  const totalSpent = customerOrders.reduce(
-                                    (sum, o) => sum + o.total,
-                                    0,
-                                  );
+                        ${customers.length > 0
+      ? customers
+        .map((customer) => {
+          const customerOrders = state.orders.filter(
+            (o) => o.userId === customer.id,
+          );
+          const totalSpent = customerOrders.reduce(
+            (sum, o) => sum + o.total,
+            0,
+          );
 
-                                  return `
+          return `
                                 <tr>
                                     <td><strong>#${customer.id}</strong></td>
                                     <td>${customer.name}</td>
@@ -1747,16 +1831,16 @@ function loadClientes() {
                                     </td>
                                 </tr>
                             `;
-                                })
-                                .join("")
-                            : `
+        })
+        .join("")
+      : `
                             <tr>
                                 <td colspan="7" style="text-align: center; padding: 3rem;">
                                     No hay clientes registrados
                                 </td>
                             </tr>
                         `
-                        }
+    }
                     </tbody>
                 </table>
             </div>
@@ -2086,36 +2170,35 @@ function renderCouponsTable(coupons) {
             </thead>
             <tbody>
                 ${coupons
-                  .map((coupon) => {
-                    const expiresAt = coupon.expires_at || coupon.expiresAt;
-                    const usedCount = parseInt(
-                      coupon.used_count || coupon.usedCount || 0,
-                    );
-                    const maxUses = parseInt(
-                      coupon.max_uses || coupon.usageLimit || 0,
-                    );
-                    const discountType = coupon.discount_type || coupon.type;
-                    const discountValue = coupon.discount_value || coupon.value;
-                    const minPurchase =
-                      coupon.min_purchase || coupon.minPurchase;
+      .map((coupon) => {
+        const expiresAt = coupon.expires_at || coupon.expiresAt;
+        const usedCount = parseInt(
+          coupon.used_count || coupon.usedCount || 0,
+        );
+        const maxUses = parseInt(
+          coupon.max_uses || coupon.usageLimit || 0,
+        );
+        const discountType = coupon.discount_type || coupon.type;
+        const discountValue = coupon.discount_value || coupon.value;
+        const minPurchase =
+          coupon.min_purchase || coupon.minPurchase;
 
-                    const isExpired =
-                      expiresAt && new Date(expiresAt) < new Date();
-                    const isExhausted = maxUses && usedCount >= maxUses;
-                    const usagePercent = maxUses
-                      ? ((usedCount / maxUses) * 100).toFixed(0)
-                      : 0;
+        const isExpired =
+          expiresAt && new Date(expiresAt) < new Date();
+        const isExhausted = maxUses && usedCount >= maxUses;
+        const usagePercent = maxUses
+          ? ((usedCount / maxUses) * 100).toFixed(0)
+          : 0;
 
-                    return `
+        return `
                     <tr>
                         <td><strong>${coupon.code}</strong></td>
                         <td>${coupon.description || ""}</td>
                         <td>
-                            ${
-                              discountType === "percentage"
-                                ? '<span class="badge info">Porcentaje</span>'
-                                : '<span class="badge primary">Fijo</span>'
-                            }
+                            ${discountType === "percentage"
+            ? '<span class="badge info">Porcentaje</span>'
+            : '<span class="badge primary">Fijo</span>'
+          }
                         </td>
                         <td>
                             <strong>${discountType === "percentage" ? discountValue + "%" : "$" + parseFloat(discountValue).toFixed(2)}</strong>
@@ -2124,15 +2207,14 @@ function renderCouponsTable(coupons) {
                         <td>
                             <div style="font-size: 0.875rem;">
                                 ${usedCount} / ${maxUses || "∞"}
-                                ${
-                                  maxUses
-                                    ? `
+                                ${maxUses
+            ? `
                                 <div style="background: #e5e7eb; border-radius: 4px; height: 4px; margin-top: 4px;">
                                     <div style="background: ${usagePercent >= 90 ? "#ef4444" : "#10b981"}; width: ${usagePercent}%; height: 100%; border-radius: 4px;"></div>
                                 </div>
                                 `
-                                    : ""
-                                }
+            : ""
+          }
                             </div>
                         </td>
                         <td>
@@ -2140,15 +2222,14 @@ function renderCouponsTable(coupons) {
                             ${isExpired ? '<br><span class="badge" style="background: #ef4444;">Expirado</span>' : ""}
                         </td>
                         <td>
-                            ${
-                              !coupon.active
-                                ? '<span class="badge" style="background: #6b7280;">Inactivo</span>'
-                                : isExpired
-                                  ? '<span class="badge" style="background: #ef4444;">Expirado</span>'
-                                  : isExhausted
-                                    ? '<span class="badge" style="background: #f59e0b;">Agotado</span>'
-                                    : '<span class="badge success">Activo</span>'
-                            }
+                            ${!coupon.active
+            ? '<span class="badge" style="background: #6b7280;">Inactivo</span>'
+            : isExpired
+              ? '<span class="badge" style="background: #ef4444;">Expirado</span>'
+              : isExhausted
+                ? '<span class="badge" style="background: #f59e0b;">Agotado</span>'
+                : '<span class="badge success">Activo</span>'
+          }
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="editCoupon(${coupon.id})" title="Editar">
@@ -2165,8 +2246,8 @@ function renderCouponsTable(coupons) {
                         </td>
                     </tr>
                 `;
-                  })
-                  .join("")}
+      })
+      .join("")}
             </tbody>
         </table>
     `;
@@ -2186,12 +2267,26 @@ function openCouponModal(coupon = null) {
       : ""
     : "";
 
-  const modalHTML = `
+  function openCouponModal(coupon = null) {
+    document.getElementById("couponModal")?.remove();
+
+    const discountType = coupon ? coupon.discount_type || coupon.type : "percentage";
+    const discountValue = coupon ? coupon.discount_value || coupon.value : "";
+    const minPurchase = coupon ? coupon.min_purchase || coupon.minPurchase || "" : "";
+    const maxUses = coupon ? coupon.max_uses || coupon.usageLimit || "" : "";
+    const expiresAtRaw = coupon ? coupon.expires_at || coupon.expiresAt : "";
+    const expiresAt = expiresAtRaw
+      ? typeof expiresAtRaw === "string"
+        ? expiresAtRaw.split("T")[0]
+        : ""
+      : "";
+
+    const modalHTML = `
     <div class="modal show" id="couponModal">
-      <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-content" style="max-width: 550px;">
         <div class="modal-header">
-          <h3>${coupon ? "Editar Cupón" : "Nuevo Cupón"}</h3>
-          <button class="modal-close" onclick="document.getElementById('couponModal').remove()">&times;</button>
+          <h3 class="modal-title">${coupon ? "Editar Cupón" : "Nuevo Cupón"}</h3>
+          <button class="modal-close" onclick="closeModal('couponModal')">&times;</button>
         </div>
         <div class="modal-body">
           <form id="couponForm">
@@ -2200,22 +2295,22 @@ function openCouponModal(coupon = null) {
             <div class="form-group">
               <label>Código del Cupón *</label>
               <input type="text" id="couponCode" value="${coupon ? coupon.code : ""}"
-                     required maxlength="20" placeholder="VERANO2024"
-                     style="text-transform: uppercase;">
+                     required maxlength="20" placeholder="Ej: VERANO2024"
+                     style="text-transform: uppercase; font-weight: 700; letter-spacing: 0.1em; color: var(--brown-dark);">
             </div>
 
             <div class="form-group">
               <label>Descripción *</label>
               <input type="text" id="couponDescription" value="${coupon ? coupon.description || "" : ""}"
-                     required placeholder="Descuento de verano">
+                     required placeholder="Ej: Descuento de temporada">
             </div>
 
             <div class="form-row">
               <div class="form-group">
-                <label>Tipo de Descuento *</label>
+                <label>Tipo de Descuento</label>
                 <select id="couponType" required>
-                  <option value="percentage" ${discountType === "percentage" ? "selected" : ""}>Porcentaje</option>
-                  <option value="fixed" ${discountType === "fixed" ? "selected" : ""}>Monto Fijo</option>
+                  <option value="percentage" ${discountType === "percentage" ? "selected" : ""}>Porcentaje (%)</option>
+                  <option value="fixed" ${discountType === "fixed" ? "selected" : ""}>Monto Fijo ($)</option>
                 </select>
               </div>
               <div class="form-group">
@@ -2229,13 +2324,12 @@ function openCouponModal(coupon = null) {
               <div class="form-group">
                 <label>Compra Mínima ($)</label>
                 <input type="number" id="couponMinPurchase" value="${minPurchase}"
-                       min="0" step="0.01" placeholder="50">
+                       min="0" step="0.01" placeholder="0">
               </div>
               <div class="form-group">
-                <label>Límite de Uso</label>
+                <label>Límite de Usos</label>
                 <input type="number" id="couponUsageLimit" value="${maxUses}"
-                       min="1" placeholder="100">
-                <small>Dejar vacío para uso ilimitado</small>
+                       min="1" placeholder="Ilimitado">
               </div>
             </div>
 
@@ -2244,23 +2338,20 @@ function openCouponModal(coupon = null) {
               <input type="date" id="couponExpiresAt"
                      value="${expiresAt}"
                      min="${new Date().toISOString().split("T")[0]}">
-              <small>Dejar vacío para sin expiración</small>
+              <small style="color: var(--gray); margin-top: 0.25rem; display: block;">Dejar vacío para que no expire</small>
             </div>
 
-            <div class="form-group">
-              <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-                <input type="checkbox" id="couponActive"
-                       ${coupon ? (coupon.active ? "checked" : "") : "checked"}
-                       style="width: auto;">
-                <span>Cupón activo</span>
-              </label>
+            <div class="form-group checkbox" style="margin-top: 1rem; background: #f8fafc; padding: 0.75rem 1rem; border-radius: 12px; border: 1px solid #e2e8f0;">
+              <input type="checkbox" id="couponActive"
+                     ${coupon ? (coupon.active ? "checked" : "") : "checked"}
+                     style="width: 18px; height: 18px; accent-color: var(--brown-dark);">
+              <label style="margin-bottom: 0; font-weight: 500; cursor: pointer;">Este cupón está activo y puede ser usado</label>
             </div>
 
-            <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
-              <button type="button" class="btn btn-secondary"
-                      onclick="document.getElementById('couponModal').remove()">Cancelar</button>
+            <div class="modal-actions">
+              <button type="button" class="btn btn-outline" onclick="closeModal('couponModal')">Cancelar</button>
               <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save"></i> Guardar
+                <i class="fas fa-save"></i> Guardar Cupón
               </button>
             </div>
           </form>
@@ -2269,134 +2360,140 @@ function openCouponModal(coupon = null) {
     </div>
   `;
 
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-  // Agregar el submit DESPUÉS de insertar el HTML
-  document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
-}
-
-function updateCouponTypeFields() {
-  const maxDiscountGroup = document.getElementById("maxDiscountGroup");
-  if (maxDiscountGroup) {
-    const type = document.getElementById("couponType")?.value;
-    maxDiscountGroup.style.display = type === "percentage" ? "block" : "none";
+    // Agregar el submit DESPUÉS de insertar el HTML
+    document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
   }
-}
 
-async function handleCouponSubmit(e) {
-  e.preventDefault();
-
-  const id = document.getElementById("couponId").value;
-
-  const expiresAt = document.getElementById("couponExpiresAt").value;
-  const usageLimit = document.getElementById("couponUsageLimit").value;
-  const minPurchase = document.getElementById("couponMinPurchase").value;
-
-  const formData = {
-    code: document.getElementById("couponCode").value.toUpperCase(),
-    description: document.getElementById("couponDescription").value,
-    discount_type: document.getElementById("couponType").value,
-    discount_value: parseFloat(document.getElementById("couponValue").value),
-    min_purchase: minPurchase ? parseFloat(minPurchase) : 0,
-    max_uses: usageLimit ? parseInt(usageLimit) : null,
-    expires_at: expiresAt || null,
-    active: document.getElementById("couponActive").checked,
-  };
-
-  try {
-    const url = id ? `${API_URL}/coupons/${id}` : `${API_URL}/coupons`;
-    const method = id ? "PUT" : "POST";
-
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error || "Error al guardar cupón");
+  function updateCouponTypeFields() {
+    const maxDiscountGroup = document.getElementById("maxDiscountGroup");
+    if (maxDiscountGroup) {
+      const type = document.getElementById("couponType")?.value;
+      maxDiscountGroup.style.display = type === "percentage" ? "block" : "none";
     }
-
-    showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
-    closeModal("couponModal");
-    loadCoupons();
-  } catch (error) {
-    console.error("Error al guardar cupón:", error);
-    showToast(error.message || "Error al guardar cupón", "error", "Error");
   }
-}
 
-async function editCoupon(id) {
-  const coupon = coupons.find((c) => c.id === id);
-  if (coupon) {
-    openCouponModal(coupon);
-  }
-}
+  async function handleCouponSubmit(e) {
+    e.preventDefault();
 
-async function toggleCouponStatus(id) {
-  const coupon = coupons.find((c) => c.id === id);
-  if (!coupon) return;
+    const id = document.getElementById("couponId").value;
 
-  try {
-    const response = await fetch(`${API_URL}/coupons/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify({ ...coupon, active: !coupon.active }),
-    });
+    const expiresAt = document.getElementById("couponExpiresAt").value;
+    const usageLimit = document.getElementById("couponUsageLimit").value;
+    const minPurchase = document.getElementById("couponMinPurchase").value;
 
-    if (response.ok) {
-      showToast(
-        `Cupón ${!coupon.active ? "activado" : "desactivado"}`,
-        "success",
-        "Éxito",
-      );
+    const formData = {
+      code: document.getElementById("couponCode").value.toUpperCase(),
+      description: document.getElementById("couponDescription").value,
+      discount_type: document.getElementById("couponType").value,
+      discount_value: parseFloat(document.getElementById("couponValue").value),
+      min_purchase: minPurchase ? parseFloat(minPurchase) : 0,
+      max_uses: usageLimit ? parseInt(usageLimit) : null,
+      expires_at: expiresAt || null,
+      active: document.getElementById("couponActive").checked,
+    };
+
+    try {
+      const url = id ? `${API_URL}/coupons/${id}` : `${API_URL}/coupons`;
+      const method = id ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || "Error al guardar cupón");
+      }
+
+      showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
+      closeModal("couponModal");
       loadCoupons();
+    } catch (error) {
+      console.error("Error al guardar cupón:", error);
+      showToast(error.message || "Error al guardar cupón", "error", "Error");
     }
-  } catch (error) {
-    showToast("Error al cambiar estado", "error", "Error");
   }
-}
 
-async function deleteCoupon(id) {
-  if (!confirm("¿Eliminar este cupón?")) return;
+  async function editCoupon(id) {
+    const coupon = coupons.find((c) => c.id === id);
+    if (coupon) {
+      openCouponModal(coupon);
+    }
+  }
 
-  try {
-    const response = await fetch(`${API_URL}/coupons/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${currentToken}` },
+  async function toggleCouponStatus(id) {
+    const coupon = coupons.find((c) => c.id === id);
+    if (!coupon) return;
+
+    try {
+      const response = await fetch(`${API_URL}/coupons/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify({ ...coupon, active: !coupon.active }),
+      });
+
+      if (response.ok) {
+        showToast(
+          `Cupón ${!coupon.active ? "activado" : "desactivado"}`,
+          "success",
+          "Éxito",
+        );
+        loadCoupons();
+      }
+    } catch (error) {
+      showToast("Error al cambiar estado", "error", "Error");
+    }
+  }
+
+  async function deleteCoupon(id) {
+    confirmAction({
+      title: "Eliminar Cupón",
+      message: "¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.",
+      type: "danger",
+      confirmText: "Eliminar Cupón",
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`${API_URL}/coupons/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${currentToken}` },
+          });
+
+          if (response.ok) {
+            showToast("Cupón eliminado", "success", "Éxito");
+            loadCoupons();
+          }
+        } catch (error) {
+          showToast("Error al eliminar cupón", "error", "Error");
+        }
+      }
     });
+  }
 
-    if (response.ok) {
-      showToast("Cupón eliminado", "success", "Éxito");
-      loadCoupons();
+  // ========================================
+  // GESTIÓN DE PROMOCIONES
+  // ========================================
+
+  let promotions = [];
+  let allProductsForPromo = [];
+
+  async function loadPromotions() {
+    const container = document.getElementById("promociones-section");
+    if (!container) {
+      console.error("❌ Elemento promociones-section no encontrado");
+      return;
     }
-  } catch (error) {
-    showToast("Error al eliminar cupón", "error", "Error");
-  }
-}
 
-// ========================================
-// GESTIÓN DE PROMOCIONES
-// ========================================
-
-let promotions = [];
-let allProductsForPromo = [];
-
-async function loadPromotions() {
-  const container = document.getElementById("promociones-section");
-  if (!container) {
-    console.error("❌ Elemento promociones-section no encontrado");
-    return;
-  }
-
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-gift"></i> Gestión de Promociones</h2>
             <button class="btn btn-primary" onclick="openPromotionModal()">
@@ -2406,57 +2503,57 @@ async function loadPromotions() {
         <div id="promotionsTableContainer"></div>
     `;
 
-  try {
-    console.log("🎁 Cargando promociones...");
-    const [promosRes, prodsRes] = await Promise.all([
-      fetch(`${API_URL}/promotions`),
-      fetch(`${API_URL}/products?includeInactive=true&includeOutOfStock=true`),
-    ]);
+    try {
+      console.log("🎁 Cargando promociones...");
+      const [promosRes, prodsRes] = await Promise.all([
+        fetch(`${API_URL}/promotions`),
+        fetch(`${API_URL}/products?includeInactive=true&includeOutOfStock=true`),
+      ]);
 
-    if (!promosRes.ok || !prodsRes.ok) {
-      throw new Error(
-        `HTTP Error: promos=${promosRes.status}, prods=${prodsRes.status}`,
-      );
-    }
+      if (!promosRes.ok || !prodsRes.ok) {
+        throw new Error(
+          `HTTP Error: promos=${promosRes.status}, prods=${prodsRes.status}`,
+        );
+      }
 
-    promotions = await promosRes.json();
-    allProductsForPromo = await prodsRes.json();
-    console.log("✅ Promociones cargadas:", promotions.length);
-    console.log("✅ Productos cargados:", allProductsForPromo.length);
-    renderPromotionsTable(promotions);
-  } catch (error) {
-    console.error("❌ Error al cargar promociones:", error);
-    showToast("Error al cargar promociones", "error", "Error");
-    const tableContainer = document.getElementById("promotionsTableContainer");
-    if (tableContainer) {
-      tableContainer.innerHTML = `
+      promotions = await promosRes.json();
+      allProductsForPromo = await prodsRes.json();
+      console.log("✅ Promociones cargadas:", promotions.length);
+      console.log("✅ Productos cargados:", allProductsForPromo.length);
+      renderPromotionsTable(promotions);
+    } catch (error) {
+      console.error("❌ Error al cargar promociones:", error);
+      showToast("Error al cargar promociones", "error", "Error");
+      const tableContainer = document.getElementById("promotionsTableContainer");
+      if (tableContainer) {
+        tableContainer.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444;"></i>
                     <p>Error al cargar promociones</p>
                     <button class="btn btn-primary" onclick="loadPromotions()">Reintentar</button>
                 </div>
             `;
+      }
     }
   }
-}
 
-function renderPromotionsTable(promotions) {
-  const container = document.getElementById("promotionsTableContainer");
+  function renderPromotionsTable(promotions) {
+    const container = document.getElementById("promotionsTableContainer");
 
-  if (promotions.length === 0) {
-    container.innerHTML = `
+    if (promotions.length === 0) {
+      container.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-gift" style="font-size: 3rem; color: #ccc;"></i>
                 <p>No hay promociones creadas</p>
                 <button class="btn btn-primary" onclick="openPromotionModal()">Crear Primera Promoción</button>
             </div>
         `;
-    return;
-  }
+      return;
+    }
 
-  const now = new Date();
+    const now = new Date();
 
-  container.innerHTML = `
+    container.innerHTML = `
         <table class="data-table">
             <thead>
                 <tr>
@@ -2470,25 +2567,25 @@ function renderPromotionsTable(promotions) {
             </thead>
             <tbody>
                 ${promotions
-                  .map((promo) => {
-                    const isActive =
-                      promo.active &&
-                      new Date(promo.start_date || promo.startDate) <= now &&
-                      new Date(promo.end_date || promo.endDate) >= now;
+        .map((promo) => {
+          const isActive =
+            promo.active &&
+            new Date(promo.start_date || promo.startDate) <= now &&
+            new Date(promo.end_date || promo.endDate) >= now;
 
-                    const typeLabels = {
-                      all: "Todos los productos",
-                      products: "Productos específicos",
-                      categories: "Por categoría",
-                    };
+          const typeLabels = {
+            all: "Todos los productos",
+            products: "Productos específicos",
+            categories: "Por categoría",
+          };
 
-                    const discountType =
-                      promo.discount_type || promo.discountType;
-                    const discountValue =
-                      promo.discount_value || promo.discountValue;
-                    const appliesTo = promo.applies_to || promo.type || "all";
+          const discountType =
+            promo.discount_type || promo.discountType;
+          const discountValue =
+            promo.discount_value || promo.discountValue;
+          const appliesTo = promo.applies_to || promo.type || "all";
 
-                    return `
+          return `
                     <tr>
                         <td>
                             <strong>${promo.name}</strong>
@@ -2505,13 +2602,12 @@ function renderPromotionsTable(promotions) {
                             </small>
                         </td>
                         <td>
-                            ${
-                              isActive
-                                ? '<span class="badge success">Activa</span>'
-                                : promo.active
-                                  ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
-                                  : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
-                            }
+                            ${isActive
+              ? '<span class="badge success">Activa</span>'
+              : promo.active
+                ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
+                : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
+            }
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="editPromotion(${promo.id})">
@@ -2523,42 +2619,43 @@ function renderPromotionsTable(promotions) {
                         </td>
                     </tr>
                 `;
-                  })
-                  .join("")}
+        })
+        .join("")}
             </tbody>
         </table>
     `;
-}
+  }
 
-function openPromotionModal(promo = null) {
-  const discountType = promo ? promo.discount_type || promo.discountType : "";
-  const discountValue = promo
-    ? promo.discount_value || promo.discountValue
-    : "";
-  const appliesTo = promo ? promo.applies_to || promo.type : "all";
-  const startDateRaw = promo ? promo.start_date || promo.startDate : "";
-  const endDateRaw = promo ? promo.end_date || promo.endDate : "";
+  function openPromotionModal(promo = null) {
+    const discountType = promo ? promo.discount_type || promo.discountType : "";
+    const discountValue = promo
+      ? promo.discount_value || promo.discountValue
+      : "";
+    const appliesTo = promo ? promo.applies_to || promo.type : "all";
+    const startDateRaw = promo ? promo.start_date || promo.startDate : "";
+    const endDateRaw = promo ? promo.end_date || promo.endDate : "";
 
-  // Asegurar que las fechas son strings antes de usar split
-  const startDate = startDateRaw
-    ? typeof startDateRaw === "string"
-      ? startDateRaw.split("T")[0]
-      : ""
-    : "";
-  const endDate = endDateRaw
-    ? typeof endDateRaw === "string"
-      ? endDateRaw.split("T")[0]
-      : ""
-    : "";
+    // Asegurar que las fechas son strings antes de usar split
+    const startDate = startDateRaw
+      ? typeof startDateRaw === "string"
+        ? startDateRaw.split("T")[0]
+        : ""
+      : "";
+    const endDate = endDateRaw
+      ? typeof endDateRaw === "string"
+        ? endDateRaw.split("T")[0]
+        : ""
+      : "";
 
-  const modalHTML = `
+    const modalHTML = `
         <div class="modal show" id="promotionModal">
-            <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-content" style="max-width: 650px;">
                 <div class="modal-header">
-                    <h3>${promo ? "Editar Promoción" : "Nueva Promoción"}</h3>
+                    <h3 class="modal-title">${promo ? "Editar Promoción" : "Nueva Promoción"}</h3>
                     <button class="modal-close" onclick="closeModal('promotionModal')">&times;</button>
                 </div>
-                <form id="promotionForm" onsubmit="handlePromotionSubmit(event)">
+                <div class="modal-body">
+                    <form id="promotionForm" onsubmit="handlePromotionSubmit(event)">
                     <input type="hidden" id="promoId" value="${promo ? promo.id : ""}">
                     
                     <div class="form-group">
@@ -2601,14 +2698,14 @@ function openPromotionModal(promo = null) {
                         <label>Seleccionar Productos</label>
                         <select id="promoProducts" multiple style="height: 150px;">
                             ${allProductsForPromo
-                              .map(
-                                (p) => `
+        .map(
+          (p) => `
                                 <option value="${p.id}" ${promo?.product_ids?.includes(p.id) ? "selected" : ""}>
                                     ${p.name}
                                 </option>
                             `,
-                              )
-                              .join("")}
+        )
+        .join("")}
                         </select>
                         <small>Mantén Ctrl (Cmd en Mac) para seleccionar múltiples</small>
                     </div>
@@ -2617,18 +2714,18 @@ function openPromotionModal(promo = null) {
                         <label>Seleccionar Categorías</label>
                         <select id="promoCategories" multiple style="height: 100px;">
                             ${[
-                              ...new Set(
-                                allProductsForPromo.map((p) => p.category),
-                              ),
-                            ]
-                              .map(
-                                (cat) => `
+        ...new Set(
+          allProductsForPromo.map((p) => p.category),
+        ),
+      ]
+        .map(
+          (cat) => `
                                 <option value="${cat}" ${promo?.category_ids?.includes(cat) ? "selected" : ""}>
                                     ${cat}
                                 </option>
                             `,
-                              )
-                              .join("")}
+        )
+        .join("")}
                         </select>
                     </div>
                     
@@ -2658,132 +2755,139 @@ function openPromotionModal(promo = null) {
                     </div>
                     
                     <div class="modal-actions">
-                        <button type="button" class="btn btn-secondary" onclick="closeModal('promotionModal')">Cancelar</button>
+                        <button type="button" class="btn btn-outline" onclick="closeModal('promotionModal')">Cancelar</button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar
+                            <i class="fas fa-save"></i> Guardar Promoción
                         </button>
                     </div>
                 </form>
             </div>
+            </div>
         </div>
     `;
 
-  document.body.insertAdjacentHTML("beforeend", modalHTML);
-  updatePromoTypeFields();
-}
-
-function updatePromoTypeFields() {
-  const type = document.getElementById("promoType").value;
-  document.getElementById("productSelectGroup").style.display =
-    type === "product" ? "block" : "none";
-  document.getElementById("categorySelectGroup").style.display =
-    type === "category" ? "block" : "none";
-}
-
-async function handlePromotionSubmit(e) {
-  e.preventDefault();
-
-  const id = document.getElementById("promoId").value;
-  const type = document.getElementById("promoType").value;
-
-  const formData = {
-    name: document.getElementById("promoName").value,
-    description: document.getElementById("promoDescription").value,
-    // Snake_case para el backend
-    discount_type: document.getElementById("promoDiscountType").value,
-    discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
-    applies_to: type,
-    start_date: document.getElementById("promoStartDate").value,
-    end_date: document.getElementById("promoEndDate").value,
-    active: document.getElementById("promoActive").checked,
-  };
-
-  if (type === "products") {
-    const selected = Array.from(
-      document.getElementById("promoProducts").selectedOptions,
-    );
-    formData.product_ids = selected.map((opt) => parseInt(opt.value));
-  } else if (type === "categories") {
-    const selected = Array.from(
-      document.getElementById("promoCategories").selectedOptions,
-    );
-    formData.category_ids = selected.map((opt) => opt.value);
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
+    updatePromoTypeFields();
   }
 
-  try {
-    const url = id ? `${API_URL}/promotions/${id}` : `${API_URL}/promotions`;
-    const method = id ? "PUT" : "POST";
+  function updatePromoTypeFields() {
+    const type = document.getElementById("promoType").value;
+    document.getElementById("productSelectGroup").style.display =
+      type === "product" ? "block" : "none";
+    document.getElementById("categorySelectGroup").style.display =
+      type === "category" ? "block" : "none";
+  }
 
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(formData),
-    });
+  async function handlePromotionSubmit(e) {
+    e.preventDefault();
 
-    if (!response.ok) {
-      const errData = await response.json().catch(() => ({}));
-      throw new Error(errData.error || "Error al guardar");
+    const id = document.getElementById("promoId").value;
+    const type = document.getElementById("promoType").value;
+
+    const formData = {
+      name: document.getElementById("promoName").value,
+      description: document.getElementById("promoDescription").value,
+      // Snake_case para el backend
+      discount_type: document.getElementById("promoDiscountType").value,
+      discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
+      applies_to: type,
+      start_date: document.getElementById("promoStartDate").value,
+      end_date: document.getElementById("promoEndDate").value,
+      active: document.getElementById("promoActive").checked,
+    };
+
+    if (type === "products") {
+      const selected = Array.from(
+        document.getElementById("promoProducts").selectedOptions,
+      );
+      formData.product_ids = selected.map((opt) => parseInt(opt.value));
+    } else if (type === "categories") {
+      const selected = Array.from(
+        document.getElementById("promoCategories").selectedOptions,
+      );
+      formData.category_ids = selected.map((opt) => opt.value);
     }
 
-    showToast(
-      id ? "Promoción actualizada" : "Promoción creada",
-      "success",
-      "Éxito",
-    );
-    closeModal("promotionModal");
-    loadPromotions();
-  } catch (error) {
-    console.error("Error al guardar promoción:", error);
-    showToast(error.message || "Error al guardar promoción", "error", "Error");
-  }
-}
-async function editPromotion(id) {
-  const promo = promotions.find((p) => p.id === id);
-  if (promo) {
-    openPromotionModal(promo);
-  }
-}
+    try {
+      const url = id ? `${API_URL}/promotions/${id}` : `${API_URL}/promotions`;
+      const method = id ? "PUT" : "POST";
 
-async function deletePromotion(id) {
-  if (!confirm("¿Eliminar esta promoción?")) return;
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
-  try {
-    const response = await fetch(`${API_URL}/promotions/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${currentToken}` },
-    });
+      if (!response.ok) {
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || "Error al guardar");
+      }
 
-    if (response.ok) {
-      showToast("Promoción eliminada", "success", "Éxito");
+      showToast(
+        id ? "Promoción actualizada" : "Promoción creada",
+        "success",
+        "Éxito",
+      );
+      closeModal("promotionModal");
       loadPromotions();
+    } catch (error) {
+      console.error("Error al guardar promoción:", error);
+      showToast(error.message || "Error al guardar promoción", "error", "Error");
     }
-  } catch (error) {
-    showToast("Error al eliminar", "error", "Error");
   }
-}
+  async function editPromotion(id) {
+    const promo = promotions.find((p) => p.id === id);
+    if (promo) {
+      openPromotionModal(promo);
+    }
+  }
 
-// ========================================
-// ANALYTICS
-// ========================================
+  async function deletePromotion(id) {
+    confirmAction({
+      title: "Eliminar Promoción",
+      message: "¿Estás seguro de que deseas eliminar esta promoción?",
+      type: "danger",
+      confirmText: "Eliminar",
+      onConfirm: async () => {
+        try {
+          const response = await fetch(`${API_URL}/promotions/${id}`, {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${currentToken}` },
+          });
 
-function loadAnalytics() {
-  const container = document.getElementById("analytics-section");
-  if (!container) return;
+          if (response.ok) {
+            showToast("Promoción eliminada", "success", "Éxito");
+            loadPromotions();
+          }
+        } catch (error) {
+          showToast("Error al eliminar", "error", "Error");
+        }
+      }
+    });
+  }
 
-  const orders = state.orders || [];
-  const products = state.products || [];
+  // ========================================
+  // ANALYTICS
+  // ========================================
 
-  // Calcular métricas
-  const totalRevenue = orders
-    .filter((o) => o.status !== "cancelled")
-    .reduce((sum, o) => sum + (o.total || 0), 0);
+  function loadAnalytics() {
+    const container = document.getElementById("analytics-section");
+    if (!container) return;
 
-  const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+    const orders = state.orders || [];
+    const products = state.products || [];
 
-  container.innerHTML = `
+    // Calcular métricas
+    const totalRevenue = orders
+      .filter((o) => o.status !== "cancelled")
+      .reduce((sum, o) => sum + (o.total || 0), 0);
+
+    const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-chart-line"></i> Analytics</h2>
         </div>
@@ -2832,53 +2936,52 @@ function loadAnalytics() {
             </div>
         </div>
     `;
-}
+  }
 
-// ========================================
-// CLIENTES
-// ========================================
+  // ========================================
+  // CLIENTES
+  // ========================================
 
-function loadClientes() {
-  const container = document.getElementById("clientes-section");
-  if (!container) return;
+  function loadClientes() {
+    const container = document.getElementById("clientes-section");
+    if (!container) return;
 
-  const orders = state.orders || [];
+    const orders = state.orders || [];
 
-  // Agrupar por cliente
-  const clientesMap = {};
-  orders.forEach((order) => {
-    const email = order.customerEmail || order.userEmail;
-    if (email) {
-      if (!clientesMap[email]) {
-        clientesMap[email] = {
-          name: order.customerName || order.userName,
-          email: email,
-          phone: order.customerPhone || "N/A",
-          orders: 0,
-          total: 0,
-        };
+    // Agrupar por cliente
+    const clientesMap = {};
+    orders.forEach((order) => {
+      const email = order.customerEmail || order.userEmail;
+      if (email) {
+        if (!clientesMap[email]) {
+          clientesMap[email] = {
+            name: order.customerName || order.userName,
+            email: email,
+            phone: order.customerPhone || "N/A",
+            orders: 0,
+            total: 0,
+          };
+        }
+        clientesMap[email].orders++;
+        clientesMap[email].total += order.total || 0;
       }
-      clientesMap[email].orders++;
-      clientesMap[email].total += order.total || 0;
-    }
-  });
+    });
 
-  const clientes = Object.values(clientesMap);
+    const clientes = Object.values(clientesMap);
 
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-users"></i> Clientes</h2>
         </div>
         
-        ${
-          clientes.length === 0
-            ? `
+        ${clientes.length === 0
+        ? `
             <div class="empty-state">
                 <i class="fas fa-users" style="font-size: 3rem; color: #ccc;"></i>
                 <p>No hay clientes registrados aún</p>
             </div>
         `
-            : `
+        : `
             <table class="data-table">
                 <thead>
                     <tr>
@@ -2891,8 +2994,8 @@ function loadClientes() {
                 </thead>
                 <tbody>
                     ${clientes
-                      .map(
-                        (cliente) => `
+          .map(
+            (cliente) => `
                         <tr>
                             <td><strong>${cliente.name}</strong></td>
                             <td>${cliente.email}</td>
@@ -2901,31 +3004,31 @@ function loadClientes() {
                             <td><strong>$${parseFloat(cliente.total || 0).toFixed(2)}</strong></td>
                         </tr>
                     `,
-                      )
-                      .join("")}
+          )
+          .join("")}
                 </tbody>
             </table>
         `
-        }
+      }
     `;
-}
+  }
 
-// ========================================
-// REPORTES
-// ========================================
+  // ========================================
+  // REPORTES
+  // ========================================
 
-function loadReportes() {
-  const container = document.getElementById("reportes-section");
-  if (!container) return;
+  function loadReportes() {
+    const container = document.getElementById("reportes-section");
+    if (!container) return;
 
-  const orders = state.orders || [];
-  const products = state.products || [];
+    const orders = state.orders || [];
+    const products = state.products || [];
 
-  const completedOrders = orders.filter((o) => o.status === "completed").length;
-  const pendingOrders = orders.filter((o) => o.status === "pending").length;
-  const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
+    const completedOrders = orders.filter((o) => o.status === "completed").length;
+    const pendingOrders = orders.filter((o) => o.status === "pending").length;
+    const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
 
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-file-alt"></i> Reportes</h2>
             <div style="display: flex; gap: 1rem;">
@@ -2984,13 +3087,13 @@ function loadReportes() {
             </div>
         </div>
     `;
-}
+  }
 
-// Función para imprimir reporte
-function imprimirReporte() {
-  const contenido = document.getElementById("reporteContenido").innerHTML;
-  const ventana = window.open("", "_blank");
-  ventana.document.write(`
+  // Función para imprimir reporte
+  function imprimirReporte() {
+    const contenido = document.getElementById("reporteContenido").innerHTML;
+    const ventana = window.open("", "_blank");
+    ventana.document.write(`
         <html>
             <head>
                 <title>Reporte - CNC CAMPAS Pro</title>
@@ -3011,65 +3114,65 @@ function imprimirReporte() {
             </body>
         </html>
     `);
-  ventana.document.close();
-  ventana.print();
-}
+    ventana.document.close();
+    ventana.print();
+  }
 
-// Función para descargar Excel
-function descargarReporteExcel() {
-  const orders = state.orders || [];
-  const products = state.products || [];
+  // Función para descargar Excel
+  function descargarReporteExcel() {
+    const orders = state.orders || [];
+    const products = state.products || [];
 
-  let csv = "Reporte de Gestión - CNC CAMPAS Pro\n\n";
-  csv += "RESUMEN DE PEDIDOS\n";
-  csv += "Estado,Cantidad\n";
-  csv += `Completados,${orders.filter((o) => o.status === "completed").length}\n`;
-  csv += `Pendientes,${orders.filter((o) => o.status === "pending").length}\n`;
-  csv += `Cancelados,${orders.filter((o) => o.status === "cancelled").length}\n\n`;
+    let csv = "Reporte de Gestión - CNC CAMPAS Pro\n\n";
+    csv += "RESUMEN DE PEDIDOS\n";
+    csv += "Estado,Cantidad\n";
+    csv += `Completados,${orders.filter((o) => o.status === "completed").length}\n`;
+    csv += `Pendientes,${orders.filter((o) => o.status === "pending").length}\n`;
+    csv += `Cancelados,${orders.filter((o) => o.status === "cancelled").length}\n\n`;
 
-  csv += "ESTADO DEL INVENTARIO\n";
-  csv += "Categoría,Cantidad\n";
-  csv += `Total Productos,${products.length}\n`;
-  csv += `Stock Bajo,${products.filter((p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0).length}\n`;
-  csv += `Sin Stock,${products.filter((p) => p.stock === 0).length}\n`;
+    csv += "ESTADO DEL INVENTARIO\n";
+    csv += "Categoría,Cantidad\n";
+    csv += `Total Productos,${products.length}\n`;
+    csv += `Stock Bajo,${products.filter((p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0).length}\n`;
+    csv += `Sin Stock,${products.filter((p) => p.stock === 0).length}\n`;
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = `reporte_${new Date().toISOString().split("T")[0]}.csv`;
-  link.click();
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `reporte_${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
 
-  showToast("Reporte descargado exitosamente", "success", "Éxito");
-}
+    showToast("Reporte descargado exitosamente", "success", "Éxito");
+  }
 
-// ========================================
-// VENTAS
-// ========================================
+  // ========================================
+  // VENTAS
+  // ========================================
 
-function loadVentas() {
-  const container = document.getElementById("ventas-section");
-  if (!container) return;
+  function loadVentas() {
+    const container = document.getElementById("ventas-section");
+    if (!container) return;
 
-  const orders = state.orders || [];
+    const orders = state.orders || [];
 
-  // Agrupar por fecha
-  const ventasPorDia = {};
-  orders.forEach((order) => {
-    if (order.status !== "cancelled") {
-      const fecha = new Date(
-        order.created_at || order.createdAt,
-      ).toLocaleDateString();
-      if (!ventasPorDia[fecha]) {
-        ventasPorDia[fecha] = { cantidad: 0, total: 0 };
+    // Agrupar por fecha
+    const ventasPorDia = {};
+    orders.forEach((order) => {
+      if (order.status !== "cancelled") {
+        const fecha = new Date(
+          order.created_at || order.createdAt,
+        ).toLocaleDateString();
+        if (!ventasPorDia[fecha]) {
+          ventasPorDia[fecha] = { cantidad: 0, total: 0 };
+        }
+        ventasPorDia[fecha].cantidad++;
+        ventasPorDia[fecha].total += order.total || 0;
       }
-      ventasPorDia[fecha].cantidad++;
-      ventasPorDia[fecha].total += order.total || 0;
-    }
-  });
+    });
 
-  const dias = Object.keys(ventasPorDia).slice(-7); // Últimos 7 días
+    const dias = Object.keys(ventasPorDia).slice(-7); // Últimos 7 días
 
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-chart-bar"></i> Análisis de Ventas</h2>
         </div>
@@ -3079,15 +3182,14 @@ function loadVentas() {
                 <h3>Ventas de los Últimos 7 Días</h3>
             </div>
             <div style="padding: 2rem;">
-                ${
-                  dias.length === 0
-                    ? `
+                ${dias.length === 0
+        ? `
                     <div style="text-align: center; padding: 3rem; color: #6b7280;">
                         <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                         <p>No hay ventas registradas aún</p>
                     </div>
                 `
-                    : `
+        : `
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -3099,10 +3201,10 @@ function loadVentas() {
                         </thead>
                         <tbody>
                             ${dias
-                              .map((dia) => {
-                                const datos = ventasPorDia[dia];
-                                const promedio = datos.total / datos.cantidad;
-                                return `
+          .map((dia) => {
+            const datos = ventasPorDia[dia];
+            const promedio = datos.total / datos.cantidad;
+            return `
                                     <tr>
                                         <td><strong>${dia}</strong></td>
                                         <td><span class="badge info">${datos.cantidad}</span></td>
@@ -3110,41 +3212,40 @@ function loadVentas() {
                                         <td>$${parseFloat(promedio || 0).toFixed(2)}</td>
                                     </tr>
                                 `;
-                              })
-                              .join("")}
+          })
+          .join("")}
                         </tbody>
                     </table>
                 `
-                }
+      }
             </div>
         </div>
     `;
-}
+  }
 
-// ========================================
-// INVENTARIO
-// ========================================
+  // ========================================
+  // INVENTARIO
+  // ========================================
 
-function loadInventario() {
-  const container = document.getElementById("inventario-section");
-  if (!container) return;
+  function loadInventario() {
+    const container = document.getElementById("inventario-section");
+    if (!container) return;
 
-  const products = state.products || [];
+    const products = state.products || [];
 
-  const lowStock = products.filter(
-    (p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0,
-  );
-  const outOfStock = products.filter((p) => p.stock === 0);
+    const lowStock = products.filter(
+      (p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0,
+    );
+    const outOfStock = products.filter((p) => p.stock === 0);
 
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-warehouse"></i> Control de Inventario</h2>
         </div>
         
         <div style="display: grid; gap: 1.5rem;">
-            ${
-              lowStock.length > 0
-                ? `
+            ${lowStock.length > 0
+        ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Productos con Stock Bajo</h3>
@@ -3160,8 +3261,8 @@ function loadInventario() {
                         </thead>
                         <tbody>
                             ${lowStock
-                              .map(
-                                (p) => `
+          .map(
+            (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge" style="background: #f59e0b;">${p.stock}</span></td>
@@ -3169,18 +3270,17 @@ function loadInventario() {
                                     <td><span class="badge" style="background: #f59e0b;">⚠️ Stock Bajo</span></td>
                                 </tr>
                             `,
-                              )
-                              .join("")}
+          )
+          .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-                : ""
-            }
+        : ""
+      }
             
-            ${
-              outOfStock.length > 0
-                ? `
+            ${outOfStock.length > 0
+        ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #ef4444;"><i class="fas fa-times-circle"></i> Productos Sin Stock</h3>
@@ -3195,26 +3295,25 @@ function loadInventario() {
                         </thead>
                         <tbody>
                             ${outOfStock
-                              .map(
-                                (p) => `
+          .map(
+            (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge info">${p.category}</span></td>
                                     <td><span class="badge" style="background: #ef4444;">❌ Sin Stock</span></td>
                                 </tr>
                             `,
-                              )
-                              .join("")}
+          )
+          .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-                : ""
-            }
+        : ""
+      }
             
-            ${
-              lowStock.length === 0 && outOfStock.length === 0
-                ? `
+            ${lowStock.length === 0 && outOfStock.length === 0
+        ? `
                 <div class="card">
                     <div style="padding: 3rem; text-align: center;">
                         <i class="fas fa-check-circle" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"></i>
@@ -3225,27 +3324,27 @@ function loadInventario() {
                     </div>
                 </div>
             `
-                : ""
-            }
+        : ""
+      }
         </div>
     `;
-}
+  }
 
-// Hacer las funciones globales
-window.previewProductImage = previewProductImage;
-window.clearImagePreview = clearImagePreview;
+  // Hacer las funciones globales
+  window.previewProductImage = previewProductImage;
+  window.clearImagePreview = clearImagePreview;
 
-console.log("✅ Sistema de upload de imágenes cargado");
+  console.log("✅ Sistema de upload de imágenes cargado");
 
-// ========================================
-// AJUSTES DEL SISTEMA
-// ========================================
+  // ========================================
+  // AJUSTES DEL SISTEMA
+  // ========================================
 
-function loadAjustes() {
-  const container = document.getElementById("ajustes-section");
-  if (!container) return;
+  function loadAjustes() {
+    const container = document.getElementById("ajustes-section");
+    if (!container) return;
 
-  container.innerHTML = `
+    container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-cog"></i> Configuración del Sistema</h2>
         </div>
@@ -3449,100 +3548,110 @@ function loadAjustes() {
             </div>
         </div>
     `;
-}
-
-// Funciones de guardado de ajustes
-function saveStoreInfo() {
-  const data = {
-    name: document.getElementById("storeName").value,
-    email: document.getElementById("storeEmail").value,
-    phone: document.getElementById("storePhone").value,
-    address: document.getElementById("storeAddress").value,
-  };
-  console.log("Guardando info de tienda:", data);
-  showToast("Información de tienda guardada", "success", "Éxito");
-}
-
-function saveShippingSettings() {
-  const data = {
-    cost: document.getElementById("shippingCost").value,
-    freeMin: document.getElementById("freeShippingMin").value,
-    deliveryTime: document.getElementById("deliveryTime").value,
-    enabled: document.getElementById("enableShipping").checked,
-  };
-  console.log("Guardando ajustes de envío:", data);
-  showToast("Configuración de envíos guardada", "success", "Éxito");
-}
-
-function savePaymentMethods() {
-  const data = {
-    creditCard: document.getElementById("enableCreditCard").checked,
-    transfer: document.getElementById("enableTransfer").checked,
-    paypal: document.getElementById("enablePayPal").checked,
-    cash: document.getElementById("enableCash").checked,
-  };
-  console.log("Guardando métodos de pago:", data);
-  showToast("Métodos de pago guardados", "success", "Éxito");
-}
-
-function saveTaxSettings() {
-  const data = {
-    rate: document.getElementById("taxRate").value,
-    included: document.getElementById("taxIncluded").checked,
-  };
-  console.log("Guardando ajustes de impuestos:", data);
-  showToast("Configuración de impuestos guardada", "success", "Éxito");
-}
-
-function saveNotificationSettings() {
-  const data = {
-    email: document.getElementById("notificationEmail").value,
-    newOrder: document.getElementById("notifyNewOrder").checked,
-    lowStock: document.getElementById("notifyLowStock").checked,
-    newUser: document.getElementById("notifyNewUser").checked,
-  };
-  console.log("Guardando ajustes de notificaciones:", data);
-  showToast("Configuración de notificaciones guardada", "success", "Éxito");
-}
-
-function clearCache() {
-  if (confirm("¿Limpiar el caché del sistema?")) {
-    showToast("Caché limpiado", "success", "Éxito");
   }
-}
 
-function exportDatabase() {
-  showToast("Exportando base de datos...", "info", "Procesando");
-  setTimeout(() => {
-    showToast("Base de datos exportada", "success", "Éxito");
-  }, 2000);
-}
-
-function confirmReset() {
-  if (
-    confirm(
-      "⚠️ ADVERTENCIA: Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
-    )
-  ) {
-    if (
-      confirm(
-        "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
-      )
-    ) {
-      showToast("Sistema reseteado", "success", "Completado");
-    }
+  // Funciones de guardado de ajustes
+  function saveStoreInfo() {
+    const data = {
+      name: document.getElementById("storeName").value,
+      email: document.getElementById("storeEmail").value,
+      phone: document.getElementById("storePhone").value,
+      address: document.getElementById("storeAddress").value,
+    };
+    console.log("Guardando info de tienda:", data);
+    showToast("Información de tienda guardada", "success", "Éxito");
   }
-}
 
-// ========================================
-// SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
-// ========================================
+  function saveShippingSettings() {
+    const data = {
+      cost: document.getElementById("shippingCost").value,
+      freeMin: document.getElementById("freeShippingMin").value,
+      deliveryTime: document.getElementById("deliveryTime").value,
+      enabled: document.getElementById("enableShipping").checked,
+    };
+    console.log("Guardando ajustes de envío:", data);
+    showToast("Configuración de envíos guardada", "success", "Éxito");
+  }
 
-async function loadAboutAdmin() {
-  const container = document.getElementById("about-section");
-  if (!container) return;
+  function savePaymentMethods() {
+    const data = {
+      creditCard: document.getElementById("enableCreditCard").checked,
+      transfer: document.getElementById("enableTransfer").checked,
+      paypal: document.getElementById("enablePayPal").checked,
+      cash: document.getElementById("enableCash").checked,
+    };
+    console.log("Guardando métodos de pago:", data);
+    showToast("Métodos de pago guardados", "success", "Éxito");
+  }
 
-  container.innerHTML = `
+  function saveTaxSettings() {
+    const data = {
+      rate: document.getElementById("taxRate").value,
+      included: document.getElementById("taxIncluded").checked,
+    };
+    console.log("Guardando ajustes de impuestos:", data);
+    showToast("Configuración de impuestos guardada", "success", "Éxito");
+  }
+
+  function saveNotificationSettings() {
+    const data = {
+      email: document.getElementById("notificationEmail").value,
+      newOrder: document.getElementById("notifyNewOrder").checked,
+      lowStock: document.getElementById("notifyLowStock").checked,
+      newUser: document.getElementById("notifyNewUser").checked,
+    };
+    console.log("Guardando ajustes de notificaciones:", data);
+    showToast("Configuración de notificaciones guardada", "success", "Éxito");
+  }
+
+  function clearCache() {
+    confirmAction({
+      title: "Limpiar Caché",
+      message: "¿Estás seguro de que deseas limpiar el caché del sistema?",
+      type: "warning",
+      confirmText: "Limpiar",
+      onConfirm: () => {
+        showToast("Caché limpiado", "success", "Éxito");
+      }
+    });
+  }
+
+  function exportDatabase() {
+    showToast("Exportando base de datos...", "info", "Procesando");
+    setTimeout(() => {
+      showToast("Base de datos exportada", "success", "Éxito");
+    }, 2000);
+  }
+
+  function confirmReset() {
+    confirmAction({
+      title: "⚠️ RESET TOTAL",
+      message: "Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
+      type: "danger",
+      confirmText: "Continuar",
+      onConfirm: () => {
+        confirmAction({
+          title: "⚠️ ÚLTIMO AVISO",
+          message: "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
+          type: "danger",
+          confirmText: "RESET TOTAL",
+          onConfirm: () => {
+            showToast("Sistema reseteado", "success", "Completado");
+          }
+        });
+      }
+    });
+  }
+
+  // ========================================
+  // SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
+  // ========================================
+
+  async function loadAboutAdmin() {
+    const container = document.getElementById("about-section");
+    if (!container) return;
+
+    container.innerHTML = `
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Editar Somos Nosotros</h3>
@@ -3605,84 +3714,84 @@ async function loadAboutAdmin() {
     </div>
   `;
 
-  try {
-    const res = await fetch(`${API_URL}/about`);
-    if (!res.ok) throw new Error("No se pudo cargar About");
-    const data = await res.json();
+    try {
+      const res = await fetch(`${API_URL}/about`);
+      if (!res.ok) throw new Error("No se pudo cargar About");
+      const data = await res.json();
 
-    document.getElementById("aboutHeroTitle").value = data.hero_title || "";
-    document.getElementById("aboutHistoriaTitle").value =
-      data.historia_title || "";
-    document.getElementById("aboutHistoriaHtml").value =
-      data.historia_html || "";
-    document.getElementById("aboutMisionTitle").value = data.mision_title || "";
-    document.getElementById("aboutMisionText").value = data.mision_text || "";
-    document.getElementById("aboutVisionTitle").value = data.vision_title || "";
-    document.getElementById("aboutVisionText").value = data.vision_text || "";
-    document.getElementById("aboutTeamTitle").value = data.team_title || "";
+      document.getElementById("aboutHeroTitle").value = data.hero_title || "";
+      document.getElementById("aboutHistoriaTitle").value =
+        data.historia_title || "";
+      document.getElementById("aboutHistoriaHtml").value =
+        data.historia_html || "";
+      document.getElementById("aboutMisionTitle").value = data.mision_title || "";
+      document.getElementById("aboutMisionText").value = data.mision_text || "";
+      document.getElementById("aboutVisionTitle").value = data.vision_title || "";
+      document.getElementById("aboutVisionText").value = data.vision_text || "";
+      document.getElementById("aboutTeamTitle").value = data.team_title || "";
 
-    // render team
-    window._aboutTeam = data.team || [];
-    renderAboutTeam();
-  } catch (e) {
-    console.error(e);
-    showToast("Error al cargar About", "error", "Error");
+      // render team
+      window._aboutTeam = data.team || [];
+      renderAboutTeam();
+    } catch (e) {
+      console.error(e);
+      showToast("Error al cargar About", "error", "Error");
+    }
+
+    document
+      .getElementById("aboutForm")
+      .addEventListener("submit", saveAboutAdmin);
   }
 
-  document
-    .getElementById("aboutForm")
-    .addEventListener("submit", saveAboutAdmin);
-}
+  async function saveAboutAdmin(e) {
+    e.preventDefault();
 
-async function saveAboutAdmin(e) {
-  e.preventDefault();
+    const payload = {
+      hero_title: document.getElementById("aboutHeroTitle").value.trim(),
+      historia_title: document.getElementById("aboutHistoriaTitle").value.trim(),
+      historia_html: document.getElementById("aboutHistoriaHtml").value.trim(),
+      mision_title: document.getElementById("aboutMisionTitle").value.trim(),
+      mision_text: document.getElementById("aboutMisionText").value.trim(),
+      vision_title: document.getElementById("aboutVisionTitle").value.trim(),
+      vision_text: document.getElementById("aboutVisionText").value.trim(),
+      team_title: document.getElementById("aboutTeamTitle").value.trim(),
+    };
 
-  const payload = {
-    hero_title: document.getElementById("aboutHeroTitle").value.trim(),
-    historia_title: document.getElementById("aboutHistoriaTitle").value.trim(),
-    historia_html: document.getElementById("aboutHistoriaHtml").value.trim(),
-    mision_title: document.getElementById("aboutMisionTitle").value.trim(),
-    mision_text: document.getElementById("aboutMisionText").value.trim(),
-    vision_title: document.getElementById("aboutVisionTitle").value.trim(),
-    vision_text: document.getElementById("aboutVisionText").value.trim(),
-    team_title: document.getElementById("aboutTeamTitle").value.trim(),
-  };
+    try {
+      const resp = await fetch(`${API_URL}/about`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-  try {
-    const resp = await fetch(`${API_URL}/about`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (!resp.ok) throw new Error("Error guardando About");
-    showToast("About actualizado", "success", "Éxito");
-  } catch (err) {
-    console.error(err);
-    showToast("No se pudo guardar About", "error", "Error");
+      if (!resp.ok) throw new Error("Error guardando About");
+      showToast("About actualizado", "success", "Éxito");
+    } catch (err) {
+      console.error(err);
+      showToast("No se pudo guardar About", "error", "Error");
+    }
   }
-}
 
-function renderAboutTeam() {
-  const container = document.getElementById("aboutTeamMembersContainer");
-  if (!container) return;
+  function renderAboutTeam() {
+    const container = document.getElementById("aboutTeamMembersContainer");
+    if (!container) return;
 
-  const members = window._aboutTeam || [];
-  if (members.length === 0) {
-    container.innerHTML = `
+    const members = window._aboutTeam || [];
+    if (members.length === 0) {
+      container.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon"><i class="fas fa-users"></i></div>
         <div class="empty-state-title">Sin miembros</div>
         <div class="empty-state-desc">Agrega tu primer miembro</div>
       </div>
     `;
-    return;
-  }
+      return;
+    }
 
-  container.innerHTML = `
+    container.innerHTML = `
     <div style="display:grid; gap:1rem;">
       ${members
         .map(
@@ -3703,129 +3812,139 @@ function renderAboutTeam() {
         .join("")}
     </div>
   `;
-}
+  }
 
-function openTeamMemberModal(id = null) {
-  const member =
-    (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
+  function openTeamMemberModal(id = null) {
+    const member =
+      (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
 
-  const modal = document.createElement("div");
-  modal.className = "modal show";
-  modal.innerHTML = `
-    <div class="modal-dialog">
-      <div class="modal-header">
-        <h2 class="modal-title">${member ? "Editar Miembro" : "Nuevo Miembro"}</h2>
-        <button class="modal-close" onclick="this.closest('.modal').remove()">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Nombre *</label>
-          <input id="tmName" type="text" value="${member?.name || ""}">
+    const modalId = "teamMemberModal";
+    document.getElementById(modalId)?.remove();
+
+    const modalHTML = `
+    <div class="modal show" id="${modalId}">
+      <div class="modal-content" style="max-width: 500px;">
+        <div class="modal-header">
+          <h2 class="modal-title">${member ? "Editar Miembro" : "Nuevo Miembro"}</h2>
+          <button class="modal-close" onclick="closeModal('${modalId}')">&times;</button>
         </div>
-        <div class="form-group">
-          <label>Rol *</label>
-          <input id="tmRole" type="text" value="${member?.role || ""}">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input id="tmName" type="text" value="${member?.name || ""}" placeholder="Ej: Lady Vargas">
+          </div>
+          <div class="form-group">
+            <label>Rol / Título *</label>
+            <input id="tmRole" type="text" value="${member?.role || ""}" placeholder="Ej: Fundadora & Diseñadora">
+          </div>
+          <div class="form-group">
+            <label>Bio Breve</label>
+            <textarea id="tmBio" rows="3" placeholder="Describe brevemente la trayectoria o función...">${member?.bio || ""}</textarea>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Bio</label>
-          <textarea id="tmBio" rows="3">${member?.bio || ""}</textarea>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeModal('${modalId}')">Cancelar</button>
+          <button class="btn btn-primary" onclick="saveTeamMember(${member?.id || "null"})">
+            <i class="fas fa-save"></i> Guardar Miembro
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="this.closest('.modal').remove()">Cancelar</button>
-        <button class="btn btn-primary" onclick="saveTeamMember(${member?.id || "null"})">
-          <i class="fas fa-save"></i> Guardar
-        </button>
       </div>
     </div>
   `;
-  document.body.appendChild(modal);
-}
-
-async function saveTeamMember(id = null) {
-  const name = document.getElementById("tmName").value.trim();
-  const role = document.getElementById("tmRole").value.trim();
-  const bio = document.getElementById("tmBio").value.trim();
-
-  if (!name || !role) {
-    showToast("Nombre y rol son obligatorios", "warning", "Aviso");
-    return;
+    document.body.insertAdjacentHTML("beforeend", modalHTML);
   }
 
-  try {
-    const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
-    const method = id ? "PUT" : "POST";
+  async function saveTeamMember(id = null) {
+    const name = document.getElementById("tmName").value.trim();
+    const role = document.getElementById("tmRole").value.trim();
+    const bio = document.getElementById("tmBio").value.trim();
 
-    const resp = await fetch(url, {
-      method,
-      headers: getAuthHeaders({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ name, role, bio, active: 1 }),
+    if (!name || !role) {
+      showToast("Nombre y rol son obligatorios", "warning", "Aviso");
+      return;
+    }
+
+    try {
+      const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
+      const method = id ? "PUT" : "POST";
+
+      const resp = await fetch(url, {
+        method,
+        headers: getAuthHeaders({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ name, role, bio, active: 1 }),
+      });
+
+      if (!resp.ok) throw new Error("Error guardando miembro");
+
+      document.querySelector(".modal")?.remove();
+      await loadAboutAdmin();
+      showToast("Miembro guardado", "success", "Éxito");
+    } catch (e) {
+      console.error(e);
+      showToast("No se pudo guardar miembro", "error", "Error");
+    }
+  }
+
+  async function deleteTeamMember(id) {
+    confirmAction({
+      title: "Eliminar Miembro",
+      message: "¿Estás seguro de que deseas eliminar a este miembro del equipo?",
+      type: "danger",
+      confirmText: "Eliminar",
+      onConfirm: async () => {
+        try {
+          const resp = await fetch(`${API_URL}/about/team/${id}`, {
+            method: "DELETE",
+            headers: getAuthHeaders(),
+          });
+          if (!resp.ok) throw new Error("Error eliminando miembro");
+          await loadAboutAdmin();
+          showToast("Miembro eliminado", "success", "Éxito");
+        } catch (e) {
+          console.error(e);
+          showToast("No se pudo eliminar miembro", "error", "Error");
+        }
+      }
     });
-
-    if (!resp.ok) throw new Error("Error guardando miembro");
-
-    document.querySelector(".modal")?.remove();
-    await loadAboutAdmin();
-    showToast("Miembro guardado", "success", "Éxito");
-  } catch (e) {
-    console.error(e);
-    showToast("No se pudo guardar miembro", "error", "Error");
   }
-}
 
-async function deleteTeamMember(id) {
-  if (!confirm("¿Eliminar este miembro?")) return;
-  try {
-    const resp = await fetch(`${API_URL}/about/team/${id}`, {
-      method: "DELETE",
-      headers: getAuthHeaders(),
-    });
-    if (!resp.ok) throw new Error("Error eliminando miembro");
-    await loadAboutAdmin();
-    showToast("Miembro eliminado", "success", "Éxito");
-  } catch (e) {
-    console.error(e);
-    showToast("No se pudo eliminar miembro", "error", "Error");
+  window.loadAboutAdmin = loadAboutAdmin;
+
+  window.saveAboutAdmin = saveAboutAdmin;
+
+  window.openTeamMemberModal = openTeamMemberModal;
+
+  window.saveTeamMember = saveTeamMember;
+
+  window.deleteTeamMember = deleteTeamMember;
+
+  // ========================================
+  // AUTH HELPERS (About / Categories / etc.)
+  // ========================================
+  function getAuthHeaders(extra = {}) {
+    const token =
+      localStorage.getItem("token") ||
+      localStorage.getItem("adminToken") ||
+      localStorage.getItem("authToken") ||
+      null;
+
+    return {
+      ...extra,
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
   }
-}
+  async function loadSettings() {
+    const container = document.getElementById("ajustes-section");
+    if (!container) return;
 
-window.loadAboutAdmin = loadAboutAdmin;
+    try {
+      const response = await fetch(`${API_URL}/settings`);
+      if (!response.ok) throw new Error("Error cargando settings");
 
-window.saveAboutAdmin = saveAboutAdmin;
+      const currentSettings = await response.json();
+      console.log("✅ Settings cargados:", currentSettings);
 
-window.openTeamMemberModal = openTeamMemberModal;
-
-window.saveTeamMember = saveTeamMember;
-
-window.deleteTeamMember = deleteTeamMember;
-
-// ========================================
-// AUTH HELPERS (About / Categories / etc.)
-// ========================================
-function getAuthHeaders(extra = {}) {
-  const token =
-    localStorage.getItem("token") ||
-    localStorage.getItem("adminToken") ||
-    localStorage.getItem("authToken") ||
-    null;
-
-  return {
-    ...extra,
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
-async function loadSettings() {
-  const container = document.getElementById("ajustes-section");
-  if (!container) return;
-
-  try {
-    const response = await fetch(`${API_URL}/settings`);
-    if (!response.ok) throw new Error("Error cargando settings");
-
-    const currentSettings = await response.json();
-    console.log("✅ Settings cargados:", currentSettings);
-
-    container.innerHTML = `
+      container.innerHTML = `
       <div class="filters-bar">
         <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
       </div>
@@ -3938,109 +4057,109 @@ async function loadSettings() {
       </div>
     `;
 
-    // Event listeners
-    document
-      .getElementById("storeInfoForm")
-      .addEventListener("submit", async (e) => {
+      // Event listeners
+      document
+        .getElementById("storeInfoForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            store_name: document.getElementById("storeName").value,
+            store_email: document.getElementById("storeEmail").value,
+            store_phone: document.getElementById("storePhone").value,
+            store_address: document.getElementById("storeAddress").value,
+            store_city: document.getElementById("storeCity").value,
+            store_schedule: document.getElementById("storeSchedule").value,
+          };
+          await guardarSettings(payload);
+        });
+
+      document
+        .getElementById("socialMediaForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            facebook_url: document.getElementById("facebookUrl").value,
+            instagram_url: document.getElementById("instagramUrl").value,
+            whatsapp_url: document.getElementById("whatsappUrl").value,
+            tiktok_url: document.getElementById("tiktokUrl").value,
+          };
+          await guardarSettings(payload);
+        });
+
+      document.getElementById("taxForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-          store_name: document.getElementById("storeName").value,
-          store_email: document.getElementById("storeEmail").value,
-          store_phone: document.getElementById("storePhone").value,
-          store_address: document.getElementById("storeAddress").value,
-          store_city: document.getElementById("storeCity").value,
-          store_schedule: document.getElementById("storeSchedule").value,
+          iva_percent: parseFloat(document.getElementById("ivaPercent").value),
         };
         await guardarSettings(payload);
       });
 
-    document
-      .getElementById("socialMediaForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          facebook_url: document.getElementById("facebookUrl").value,
-          instagram_url: document.getElementById("instagramUrl").value,
-          whatsapp_url: document.getElementById("whatsappUrl").value,
-          tiktok_url: document.getElementById("tiktokUrl").value,
-        };
-        await guardarSettings(payload);
-      });
-
-    document.getElementById("taxForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        iva_percent: parseFloat(document.getElementById("ivaPercent").value),
-      };
-      await guardarSettings(payload);
-    });
-
-    document
-      .getElementById("footerForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          footer_text: document.getElementById("footerText").value,
-        };
-        await guardarSettings(payload);
-      });
-  } catch (error) {
-    console.error("❌ Error al cargar settings:", error);
-    showToast("Error al cargar configuración", "error", "Error");
+      document
+        .getElementById("footerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            footer_text: document.getElementById("footerText").value,
+          };
+          await guardarSettings(payload);
+        });
+    } catch (error) {
+      console.error("❌ Error al cargar settings:", error);
+      showToast("Error al cargar configuración", "error", "Error");
+    }
   }
-}
 
-async function guardarSettings(payload) {
-  try {
-    const response = await fetch(`${API_URL}/settings`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(payload),
-    });
+  async function guardarSettings(payload) {
+    try {
+      const response = await fetch(`${API_URL}/settings`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) throw new Error("Error al guardar");
+      if (!response.ok) throw new Error("Error al guardar");
 
-    showToast("Configuración guardada exitosamente", "success", "Éxito");
-    await loadSettings();
-  } catch (error) {
-    console.error("Error al guardar settings:", error);
-    showToast("Error al guardar configuración", "error", "Error");
+      showToast("Configuración guardada exitosamente", "success", "Éxito");
+      await loadSettings();
+    } catch (error) {
+      console.error("Error al guardar settings:", error);
+      showToast("Error al guardar configuración", "error", "Error");
+    }
   }
-}
-window.getAuthHeaders = getAuthHeaders;
+  window.getAuthHeaders = getAuthHeaders;
 
-// ========================================
-// DOCUMENTOS LEGALES - EDITOR QUILL
-// Agregable a admin-pro.js
-// ========================================
+  // ========================================
+  // DOCUMENTOS LEGALES - EDITOR QUILL
+  // Agregable a admin-pro.js
+  // ========================================
 
-let quillPrivacy = null;
-let quillTerms = null;
+  let quillPrivacy = null;
+  let quillTerms = null;
 
-async function loadAjustesCompleto() {
-  const container = document.getElementById("ajustes-section");
-  if (!container) return;
+  async function loadAjustesCompleto() {
+    const container = document.getElementById("ajustes-section");
+    if (!container) return;
 
-  // Mostrar spinner mientras carga
-  container.innerHTML = `
+    // Mostrar spinner mientras carga
+    container.innerHTML = `
     <div class="loading">
       <div class="spinner"></div>
       <p>Cargando configuración...</p>
     </div>
   `;
 
-  try {
-    // Cargar datos actuales
-    const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
-    if (!res.ok) throw new Error("Error cargando settings");
+    try {
+      // Cargar datos actuales
+      const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
+      if (!res.ok) throw new Error("Error cargando settings");
 
-    const data = await res.json();
+      const data = await res.json();
 
-    // Renderizar la interfaz COMPLETA (Settings + Documentos Legales)
-    container.innerHTML = `
+      // Renderizar la interfaz COMPLETA (Settings + Documentos Legales)
+      container.innerHTML = `
       <!-- SETTINGS -->
       <div class="filters-bar">
         <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
@@ -4262,86 +4381,86 @@ async function loadAjustesCompleto() {
       </div>
     `;
 
-    // Inicializar Quill después de renderizar
-    setTimeout(() => {
-      initQuillEditors(data);
-    }, 200);
+      // Inicializar Quill después de renderizar
+      setTimeout(() => {
+        initQuillEditors(data);
+      }, 200);
 
-    // Event listeners de SETTINGS
-    document
-      .getElementById("storeInfoForm")
-      .addEventListener("submit", async (e) => {
+      // Event listeners de SETTINGS
+      document
+        .getElementById("storeInfoForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            store_name: document.getElementById("storeName").value,
+            store_email: document.getElementById("storeEmail").value,
+            store_phone: document.getElementById("storePhone").value,
+            store_address: document.getElementById("storeAddress").value,
+            store_city: document.getElementById("storeCity").value,
+            store_schedule: document.getElementById("storeSchedule").value,
+          };
+          await guardarSettings(payload);
+        });
+      // Event listener para datos bancarios
+      document
+        .getElementById("bankForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            bank_name: document.getElementById("bankName").value,
+            account_type: document.getElementById("accountType").value,
+            account_number: document.getElementById("accountNumber").value,
+            account_holder: document.getElementById("accountHolder").value,
+            account_id: document.getElementById("accountId").value,
+          };
+          await guardarSettings(payload);
+        });
+
+      // Event listener para mensaje de WhatsApp
+      document
+        .getElementById("whatsappForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            whatsapp_message: document.getElementById("whatsappMessage").value,
+          };
+          await guardarSettings(payload);
+        });
+
+      document
+        .getElementById("socialMediaForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            facebook_url: document.getElementById("facebookUrl").value,
+            instagram_url: document.getElementById("instagramUrl").value,
+            whatsapp_url: document.getElementById("whatsappUrl").value,
+            tiktok_url: document.getElementById("tiktokUrl").value,
+          };
+          await guardarSettings(payload);
+        });
+
+      document.getElementById("taxForm").addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-          store_name: document.getElementById("storeName").value,
-          store_email: document.getElementById("storeEmail").value,
-          store_phone: document.getElementById("storePhone").value,
-          store_address: document.getElementById("storeAddress").value,
-          store_city: document.getElementById("storeCity").value,
-          store_schedule: document.getElementById("storeSchedule").value,
+          iva_percent: parseFloat(document.getElementById("ivaPercent").value),
         };
         await guardarSettings(payload);
       });
-    // Event listener para datos bancarios
-    document
-      .getElementById("bankForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          bank_name: document.getElementById("bankName").value,
-          account_type: document.getElementById("accountType").value,
-          account_number: document.getElementById("accountNumber").value,
-          account_holder: document.getElementById("accountHolder").value,
-          account_id: document.getElementById("accountId").value,
-        };
-        await guardarSettings(payload);
-      });
 
-    // Event listener para mensaje de WhatsApp
-    document
-      .getElementById("whatsappForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          whatsapp_message: document.getElementById("whatsappMessage").value,
-        };
-        await guardarSettings(payload);
-      });
-
-    document
-      .getElementById("socialMediaForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          facebook_url: document.getElementById("facebookUrl").value,
-          instagram_url: document.getElementById("instagramUrl").value,
-          whatsapp_url: document.getElementById("whatsappUrl").value,
-          tiktok_url: document.getElementById("tiktokUrl").value,
-        };
-        await guardarSettings(payload);
-      });
-
-    document.getElementById("taxForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const payload = {
-        iva_percent: parseFloat(document.getElementById("ivaPercent").value),
-      };
-      await guardarSettings(payload);
-    });
-
-    document
-      .getElementById("footerForm")
-      .addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const payload = {
-          footer_text: document.getElementById("footerText").value,
-        };
-        await guardarSettings(payload);
-      });
-  } catch (error) {
-    console.error("❌ Error al cargar documentos legales:", error);
-    showToast("Error al cargar documentos legales", "error", "Error");
-    container.innerHTML = `
+      document
+        .getElementById("footerForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const payload = {
+            footer_text: document.getElementById("footerText").value,
+          };
+          await guardarSettings(payload);
+        });
+    } catch (error) {
+      console.error("❌ Error al cargar documentos legales:", error);
+      showToast("Error al cargar documentos legales", "error", "Error");
+      container.innerHTML = `
       <div class="card">
         <div style="padding: 2rem; text-align: center;">
           <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
@@ -4352,166 +4471,167 @@ async function loadAjustesCompleto() {
         </div>
       </div>
     `;
-  }
-}
-
-function initQuillEditors(data) {
-  if (typeof Quill === "undefined") {
-    console.error(
-      "❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html",
-    );
-    showToast(
-      "Editor Quill no cargó. Revisa el CDN en admin-pro.html",
-      "error",
-      "Error",
-    );
-    return;
-  }
-
-  // Esperar a que los elementos existan en el DOM
-  const privacyEl = document.getElementById("privacyEditor");
-  const termsEl = document.getElementById("termsEditor");
-
-  if (!privacyEl || !termsEl) {
-    console.error("❌ Los elementos del editor no se encontraron en el DOM");
-    setTimeout(() => initQuillEditors(data), 300); // Reintentar
-    return;
-  }
-
-  const toolbarOptions = [
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ align: [] }],
-    ["blockquote"],
-    ["link"],
-    ["clean"],
-  ];
-
-  // Destruir editores anteriores si existen
-  if (quillPrivacy) {
-    quillPrivacy = null;
-  }
-  if (quillTerms) {
-    quillTerms = null;
-  }
-
-  // Crear nuevos editores
-  try {
-    quillPrivacy = new Quill("#privacyEditor", {
-      theme: "snow",
-      modules: { toolbar: toolbarOptions },
-      placeholder: "Escribe la política de privacidad aquí...",
-    });
-
-    quillTerms = new Quill("#termsEditor", {
-      theme: "snow",
-      modules: { toolbar: toolbarOptions },
-      placeholder: "Escribe los términos y condiciones aquí...",
-    });
-
-    // Cargar contenido existente
-    if (data.privacy_policy_html) {
-      quillPrivacy.root.innerHTML = data.privacy_policy_html;
     }
-
-    if (data.terms_conditions_html) {
-      quillTerms.root.innerHTML = data.terms_conditions_html;
-    }
-
-    console.log("✅ Editores Quill inicializados correctamente");
-  } catch (error) {
-    console.error("❌ Error inicializando Quill:", error);
-    showToast("Error inicializando editor: " + error.message, "error", "Error");
   }
-}
 
-async function saveLegalDocs(docType) {
-  try {
-    if (!quillPrivacy || !quillTerms) {
+  function initQuillEditors(data) {
+    if (typeof Quill === "undefined") {
+      console.error(
+        "❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html",
+      );
       showToast(
-        "Los editores no se inicializaron correctamente",
-        "warning",
-        "Aviso",
+        "Editor Quill no cargó. Revisa el CDN en admin-pro.html",
+        "error",
+        "Error",
       );
       return;
     }
 
-    const payload = {};
+    // Esperar a que los elementos existan en el DOM
+    const privacyEl = document.getElementById("privacyEditor");
+    const termsEl = document.getElementById("termsEditor");
 
-    if (docType === "privacy") {
-      payload.privacy_policy_html = quillPrivacy.root.innerHTML;
-    } else if (docType === "terms") {
-      payload.terms_conditions_html = quillTerms.root.innerHTML;
-    } else {
-      // Guardar ambos
-      payload.privacy_policy_html = quillPrivacy.root.innerHTML;
-      payload.terms_conditions_html = quillTerms.root.innerHTML;
+    if (!privacyEl || !termsEl) {
+      console.error("❌ Los elementos del editor no se encontraron en el DOM");
+      setTimeout(() => initQuillEditors(data), 300); // Reintentar
+      return;
     }
 
-    const res = await fetch(`${API_URL}/settings`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(payload),
-    });
+    const toolbarOptions = [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ align: [] }],
+      ["blockquote"],
+      ["link"],
+      ["clean"],
+    ];
 
-    if (!res.ok) {
-      const error = await res.json().catch(() => ({}));
-      throw new Error(error.error || "Error guardando documentos");
+    // Destruir editores anteriores si existen
+    if (quillPrivacy) {
+      quillPrivacy = null;
+    }
+    if (quillTerms) {
+      quillTerms = null;
     }
 
-    showToast("Documento legal guardado exitosamente ✅", "success", "Éxito");
-    console.log("✅ Documento guardado:", docType);
-  } catch (error) {
-    console.error("❌ Error al guardar documentos:", error);
-    showToast(error.message || "Error guardando documento", "error", "Error");
+    // Crear nuevos editores
+    try {
+      quillPrivacy = new Quill("#privacyEditor", {
+        theme: "snow",
+        modules: { toolbar: toolbarOptions },
+        placeholder: "Escribe la política de privacidad aquí...",
+      });
+
+      quillTerms = new Quill("#termsEditor", {
+        theme: "snow",
+        modules: { toolbar: toolbarOptions },
+        placeholder: "Escribe los términos y condiciones aquí...",
+      });
+
+      // Cargar contenido existente
+      if (data.privacy_policy_html) {
+        quillPrivacy.root.innerHTML = data.privacy_policy_html;
+      }
+
+      if (data.terms_conditions_html) {
+        quillTerms.root.innerHTML = data.terms_conditions_html;
+      }
+
+      console.log("✅ Editores Quill inicializados correctamente");
+    } catch (error) {
+      console.error("❌ Error inicializando Quill:", error);
+      showToast("Error inicializando editor: " + error.message, "error", "Error");
+    }
   }
-}
 
-// Exportar función global
-window.loadAjustesCompleto = loadAjustesCompleto;
-window.saveLegalDocs = saveLegalDocs;
-window.openCategoryModal = openCategoryModal;
-window.closeCategoryModal = closeCategoryModal;
-window.handleCategorySubmit = handleCategorySubmit;
-window.selectCategoryIcon = selectCategoryIcon;
-window.deleteCategory = deleteCategory;
+  async function saveLegalDocs(docType) {
+    try {
+      if (!quillPrivacy || !quillTerms) {
+        showToast(
+          "Los editores no se inicializaron correctamente",
+          "warning",
+          "Aviso",
+        );
+        return;
+      }
 
-async function guardarSettings(payload) {
-  try {
-    console.log("📤 Enviando payload:", payload); // DEBUG
+      const payload = {};
 
-    const response = await fetch(`${API_URL}/settings`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
-      body: JSON.stringify(payload),
-    });
+      if (docType === "privacy") {
+        payload.privacy_policy_html = quillPrivacy.root.innerHTML;
+      } else if (docType === "terms") {
+        payload.terms_conditions_html = quillTerms.root.innerHTML;
+      } else {
+        // Guardar ambos
+        payload.privacy_policy_html = quillPrivacy.root.innerHTML;
+        payload.terms_conditions_html = quillTerms.root.innerHTML;
+      }
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error("❌ Error del servidor:", errorData);
-      throw new Error(errorData.error || "Error al guardar");
+      const res = await fetch(`${API_URL}/settings`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({}));
+        throw new Error(error.error || "Error guardando documentos");
+      }
+
+      showToast("Documento legal guardado exitosamente ✅", "success", "Éxito");
+      console.log("✅ Documento guardado:", docType);
+    } catch (error) {
+      console.error("❌ Error al guardar documentos:", error);
+      showToast(error.message || "Error guardando documento", "error", "Error");
     }
+  }
 
-    const result = await response.json();
-    console.log("✅ Respuesta del servidor:", result);
+  // Exportar función global
+  window.loadAjustesCompleto = loadAjustesCompleto;
+  window.saveLegalDocs = saveLegalDocs;
+  window.openCategoryModal = openCategoryModal;
+  window.closeCategoryModal = closeCategoryModal;
+  window.handleCategorySubmit = handleCategorySubmit;
+  window.selectCategoryIcon = selectCategoryIcon;
+  window.deleteCategory = deleteCategory;
 
-    showToast("Configuración guardada exitosamente", "success", "Éxito");
+  async function guardarSettings(payload) {
+    try {
+      console.log("📤 Enviando payload:", payload); // DEBUG
 
-    await loadAjustesCompleto();
-  } catch (error) {
-    console.error("❌ Error al guardar settings:", error);
-    showToast(
-      error.message || "Error al guardar configuración",
-      "error",
-      "Error",
-    );
+      const response = await fetch(`${API_URL}/settings`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${currentToken}`,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("❌ Error del servidor:", errorData);
+        throw new Error(errorData.error || "Error al guardar");
+      }
+
+      const result = await response.json();
+      console.log("✅ Respuesta del servidor:", result);
+
+      showToast("Configuración guardada exitosamente", "success", "Éxito");
+
+      await loadAjustesCompleto();
+    } catch (error) {
+      console.error("❌ Error al guardar settings:", error);
+      showToast(
+        error.message || "Error al guardar configuración",
+        "error",
+        "Error",
+      );
+    }
   }
 }
