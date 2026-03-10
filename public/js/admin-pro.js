@@ -1458,10 +1458,7 @@ async function handleCategorySubmit(e) {
 
     const response = await fetch(url, {
       method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
-      },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify(payload),
     });
 
