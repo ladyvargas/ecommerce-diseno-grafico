@@ -1728,6 +1728,32 @@ window.updateOrderStatus = updateOrderStatus;
 window.viewOrderDetail = viewOrderDetail;
 window.filterByCategory = filterByCategory;
 window.closeModal = closeModal;
+window.openCouponModal = openCouponModal;
+window.loadCoupons = loadCoupons;
+window.editCoupon = editCoupon;
+window.deleteCoupon = deleteCoupon;
+window.toggleCouponStatus = toggleCouponStatus;
+window.openPromotionModal = openPromotionModal;
+window.loadPromotions = loadPromotions;
+window.editPromotion = editPromotion;
+window.deletePromotion = deletePromotion;
+window.handleCouponSubmit = handleCouponSubmit;
+window.updateCouponTypeFields = updateCouponTypeFields;
+window.handlePromotionSubmit = handlePromotionSubmit;
+window.updatePromoTypeFields = updatePromoTypeFields;
+window.openCategoryModal = openCategoryModal;
+window.closeCategoryModal = closeCategoryModal;
+window.handleCategorySubmit = handleCategorySubmit;
+window.deleteCategory = deleteCategory;
+window.selectCategoryIcon = selectCategoryIcon;
+window.cancelOrder = cancelOrder;
+window.loadAnalytics = loadAnalytics;
+window.loadClientes = loadClientes;
+window.loadReportes = loadReportes;
+window.loadVentas = loadVentas;
+window.loadInventario = loadInventario;
+window.loadAjustesCompleto = loadAjustesCompleto;
+window.confirmAction = confirmAction;
 
 console.log("✅ Admin Pro Panel cargado correctamente");
 
@@ -2253,6 +2279,7 @@ function renderCouponsTable(coupons) {
     `;
 }
 
+
 function openCouponModal(coupon = null) {
   document.getElementById("couponModal")?.remove();
 
@@ -2267,21 +2294,7 @@ function openCouponModal(coupon = null) {
       : ""
     : "";
 
-  function openCouponModal(coupon = null) {
-    document.getElementById("couponModal")?.remove();
-
-    const discountType = coupon ? coupon.discount_type || coupon.type : "percentage";
-    const discountValue = coupon ? coupon.discount_value || coupon.value : "";
-    const minPurchase = coupon ? coupon.min_purchase || coupon.minPurchase || "" : "";
-    const maxUses = coupon ? coupon.max_uses || coupon.usageLimit || "" : "";
-    const expiresAtRaw = coupon ? coupon.expires_at || coupon.expiresAt : "";
-    const expiresAt = expiresAtRaw
-      ? typeof expiresAtRaw === "string"
-        ? expiresAtRaw.split("T")[0]
-        : ""
-      : "";
-
-    const modalHTML = `
+  const modalHTML = `
     <div class="modal show" id="couponModal">
       <div class="modal-content" style="max-width: 550px;">
         <div class="modal-header">
@@ -2360,140 +2373,140 @@ function openCouponModal(coupon = null) {
     </div>
   `;
 
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
 
-    // Agregar el submit DESPUÉS de insertar el HTML
-    document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
+  // Agregar el submit DESPUÉS de insertar el HTML
+  document.getElementById("couponForm").addEventListener("submit", handleCouponSubmit);
+}
+
+function updateCouponTypeFields() {
+  const maxDiscountGroup = document.getElementById("maxDiscountGroup");
+  if (maxDiscountGroup) {
+    const type = document.getElementById("couponType")?.value;
+    maxDiscountGroup.style.display = type === "percentage" ? "block" : "none";
   }
+}
 
-  function updateCouponTypeFields() {
-    const maxDiscountGroup = document.getElementById("maxDiscountGroup");
-    if (maxDiscountGroup) {
-      const type = document.getElementById("couponType")?.value;
-      maxDiscountGroup.style.display = type === "percentage" ? "block" : "none";
-    }
-  }
+async function handleCouponSubmit(e) {
+  e.preventDefault();
 
-  async function handleCouponSubmit(e) {
-    e.preventDefault();
+  const id = document.getElementById("couponId").value;
 
-    const id = document.getElementById("couponId").value;
+  const expiresAt = document.getElementById("couponExpiresAt").value;
+  const usageLimit = document.getElementById("couponUsageLimit").value;
+  const minPurchase = document.getElementById("couponMinPurchase").value;
 
-    const expiresAt = document.getElementById("couponExpiresAt").value;
-    const usageLimit = document.getElementById("couponUsageLimit").value;
-    const minPurchase = document.getElementById("couponMinPurchase").value;
+  const formData = {
+    code: document.getElementById("couponCode").value.toUpperCase(),
+    description: document.getElementById("couponDescription").value,
+    discount_type: document.getElementById("couponType").value,
+    discount_value: parseFloat(document.getElementById("couponValue").value),
+    min_purchase: minPurchase ? parseFloat(minPurchase) : 0,
+    max_uses: usageLimit ? parseInt(usageLimit) : null,
+    expires_at: expiresAt || null,
+    active: document.getElementById("couponActive").checked,
+  };
 
-    const formData = {
-      code: document.getElementById("couponCode").value.toUpperCase(),
-      description: document.getElementById("couponDescription").value,
-      discount_type: document.getElementById("couponType").value,
-      discount_value: parseFloat(document.getElementById("couponValue").value),
-      min_purchase: minPurchase ? parseFloat(minPurchase) : 0,
-      max_uses: usageLimit ? parseInt(usageLimit) : null,
-      expires_at: expiresAt || null,
-      active: document.getElementById("couponActive").checked,
-    };
+  try {
+    const url = id ? `${API_URL}/coupons/${id}` : `${API_URL}/coupons`;
+    const method = id ? "PUT" : "POST";
 
-    try {
-      const url = id ? `${API_URL}/coupons/${id}` : `${API_URL}/coupons`;
-      const method = id ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || "Error al guardar cupón");
-      }
-
-      showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
-      closeModal("couponModal");
-      loadCoupons();
-    } catch (error) {
-      console.error("Error al guardar cupón:", error);
-      showToast(error.message || "Error al guardar cupón", "error", "Error");
-    }
-  }
-
-  async function editCoupon(id) {
-    const coupon = coupons.find((c) => c.id === id);
-    if (coupon) {
-      openCouponModal(coupon);
-    }
-  }
-
-  async function toggleCouponStatus(id) {
-    const coupon = coupons.find((c) => c.id === id);
-    if (!coupon) return;
-
-    try {
-      const response = await fetch(`${API_URL}/coupons/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify({ ...coupon, active: !coupon.active }),
-      });
-
-      if (response.ok) {
-        showToast(
-          `Cupón ${!coupon.active ? "activado" : "desactivado"}`,
-          "success",
-          "Éxito",
-        );
-        loadCoupons();
-      }
-    } catch (error) {
-      showToast("Error al cambiar estado", "error", "Error");
-    }
-  }
-
-  async function deleteCoupon(id) {
-    confirmAction({
-      title: "Eliminar Cupón",
-      message: "¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.",
-      type: "danger",
-      confirmText: "Eliminar Cupón",
-      onConfirm: async () => {
-        try {
-          const response = await fetch(`${API_URL}/coupons/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${currentToken}` },
-          });
-
-          if (response.ok) {
-            showToast("Cupón eliminado", "success", "Éxito");
-            loadCoupons();
-          }
-        } catch (error) {
-          showToast("Error al eliminar cupón", "error", "Error");
-        }
-      }
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(formData),
     });
-  }
 
-  // ========================================
-  // GESTIÓN DE PROMOCIONES
-  // ========================================
-
-  let promotions = [];
-  let allProductsForPromo = [];
-
-  async function loadPromotions() {
-    const container = document.getElementById("promociones-section");
-    if (!container) {
-      console.error("❌ Elemento promociones-section no encontrado");
-      return;
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || "Error al guardar cupón");
     }
 
-    container.innerHTML = `
+    showToast(id ? "Cupón actualizado" : "Cupón creado", "success", "Éxito");
+    closeModal("couponModal");
+    loadCoupons();
+  } catch (error) {
+    console.error("Error al guardar cupón:", error);
+    showToast(error.message || "Error al guardar cupón", "error", "Error");
+  }
+}
+
+async function editCoupon(id) {
+  const coupon = coupons.find((c) => c.id === id);
+  if (coupon) {
+    openCouponModal(coupon);
+  }
+}
+
+async function toggleCouponStatus(id) {
+  const coupon = coupons.find((c) => c.id === id);
+  if (!coupon) return;
+
+  try {
+    const response = await fetch(`${API_URL}/coupons/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify({ ...coupon, active: !coupon.active }),
+    });
+
+    if (response.ok) {
+      showToast(
+        `Cupón ${!coupon.active ? "activado" : "desactivado"}`,
+        "success",
+        "Éxito",
+      );
+      loadCoupons();
+    }
+  } catch (error) {
+    showToast("Error al cambiar estado", "error", "Error");
+  }
+}
+
+async function deleteCoupon(id) {
+  confirmAction({
+    title: "Eliminar Cupón",
+    message: "¿Estás seguro de que deseas eliminar este cupón? Esta acción no se puede deshacer.",
+    type: "danger",
+    confirmText: "Eliminar Cupón",
+    onConfirm: async () => {
+      try {
+        const response = await fetch(`${API_URL}/coupons/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${currentToken}` },
+        });
+
+        if (response.ok) {
+          showToast("Cupón eliminado", "success", "Éxito");
+          loadCoupons();
+        }
+      } catch (error) {
+        showToast("Error al eliminar cupón", "error", "Error");
+      }
+    }
+  });
+}
+
+// ========================================
+// GESTIÓN DE PROMOCIONES
+// ========================================
+
+let promotions = [];
+let allProductsForPromo = [];
+
+async function loadPromotions() {
+  const container = document.getElementById("promociones-section");
+  if (!container) {
+    console.error("❌ Elemento promociones-section no encontrado");
+    return;
+  }
+
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-gift"></i> Gestión de Promociones</h2>
             <button class="btn btn-primary" onclick="openPromotionModal()">
@@ -2503,57 +2516,57 @@ function openCouponModal(coupon = null) {
         <div id="promotionsTableContainer"></div>
     `;
 
-    try {
-      console.log("🎁 Cargando promociones...");
-      const [promosRes, prodsRes] = await Promise.all([
-        fetch(`${API_URL}/promotions`),
-        fetch(`${API_URL}/products?includeInactive=true&includeOutOfStock=true`),
-      ]);
+  try {
+    console.log("🎁 Cargando promociones...");
+    const [promosRes, prodsRes] = await Promise.all([
+      fetch(`${API_URL}/promotions`),
+      fetch(`${API_URL}/products?includeInactive=true&includeOutOfStock=true`),
+    ]);
 
-      if (!promosRes.ok || !prodsRes.ok) {
-        throw new Error(
-          `HTTP Error: promos=${promosRes.status}, prods=${prodsRes.status}`,
-        );
-      }
+    if (!promosRes.ok || !prodsRes.ok) {
+      throw new Error(
+        `HTTP Error: promos=${promosRes.status}, prods=${prodsRes.status}`,
+      );
+    }
 
-      promotions = await promosRes.json();
-      allProductsForPromo = await prodsRes.json();
-      console.log("✅ Promociones cargadas:", promotions.length);
-      console.log("✅ Productos cargados:", allProductsForPromo.length);
-      renderPromotionsTable(promotions);
-    } catch (error) {
-      console.error("❌ Error al cargar promociones:", error);
-      showToast("Error al cargar promociones", "error", "Error");
-      const tableContainer = document.getElementById("promotionsTableContainer");
-      if (tableContainer) {
-        tableContainer.innerHTML = `
+    promotions = await promosRes.json();
+    allProductsForPromo = await prodsRes.json();
+    console.log("✅ Promociones cargadas:", promotions.length);
+    console.log("✅ Productos cargados:", allProductsForPromo.length);
+    renderPromotionsTable(promotions);
+  } catch (error) {
+    console.error("❌ Error al cargar promociones:", error);
+    showToast("Error al cargar promociones", "error", "Error");
+    const tableContainer = document.getElementById("promotionsTableContainer");
+    if (tableContainer) {
+      tableContainer.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444;"></i>
                     <p>Error al cargar promociones</p>
                     <button class="btn btn-primary" onclick="loadPromotions()">Reintentar</button>
                 </div>
             `;
-      }
     }
   }
+}
 
-  function renderPromotionsTable(promotions) {
-    const container = document.getElementById("promotionsTableContainer");
+function renderPromotionsTable(promotions) {
+  const container = document.getElementById("promotionsTableContainer");
 
-    if (promotions.length === 0) {
-      container.innerHTML = `
+  if (promotions.length === 0) {
+    container.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-gift" style="font-size: 3rem; color: #ccc;"></i>
                 <p>No hay promociones creadas</p>
                 <button class="btn btn-primary" onclick="openPromotionModal()">Crear Primera Promoción</button>
             </div>
         `;
-      return;
-    }
+    return;
+  }
 
-    const now = new Date();
+  const now = new Date();
 
-    container.innerHTML = `
+  container.innerHTML = `
         <table class="data-table">
             <thead>
                 <tr>
@@ -2567,25 +2580,25 @@ function openCouponModal(coupon = null) {
             </thead>
             <tbody>
                 ${promotions
-        .map((promo) => {
-          const isActive =
-            promo.active &&
-            new Date(promo.start_date || promo.startDate) <= now &&
-            new Date(promo.end_date || promo.endDate) >= now;
+      .map((promo) => {
+        const isActive =
+          promo.active &&
+          new Date(promo.start_date || promo.startDate) <= now &&
+          new Date(promo.end_date || promo.endDate) >= now;
 
-          const typeLabels = {
-            all: "Todos los productos",
-            products: "Productos específicos",
-            categories: "Por categoría",
-          };
+        const typeLabels = {
+          all: "Todos los productos",
+          products: "Productos específicos",
+          categories: "Por categoría",
+        };
 
-          const discountType =
-            promo.discount_type || promo.discountType;
-          const discountValue =
-            promo.discount_value || promo.discountValue;
-          const appliesTo = promo.applies_to || promo.type || "all";
+        const discountType =
+          promo.discount_type || promo.discountType;
+        const discountValue =
+          promo.discount_value || promo.discountValue;
+        const appliesTo = promo.applies_to || promo.type || "all";
 
-          return `
+        return `
                     <tr>
                         <td>
                             <strong>${promo.name}</strong>
@@ -2603,11 +2616,11 @@ function openCouponModal(coupon = null) {
                         </td>
                         <td>
                             ${isActive
-              ? '<span class="badge success">Activa</span>'
-              : promo.active
-                ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
-                : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
-            }
+            ? '<span class="badge success">Activa</span>'
+            : promo.active
+              ? '<span class="badge" style="background: #f59e0b;">Programada</span>'
+              : '<span class="badge" style="background: #6b7280;">Inactiva</span>'
+          }
                         </td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="editPromotion(${promo.id})">
@@ -2619,35 +2632,35 @@ function openCouponModal(coupon = null) {
                         </td>
                     </tr>
                 `;
-        })
-        .join("")}
+      })
+      .join("")}
             </tbody>
         </table>
     `;
-  }
+}
 
-  function openPromotionModal(promo = null) {
-    const discountType = promo ? promo.discount_type || promo.discountType : "";
-    const discountValue = promo
-      ? promo.discount_value || promo.discountValue
-      : "";
-    const appliesTo = promo ? promo.applies_to || promo.type : "all";
-    const startDateRaw = promo ? promo.start_date || promo.startDate : "";
-    const endDateRaw = promo ? promo.end_date || promo.endDate : "";
+function openPromotionModal(promo = null) {
+  const discountType = promo ? promo.discount_type || promo.discountType : "";
+  const discountValue = promo
+    ? promo.discount_value || promo.discountValue
+    : "";
+  const appliesTo = promo ? promo.applies_to || promo.type : "all";
+  const startDateRaw = promo ? promo.start_date || promo.startDate : "";
+  const endDateRaw = promo ? promo.end_date || promo.endDate : "";
 
-    // Asegurar que las fechas son strings antes de usar split
-    const startDate = startDateRaw
-      ? typeof startDateRaw === "string"
-        ? startDateRaw.split("T")[0]
-        : ""
-      : "";
-    const endDate = endDateRaw
-      ? typeof endDateRaw === "string"
-        ? endDateRaw.split("T")[0]
-        : ""
-      : "";
+  // Asegurar que las fechas son strings antes de usar split
+  const startDate = startDateRaw
+    ? typeof startDateRaw === "string"
+      ? startDateRaw.split("T")[0]
+      : ""
+    : "";
+  const endDate = endDateRaw
+    ? typeof endDateRaw === "string"
+      ? endDateRaw.split("T")[0]
+      : ""
+    : "";
 
-    const modalHTML = `
+  const modalHTML = `
         <div class="modal show" id="promotionModal">
             <div class="modal-content" style="max-width: 650px;">
                 <div class="modal-header">
@@ -2698,14 +2711,14 @@ function openCouponModal(coupon = null) {
                         <label>Seleccionar Productos</label>
                         <select id="promoProducts" multiple style="height: 150px;">
                             ${allProductsForPromo
-        .map(
-          (p) => `
+      .map(
+        (p) => `
                                 <option value="${p.id}" ${promo?.product_ids?.includes(p.id) ? "selected" : ""}>
                                     ${p.name}
                                 </option>
                             `,
-        )
-        .join("")}
+      )
+      .join("")}
                         </select>
                         <small>Mantén Ctrl (Cmd en Mac) para seleccionar múltiples</small>
                     </div>
@@ -2714,18 +2727,18 @@ function openCouponModal(coupon = null) {
                         <label>Seleccionar Categorías</label>
                         <select id="promoCategories" multiple style="height: 100px;">
                             ${[
-        ...new Set(
-          allProductsForPromo.map((p) => p.category),
-        ),
-      ]
-        .map(
-          (cat) => `
+      ...new Set(
+        allProductsForPromo.map((p) => p.category),
+      ),
+    ]
+      .map(
+        (cat) => `
                                 <option value="${cat}" ${promo?.category_ids?.includes(cat) ? "selected" : ""}>
                                     ${cat}
                                 </option>
                             `,
-        )
-        .join("")}
+      )
+      .join("")}
                         </select>
                     </div>
                     
@@ -2766,128 +2779,128 @@ function openCouponModal(coupon = null) {
         </div>
     `;
 
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-    updatePromoTypeFields();
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+  updatePromoTypeFields();
+}
+
+function updatePromoTypeFields() {
+  const type = document.getElementById("promoType").value;
+  document.getElementById("productSelectGroup").style.display =
+    type === "product" ? "block" : "none";
+  document.getElementById("categorySelectGroup").style.display =
+    type === "category" ? "block" : "none";
+}
+
+async function handlePromotionSubmit(e) {
+  e.preventDefault();
+
+  const id = document.getElementById("promoId").value;
+  const type = document.getElementById("promoType").value;
+
+  const formData = {
+    name: document.getElementById("promoName").value,
+    description: document.getElementById("promoDescription").value,
+    // Snake_case para el backend
+    discount_type: document.getElementById("promoDiscountType").value,
+    discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
+    applies_to: type,
+    start_date: document.getElementById("promoStartDate").value,
+    end_date: document.getElementById("promoEndDate").value,
+    active: document.getElementById("promoActive").checked,
+  };
+
+  if (type === "products") {
+    const selected = Array.from(
+      document.getElementById("promoProducts").selectedOptions,
+    );
+    formData.product_ids = selected.map((opt) => parseInt(opt.value));
+  } else if (type === "categories") {
+    const selected = Array.from(
+      document.getElementById("promoCategories").selectedOptions,
+    );
+    formData.category_ids = selected.map((opt) => opt.value);
   }
 
-  function updatePromoTypeFields() {
-    const type = document.getElementById("promoType").value;
-    document.getElementById("productSelectGroup").style.display =
-      type === "product" ? "block" : "none";
-    document.getElementById("categorySelectGroup").style.display =
-      type === "category" ? "block" : "none";
-  }
+  try {
+    const url = id ? `${API_URL}/promotions/${id}` : `${API_URL}/promotions`;
+    const method = id ? "PUT" : "POST";
 
-  async function handlePromotionSubmit(e) {
-    e.preventDefault();
-
-    const id = document.getElementById("promoId").value;
-    const type = document.getElementById("promoType").value;
-
-    const formData = {
-      name: document.getElementById("promoName").value,
-      description: document.getElementById("promoDescription").value,
-      // Snake_case para el backend
-      discount_type: document.getElementById("promoDiscountType").value,
-      discount_value: parseFloat(document.getElementById("promoDiscountValue").value),
-      applies_to: type,
-      start_date: document.getElementById("promoStartDate").value,
-      end_date: document.getElementById("promoEndDate").value,
-      active: document.getElementById("promoActive").checked,
-    };
-
-    if (type === "products") {
-      const selected = Array.from(
-        document.getElementById("promoProducts").selectedOptions,
-      );
-      formData.product_ids = selected.map((opt) => parseInt(opt.value));
-    } else if (type === "categories") {
-      const selected = Array.from(
-        document.getElementById("promoCategories").selectedOptions,
-      );
-      formData.category_ids = selected.map((opt) => opt.value);
-    }
-
-    try {
-      const url = id ? `${API_URL}/promotions/${id}` : `${API_URL}/promotions`;
-      const method = id ? "PUT" : "POST";
-
-      const response = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}));
-        throw new Error(errData.error || "Error al guardar");
-      }
-
-      showToast(
-        id ? "Promoción actualizada" : "Promoción creada",
-        "success",
-        "Éxito",
-      );
-      closeModal("promotionModal");
-      loadPromotions();
-    } catch (error) {
-      console.error("Error al guardar promoción:", error);
-      showToast(error.message || "Error al guardar promoción", "error", "Error");
-    }
-  }
-  async function editPromotion(id) {
-    const promo = promotions.find((p) => p.id === id);
-    if (promo) {
-      openPromotionModal(promo);
-    }
-  }
-
-  async function deletePromotion(id) {
-    confirmAction({
-      title: "Eliminar Promoción",
-      message: "¿Estás seguro de que deseas eliminar esta promoción?",
-      type: "danger",
-      confirmText: "Eliminar",
-      onConfirm: async () => {
-        try {
-          const response = await fetch(`${API_URL}/promotions/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${currentToken}` },
-          });
-
-          if (response.ok) {
-            showToast("Promoción eliminada", "success", "Éxito");
-            loadPromotions();
-          }
-        } catch (error) {
-          showToast("Error al eliminar", "error", "Error");
-        }
-      }
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(formData),
     });
+
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({}));
+      throw new Error(errData.error || "Error al guardar");
+    }
+
+    showToast(
+      id ? "Promoción actualizada" : "Promoción creada",
+      "success",
+      "Éxito",
+    );
+    closeModal("promotionModal");
+    loadPromotions();
+  } catch (error) {
+    console.error("Error al guardar promoción:", error);
+    showToast(error.message || "Error al guardar promoción", "error", "Error");
   }
+}
+async function editPromotion(id) {
+  const promo = promotions.find((p) => p.id === id);
+  if (promo) {
+    openPromotionModal(promo);
+  }
+}
 
-  // ========================================
-  // ANALYTICS
-  // ========================================
+async function deletePromotion(id) {
+  confirmAction({
+    title: "Eliminar Promoción",
+    message: "¿Estás seguro de que deseas eliminar esta promoción?",
+    type: "danger",
+    confirmText: "Eliminar",
+    onConfirm: async () => {
+      try {
+        const response = await fetch(`${API_URL}/promotions/${id}`, {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${currentToken}` },
+        });
 
-  function loadAnalytics() {
-    const container = document.getElementById("analytics-section");
-    if (!container) return;
+        if (response.ok) {
+          showToast("Promoción eliminada", "success", "Éxito");
+          loadPromotions();
+        }
+      } catch (error) {
+        showToast("Error al eliminar", "error", "Error");
+      }
+    }
+  });
+}
 
-    const orders = state.orders || [];
-    const products = state.products || [];
+// ========================================
+// ANALYTICS
+// ========================================
 
-    // Calcular métricas
-    const totalRevenue = orders
-      .filter((o) => o.status !== "cancelled")
-      .reduce((sum, o) => sum + (o.total || 0), 0);
+function loadAnalytics() {
+  const container = document.getElementById("analytics-section");
+  if (!container) return;
 
-    const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+  const orders = state.orders || [];
+  const products = state.products || [];
 
-    container.innerHTML = `
+  // Calcular métricas
+  const totalRevenue = orders
+    .filter((o) => o.status !== "cancelled")
+    .reduce((sum, o) => sum + (o.total || 0), 0);
+
+  const avgOrderValue = orders.length > 0 ? totalRevenue / orders.length : 0;
+
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-chart-line"></i> Analytics</h2>
         </div>
@@ -2936,52 +2949,52 @@ function openCouponModal(coupon = null) {
             </div>
         </div>
     `;
-  }
+}
 
-  // ========================================
-  // CLIENTES
-  // ========================================
+// ========================================
+// CLIENTES
+// ========================================
 
-  function loadClientes() {
-    const container = document.getElementById("clientes-section");
-    if (!container) return;
+function loadClientes() {
+  const container = document.getElementById("clientes-section");
+  if (!container) return;
 
-    const orders = state.orders || [];
+  const orders = state.orders || [];
 
-    // Agrupar por cliente
-    const clientesMap = {};
-    orders.forEach((order) => {
-      const email = order.customerEmail || order.userEmail;
-      if (email) {
-        if (!clientesMap[email]) {
-          clientesMap[email] = {
-            name: order.customerName || order.userName,
-            email: email,
-            phone: order.customerPhone || "N/A",
-            orders: 0,
-            total: 0,
-          };
-        }
-        clientesMap[email].orders++;
-        clientesMap[email].total += order.total || 0;
+  // Agrupar por cliente
+  const clientesMap = {};
+  orders.forEach((order) => {
+    const email = order.customerEmail || order.userEmail;
+    if (email) {
+      if (!clientesMap[email]) {
+        clientesMap[email] = {
+          name: order.customerName || order.userName,
+          email: email,
+          phone: order.customerPhone || "N/A",
+          orders: 0,
+          total: 0,
+        };
       }
-    });
+      clientesMap[email].orders++;
+      clientesMap[email].total += order.total || 0;
+    }
+  });
 
-    const clientes = Object.values(clientesMap);
+  const clientes = Object.values(clientesMap);
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-users"></i> Clientes</h2>
         </div>
         
         ${clientes.length === 0
-        ? `
+      ? `
             <div class="empty-state">
                 <i class="fas fa-users" style="font-size: 3rem; color: #ccc;"></i>
                 <p>No hay clientes registrados aún</p>
             </div>
         `
-        : `
+      : `
             <table class="data-table">
                 <thead>
                     <tr>
@@ -2994,8 +3007,8 @@ function openCouponModal(coupon = null) {
                 </thead>
                 <tbody>
                     ${clientes
-          .map(
-            (cliente) => `
+        .map(
+          (cliente) => `
                         <tr>
                             <td><strong>${cliente.name}</strong></td>
                             <td>${cliente.email}</td>
@@ -3004,31 +3017,31 @@ function openCouponModal(coupon = null) {
                             <td><strong>$${parseFloat(cliente.total || 0).toFixed(2)}</strong></td>
                         </tr>
                     `,
-          )
-          .join("")}
+        )
+        .join("")}
                 </tbody>
             </table>
         `
-      }
+    }
     `;
-  }
+}
 
-  // ========================================
-  // REPORTES
-  // ========================================
+// ========================================
+// REPORTES
+// ========================================
 
-  function loadReportes() {
-    const container = document.getElementById("reportes-section");
-    if (!container) return;
+function loadReportes() {
+  const container = document.getElementById("reportes-section");
+  if (!container) return;
 
-    const orders = state.orders || [];
-    const products = state.products || [];
+  const orders = state.orders || [];
+  const products = state.products || [];
 
-    const completedOrders = orders.filter((o) => o.status === "completed").length;
-    const pendingOrders = orders.filter((o) => o.status === "pending").length;
-    const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
+  const completedOrders = orders.filter((o) => o.status === "completed").length;
+  const pendingOrders = orders.filter((o) => o.status === "pending").length;
+  const cancelledOrders = orders.filter((o) => o.status === "cancelled").length;
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-file-alt"></i> Reportes</h2>
             <div style="display: flex; gap: 1rem;">
@@ -3087,13 +3100,13 @@ function openCouponModal(coupon = null) {
             </div>
         </div>
     `;
-  }
+}
 
-  // Función para imprimir reporte
-  function imprimirReporte() {
-    const contenido = document.getElementById("reporteContenido").innerHTML;
-    const ventana = window.open("", "_blank");
-    ventana.document.write(`
+// Función para imprimir reporte
+function imprimirReporte() {
+  const contenido = document.getElementById("reporteContenido").innerHTML;
+  const ventana = window.open("", "_blank");
+  ventana.document.write(`
         <html>
             <head>
                 <title>Reporte - CNC CAMPAS Pro</title>
@@ -3114,65 +3127,65 @@ function openCouponModal(coupon = null) {
             </body>
         </html>
     `);
-    ventana.document.close();
-    ventana.print();
-  }
+  ventana.document.close();
+  ventana.print();
+}
 
-  // Función para descargar Excel
-  function descargarReporteExcel() {
-    const orders = state.orders || [];
-    const products = state.products || [];
+// Función para descargar Excel
+function descargarReporteExcel() {
+  const orders = state.orders || [];
+  const products = state.products || [];
 
-    let csv = "Reporte de Gestión - CNC CAMPAS Pro\n\n";
-    csv += "RESUMEN DE PEDIDOS\n";
-    csv += "Estado,Cantidad\n";
-    csv += `Completados,${orders.filter((o) => o.status === "completed").length}\n`;
-    csv += `Pendientes,${orders.filter((o) => o.status === "pending").length}\n`;
-    csv += `Cancelados,${orders.filter((o) => o.status === "cancelled").length}\n\n`;
+  let csv = "Reporte de Gestión - CNC CAMPAS Pro\n\n";
+  csv += "RESUMEN DE PEDIDOS\n";
+  csv += "Estado,Cantidad\n";
+  csv += `Completados,${orders.filter((o) => o.status === "completed").length}\n`;
+  csv += `Pendientes,${orders.filter((o) => o.status === "pending").length}\n`;
+  csv += `Cancelados,${orders.filter((o) => o.status === "cancelled").length}\n\n`;
 
-    csv += "ESTADO DEL INVENTARIO\n";
-    csv += "Categoría,Cantidad\n";
-    csv += `Total Productos,${products.length}\n`;
-    csv += `Stock Bajo,${products.filter((p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0).length}\n`;
-    csv += `Sin Stock,${products.filter((p) => p.stock === 0).length}\n`;
+  csv += "ESTADO DEL INVENTARIO\n";
+  csv += "Categoría,Cantidad\n";
+  csv += `Total Productos,${products.length}\n`;
+  csv += `Stock Bajo,${products.filter((p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0).length}\n`;
+  csv += `Sin Stock,${products.filter((p) => p.stock === 0).length}\n`;
 
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `reporte_${new Date().toISOString().split("T")[0]}.csv`;
-    link.click();
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `reporte_${new Date().toISOString().split("T")[0]}.csv`;
+  link.click();
 
-    showToast("Reporte descargado exitosamente", "success", "Éxito");
-  }
+  showToast("Reporte descargado exitosamente", "success", "Éxito");
+}
 
-  // ========================================
-  // VENTAS
-  // ========================================
+// ========================================
+// VENTAS
+// ========================================
 
-  function loadVentas() {
-    const container = document.getElementById("ventas-section");
-    if (!container) return;
+function loadVentas() {
+  const container = document.getElementById("ventas-section");
+  if (!container) return;
 
-    const orders = state.orders || [];
+  const orders = state.orders || [];
 
-    // Agrupar por fecha
-    const ventasPorDia = {};
-    orders.forEach((order) => {
-      if (order.status !== "cancelled") {
-        const fecha = new Date(
-          order.created_at || order.createdAt,
-        ).toLocaleDateString();
-        if (!ventasPorDia[fecha]) {
-          ventasPorDia[fecha] = { cantidad: 0, total: 0 };
-        }
-        ventasPorDia[fecha].cantidad++;
-        ventasPorDia[fecha].total += order.total || 0;
+  // Agrupar por fecha
+  const ventasPorDia = {};
+  orders.forEach((order) => {
+    if (order.status !== "cancelled") {
+      const fecha = new Date(
+        order.created_at || order.createdAt,
+      ).toLocaleDateString();
+      if (!ventasPorDia[fecha]) {
+        ventasPorDia[fecha] = { cantidad: 0, total: 0 };
       }
-    });
+      ventasPorDia[fecha].cantidad++;
+      ventasPorDia[fecha].total += order.total || 0;
+    }
+  });
 
-    const dias = Object.keys(ventasPorDia).slice(-7); // Últimos 7 días
+  const dias = Object.keys(ventasPorDia).slice(-7); // Últimos 7 días
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-chart-bar"></i> Análisis de Ventas</h2>
         </div>
@@ -3183,13 +3196,13 @@ function openCouponModal(coupon = null) {
             </div>
             <div style="padding: 2rem;">
                 ${dias.length === 0
-        ? `
+      ? `
                     <div style="text-align: center; padding: 3rem; color: #6b7280;">
                         <i class="fas fa-chart-line" style="font-size: 3rem; margin-bottom: 1rem;"></i>
                         <p>No hay ventas registradas aún</p>
                     </div>
                 `
-        : `
+      : `
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -3201,10 +3214,10 @@ function openCouponModal(coupon = null) {
                         </thead>
                         <tbody>
                             ${dias
-          .map((dia) => {
-            const datos = ventasPorDia[dia];
-            const promedio = datos.total / datos.cantidad;
-            return `
+        .map((dia) => {
+          const datos = ventasPorDia[dia];
+          const promedio = datos.total / datos.cantidad;
+          return `
                                     <tr>
                                         <td><strong>${dia}</strong></td>
                                         <td><span class="badge info">${datos.cantidad}</span></td>
@@ -3212,40 +3225,40 @@ function openCouponModal(coupon = null) {
                                         <td>$${parseFloat(promedio || 0).toFixed(2)}</td>
                                     </tr>
                                 `;
-          })
-          .join("")}
+        })
+        .join("")}
                         </tbody>
                     </table>
                 `
-      }
+    }
             </div>
         </div>
     `;
-  }
+}
 
-  // ========================================
-  // INVENTARIO
-  // ========================================
+// ========================================
+// INVENTARIO
+// ========================================
 
-  function loadInventario() {
-    const container = document.getElementById("inventario-section");
-    if (!container) return;
+function loadInventario() {
+  const container = document.getElementById("inventario-section");
+  if (!container) return;
 
-    const products = state.products || [];
+  const products = state.products || [];
 
-    const lowStock = products.filter(
-      (p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0,
-    );
-    const outOfStock = products.filter((p) => p.stock === 0);
+  const lowStock = products.filter(
+    (p) => p.stock <= (p.lowStockThreshold || 10) && p.stock > 0,
+  );
+  const outOfStock = products.filter((p) => p.stock === 0);
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-warehouse"></i> Control de Inventario</h2>
         </div>
         
         <div style="display: grid; gap: 1.5rem;">
             ${lowStock.length > 0
-        ? `
+      ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #f59e0b;"><i class="fas fa-exclamation-triangle"></i> Productos con Stock Bajo</h3>
@@ -3261,8 +3274,8 @@ function openCouponModal(coupon = null) {
                         </thead>
                         <tbody>
                             ${lowStock
-          .map(
-            (p) => `
+        .map(
+          (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge" style="background: #f59e0b;">${p.stock}</span></td>
@@ -3270,17 +3283,17 @@ function openCouponModal(coupon = null) {
                                     <td><span class="badge" style="background: #f59e0b;">⚠️ Stock Bajo</span></td>
                                 </tr>
                             `,
-          )
-          .join("")}
+        )
+        .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-        : ""
-      }
+      : ""
+    }
             
             ${outOfStock.length > 0
-        ? `
+      ? `
                 <div class="card">
                     <div class="card-header">
                         <h3 style="color: #ef4444;"><i class="fas fa-times-circle"></i> Productos Sin Stock</h3>
@@ -3295,25 +3308,25 @@ function openCouponModal(coupon = null) {
                         </thead>
                         <tbody>
                             ${outOfStock
-          .map(
-            (p) => `
+        .map(
+          (p) => `
                                 <tr>
                                     <td><strong>${p.name}</strong></td>
                                     <td><span class="badge info">${p.category}</span></td>
                                     <td><span class="badge" style="background: #ef4444;">❌ Sin Stock</span></td>
                                 </tr>
                             `,
-          )
-          .join("")}
+        )
+        .join("")}
                         </tbody>
                     </table>
                 </div>
             `
-        : ""
-      }
+      : ""
+    }
             
             ${lowStock.length === 0 && outOfStock.length === 0
-        ? `
+      ? `
                 <div class="card">
                     <div style="padding: 3rem; text-align: center;">
                         <i class="fas fa-check-circle" style="font-size: 4rem; color: #10b981; margin-bottom: 1rem;"></i>
@@ -3324,27 +3337,27 @@ function openCouponModal(coupon = null) {
                     </div>
                 </div>
             `
-        : ""
-      }
+      : ""
+    }
         </div>
     `;
-  }
+}
 
-  // Hacer las funciones globales
-  window.previewProductImage = previewProductImage;
-  window.clearImagePreview = clearImagePreview;
+// Hacer las funciones globales
+window.previewProductImage = previewProductImage;
+window.clearImagePreview = clearImagePreview;
 
-  console.log("✅ Sistema de upload de imágenes cargado");
+console.log("✅ Sistema de upload de imágenes cargado");
 
-  // ========================================
-  // AJUSTES DEL SISTEMA
-  // ========================================
+// ========================================
+// AJUSTES DEL SISTEMA
+// ========================================
 
-  function loadAjustes() {
-    const container = document.getElementById("ajustes-section");
-    if (!container) return;
+function loadAjustes() {
+  const container = document.getElementById("ajustes-section");
+  if (!container) return;
 
-    container.innerHTML = `
+  container.innerHTML = `
         <div class="section-header">
             <h2><i class="fas fa-cog"></i> Configuración del Sistema</h2>
         </div>
@@ -3548,110 +3561,110 @@ function openCouponModal(coupon = null) {
             </div>
         </div>
     `;
-  }
+}
 
-  // Funciones de guardado de ajustes
-  function saveStoreInfo() {
-    const data = {
-      name: document.getElementById("storeName").value,
-      email: document.getElementById("storeEmail").value,
-      phone: document.getElementById("storePhone").value,
-      address: document.getElementById("storeAddress").value,
-    };
-    console.log("Guardando info de tienda:", data);
-    showToast("Información de tienda guardada", "success", "Éxito");
-  }
+// Funciones de guardado de ajustes
+function saveStoreInfo() {
+  const data = {
+    name: document.getElementById("storeName").value,
+    email: document.getElementById("storeEmail").value,
+    phone: document.getElementById("storePhone").value,
+    address: document.getElementById("storeAddress").value,
+  };
+  console.log("Guardando info de tienda:", data);
+  showToast("Información de tienda guardada", "success", "Éxito");
+}
 
-  function saveShippingSettings() {
-    const data = {
-      cost: document.getElementById("shippingCost").value,
-      freeMin: document.getElementById("freeShippingMin").value,
-      deliveryTime: document.getElementById("deliveryTime").value,
-      enabled: document.getElementById("enableShipping").checked,
-    };
-    console.log("Guardando ajustes de envío:", data);
-    showToast("Configuración de envíos guardada", "success", "Éxito");
-  }
+function saveShippingSettings() {
+  const data = {
+    cost: document.getElementById("shippingCost").value,
+    freeMin: document.getElementById("freeShippingMin").value,
+    deliveryTime: document.getElementById("deliveryTime").value,
+    enabled: document.getElementById("enableShipping").checked,
+  };
+  console.log("Guardando ajustes de envío:", data);
+  showToast("Configuración de envíos guardada", "success", "Éxito");
+}
 
-  function savePaymentMethods() {
-    const data = {
-      creditCard: document.getElementById("enableCreditCard").checked,
-      transfer: document.getElementById("enableTransfer").checked,
-      paypal: document.getElementById("enablePayPal").checked,
-      cash: document.getElementById("enableCash").checked,
-    };
-    console.log("Guardando métodos de pago:", data);
-    showToast("Métodos de pago guardados", "success", "Éxito");
-  }
+function savePaymentMethods() {
+  const data = {
+    creditCard: document.getElementById("enableCreditCard").checked,
+    transfer: document.getElementById("enableTransfer").checked,
+    paypal: document.getElementById("enablePayPal").checked,
+    cash: document.getElementById("enableCash").checked,
+  };
+  console.log("Guardando métodos de pago:", data);
+  showToast("Métodos de pago guardados", "success", "Éxito");
+}
 
-  function saveTaxSettings() {
-    const data = {
-      rate: document.getElementById("taxRate").value,
-      included: document.getElementById("taxIncluded").checked,
-    };
-    console.log("Guardando ajustes de impuestos:", data);
-    showToast("Configuración de impuestos guardada", "success", "Éxito");
-  }
+function saveTaxSettings() {
+  const data = {
+    rate: document.getElementById("taxRate").value,
+    included: document.getElementById("taxIncluded").checked,
+  };
+  console.log("Guardando ajustes de impuestos:", data);
+  showToast("Configuración de impuestos guardada", "success", "Éxito");
+}
 
-  function saveNotificationSettings() {
-    const data = {
-      email: document.getElementById("notificationEmail").value,
-      newOrder: document.getElementById("notifyNewOrder").checked,
-      lowStock: document.getElementById("notifyLowStock").checked,
-      newUser: document.getElementById("notifyNewUser").checked,
-    };
-    console.log("Guardando ajustes de notificaciones:", data);
-    showToast("Configuración de notificaciones guardada", "success", "Éxito");
-  }
+function saveNotificationSettings() {
+  const data = {
+    email: document.getElementById("notificationEmail").value,
+    newOrder: document.getElementById("notifyNewOrder").checked,
+    lowStock: document.getElementById("notifyLowStock").checked,
+    newUser: document.getElementById("notifyNewUser").checked,
+  };
+  console.log("Guardando ajustes de notificaciones:", data);
+  showToast("Configuración de notificaciones guardada", "success", "Éxito");
+}
 
-  function clearCache() {
-    confirmAction({
-      title: "Limpiar Caché",
-      message: "¿Estás seguro de que deseas limpiar el caché del sistema?",
-      type: "warning",
-      confirmText: "Limpiar",
-      onConfirm: () => {
-        showToast("Caché limpiado", "success", "Éxito");
-      }
-    });
-  }
+function clearCache() {
+  confirmAction({
+    title: "Limpiar Caché",
+    message: "¿Estás seguro de que deseas limpiar el caché del sistema?",
+    type: "warning",
+    confirmText: "Limpiar",
+    onConfirm: () => {
+      showToast("Caché limpiado", "success", "Éxito");
+    }
+  });
+}
 
-  function exportDatabase() {
-    showToast("Exportando base de datos...", "info", "Procesando");
-    setTimeout(() => {
-      showToast("Base de datos exportada", "success", "Éxito");
-    }, 2000);
-  }
+function exportDatabase() {
+  showToast("Exportando base de datos...", "info", "Procesando");
+  setTimeout(() => {
+    showToast("Base de datos exportada", "success", "Éxito");
+  }, 2000);
+}
 
-  function confirmReset() {
-    confirmAction({
-      title: "⚠️ RESET TOTAL",
-      message: "Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
-      type: "danger",
-      confirmText: "Continuar",
-      onConfirm: () => {
-        confirmAction({
-          title: "⚠️ ÚLTIMO AVISO",
-          message: "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
-          type: "danger",
-          confirmText: "RESET TOTAL",
-          onConfirm: () => {
-            showToast("Sistema reseteado", "success", "Completado");
-          }
-        });
-      }
-    });
-  }
+function confirmReset() {
+  confirmAction({
+    title: "⚠️ RESET TOTAL",
+    message: "Esta acción eliminará TODOS los datos del sistema. ¿Estás seguro?",
+    type: "danger",
+    confirmText: "Continuar",
+    onConfirm: () => {
+      confirmAction({
+        title: "⚠️ ÚLTIMO AVISO",
+        message: "¿REALMENTE quieres resetear el sistema? Esta acción NO se puede deshacer.",
+        type: "danger",
+        confirmText: "RESET TOTAL",
+        onConfirm: () => {
+          showToast("Sistema reseteado", "success", "Completado");
+        }
+      });
+    }
+  });
+}
 
-  // ========================================
-  // SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
-  // ========================================
+// ========================================
+// SOMOS NOSOTROS (ABOUT) - ADMIN DINÁMICO
+// ========================================
 
-  async function loadAboutAdmin() {
-    const container = document.getElementById("about-section");
-    if (!container) return;
+async function loadAboutAdmin() {
+  const container = document.getElementById("about-section");
+  if (!container) return;
 
-    container.innerHTML = `
+  container.innerHTML = `
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Editar Somos Nosotros</h3>
@@ -3714,88 +3727,88 @@ function openCouponModal(coupon = null) {
     </div>
   `;
 
-    try {
-      const res = await fetch(`${API_URL}/about`);
-      if (!res.ok) throw new Error("No se pudo cargar About");
-      const data = await res.json();
+  try {
+    const res = await fetch(`${API_URL}/about`);
+    if (!res.ok) throw new Error("No se pudo cargar About");
+    const data = await res.json();
 
-      document.getElementById("aboutHeroTitle").value = data.hero_title || "";
-      document.getElementById("aboutHistoriaTitle").value =
-        data.historia_title || "";
-      document.getElementById("aboutHistoriaHtml").value =
-        data.historia_html || "";
-      document.getElementById("aboutMisionTitle").value = data.mision_title || "";
-      document.getElementById("aboutMisionText").value = data.mision_text || "";
-      document.getElementById("aboutVisionTitle").value = data.vision_title || "";
-      document.getElementById("aboutVisionText").value = data.vision_text || "";
-      document.getElementById("aboutTeamTitle").value = data.team_title || "";
+    document.getElementById("aboutHeroTitle").value = data.hero_title || "";
+    document.getElementById("aboutHistoriaTitle").value =
+      data.historia_title || "";
+    document.getElementById("aboutHistoriaHtml").value =
+      data.historia_html || "";
+    document.getElementById("aboutMisionTitle").value = data.mision_title || "";
+    document.getElementById("aboutMisionText").value = data.mision_text || "";
+    document.getElementById("aboutVisionTitle").value = data.vision_title || "";
+    document.getElementById("aboutVisionText").value = data.vision_text || "";
+    document.getElementById("aboutTeamTitle").value = data.team_title || "";
 
-      // render team
-      window._aboutTeam = data.team || [];
-      renderAboutTeam();
-    } catch (e) {
-      console.error(e);
-      showToast("Error al cargar About", "error", "Error");
-    }
-
-    document
-      .getElementById("aboutForm")
-      .addEventListener("submit", saveAboutAdmin);
+    // render team
+    window._aboutTeam = data.team || [];
+    renderAboutTeam();
+  } catch (e) {
+    console.error(e);
+    showToast("Error al cargar About", "error", "Error");
   }
 
-  async function saveAboutAdmin(e) {
-    e.preventDefault();
+  document
+    .getElementById("aboutForm")
+    .addEventListener("submit", saveAboutAdmin);
+}
 
-    const payload = {
-      hero_title: document.getElementById("aboutHeroTitle").value.trim(),
-      historia_title: document.getElementById("aboutHistoriaTitle").value.trim(),
-      historia_html: document.getElementById("aboutHistoriaHtml").value.trim(),
-      mision_title: document.getElementById("aboutMisionTitle").value.trim(),
-      mision_text: document.getElementById("aboutMisionText").value.trim(),
-      vision_title: document.getElementById("aboutVisionTitle").value.trim(),
-      vision_text: document.getElementById("aboutVisionText").value.trim(),
-      team_title: document.getElementById("aboutTeamTitle").value.trim(),
-    };
+async function saveAboutAdmin(e) {
+  e.preventDefault();
 
-    try {
-      const resp = await fetch(`${API_URL}/about`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
+  const payload = {
+    hero_title: document.getElementById("aboutHeroTitle").value.trim(),
+    historia_title: document.getElementById("aboutHistoriaTitle").value.trim(),
+    historia_html: document.getElementById("aboutHistoriaHtml").value.trim(),
+    mision_title: document.getElementById("aboutMisionTitle").value.trim(),
+    mision_text: document.getElementById("aboutMisionText").value.trim(),
+    vision_title: document.getElementById("aboutVisionTitle").value.trim(),
+    vision_text: document.getElementById("aboutVisionText").value.trim(),
+    team_title: document.getElementById("aboutTeamTitle").value.trim(),
+  };
 
-      if (!resp.ok) throw new Error("Error guardando About");
-      showToast("About actualizado", "success", "Éxito");
-    } catch (err) {
-      console.error(err);
-      showToast("No se pudo guardar About", "error", "Error");
-    }
+  try {
+    const resp = await fetch(`${API_URL}/about`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!resp.ok) throw new Error("Error guardando About");
+    showToast("About actualizado", "success", "Éxito");
+  } catch (err) {
+    console.error(err);
+    showToast("No se pudo guardar About", "error", "Error");
   }
+}
 
-  function renderAboutTeam() {
-    const container = document.getElementById("aboutTeamMembersContainer");
-    if (!container) return;
+function renderAboutTeam() {
+  const container = document.getElementById("aboutTeamMembersContainer");
+  if (!container) return;
 
-    const members = window._aboutTeam || [];
-    if (members.length === 0) {
-      container.innerHTML = `
+  const members = window._aboutTeam || [];
+  if (members.length === 0) {
+    container.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon"><i class="fas fa-users"></i></div>
         <div class="empty-state-title">Sin miembros</div>
         <div class="empty-state-desc">Agrega tu primer miembro</div>
       </div>
     `;
-      return;
-    }
+    return;
+  }
 
-    container.innerHTML = `
+  container.innerHTML = `
     <div style="display:grid; gap:1rem;">
       ${members
-        .map(
-          (m) => `
+      .map(
+        (m) => `
         <div style="border:1px solid #e2e8f0; padding:1rem; border-radius:12px; display:flex; justify-content:space-between; gap:1rem;">
           <div>
             <div style="font-weight:700;">${m.name}</div>
@@ -3808,20 +3821,20 @@ function openCouponModal(coupon = null) {
           </div>
         </div>
       `,
-        )
-        .join("")}
+      )
+      .join("")}
     </div>
   `;
-  }
+}
 
-  function openTeamMemberModal(id = null) {
-    const member =
-      (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
+function openTeamMemberModal(id = null) {
+  const member =
+    (window._aboutTeam || []).find((x) => String(x.id) === String(id)) || null;
 
-    const modalId = "teamMemberModal";
-    document.getElementById(modalId)?.remove();
+  const modalId = "teamMemberModal";
+  document.getElementById(modalId)?.remove();
 
-    const modalHTML = `
+  const modalHTML = `
     <div class="modal show" id="${modalId}">
       <div class="modal-content" style="max-width: 500px;">
         <div class="modal-header">
@@ -3851,100 +3864,100 @@ function openCouponModal(coupon = null) {
       </div>
     </div>
   `;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
+  document.body.insertAdjacentHTML("beforeend", modalHTML);
+}
+
+async function saveTeamMember(id = null) {
+  const name = document.getElementById("tmName").value.trim();
+  const role = document.getElementById("tmRole").value.trim();
+  const bio = document.getElementById("tmBio").value.trim();
+
+  if (!name || !role) {
+    showToast("Nombre y rol son obligatorios", "warning", "Aviso");
+    return;
   }
 
-  async function saveTeamMember(id = null) {
-    const name = document.getElementById("tmName").value.trim();
-    const role = document.getElementById("tmRole").value.trim();
-    const bio = document.getElementById("tmBio").value.trim();
+  try {
+    const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
+    const method = id ? "PUT" : "POST";
 
-    if (!name || !role) {
-      showToast("Nombre y rol son obligatorios", "warning", "Aviso");
-      return;
-    }
-
-    try {
-      const url = id ? `${API_URL}/about/team/${id}` : `${API_URL}/about/team`;
-      const method = id ? "PUT" : "POST";
-
-      const resp = await fetch(url, {
-        method,
-        headers: getAuthHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ name, role, bio, active: 1 }),
-      });
-
-      if (!resp.ok) throw new Error("Error guardando miembro");
-
-      document.querySelector(".modal")?.remove();
-      await loadAboutAdmin();
-      showToast("Miembro guardado", "success", "Éxito");
-    } catch (e) {
-      console.error(e);
-      showToast("No se pudo guardar miembro", "error", "Error");
-    }
-  }
-
-  async function deleteTeamMember(id) {
-    confirmAction({
-      title: "Eliminar Miembro",
-      message: "¿Estás seguro de que deseas eliminar a este miembro del equipo?",
-      type: "danger",
-      confirmText: "Eliminar",
-      onConfirm: async () => {
-        try {
-          const resp = await fetch(`${API_URL}/about/team/${id}`, {
-            method: "DELETE",
-            headers: getAuthHeaders(),
-          });
-          if (!resp.ok) throw new Error("Error eliminando miembro");
-          await loadAboutAdmin();
-          showToast("Miembro eliminado", "success", "Éxito");
-        } catch (e) {
-          console.error(e);
-          showToast("No se pudo eliminar miembro", "error", "Error");
-        }
-      }
+    const resp = await fetch(url, {
+      method,
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
+      body: JSON.stringify({ name, role, bio, active: 1 }),
     });
+
+    if (!resp.ok) throw new Error("Error guardando miembro");
+
+    document.querySelector(".modal")?.remove();
+    await loadAboutAdmin();
+    showToast("Miembro guardado", "success", "Éxito");
+  } catch (e) {
+    console.error(e);
+    showToast("No se pudo guardar miembro", "error", "Error");
   }
+}
 
-  window.loadAboutAdmin = loadAboutAdmin;
+async function deleteTeamMember(id) {
+  confirmAction({
+    title: "Eliminar Miembro",
+    message: "¿Estás seguro de que deseas eliminar a este miembro del equipo?",
+    type: "danger",
+    confirmText: "Eliminar",
+    onConfirm: async () => {
+      try {
+        const resp = await fetch(`${API_URL}/about/team/${id}`, {
+          method: "DELETE",
+          headers: getAuthHeaders(),
+        });
+        if (!resp.ok) throw new Error("Error eliminando miembro");
+        await loadAboutAdmin();
+        showToast("Miembro eliminado", "success", "Éxito");
+      } catch (e) {
+        console.error(e);
+        showToast("No se pudo eliminar miembro", "error", "Error");
+      }
+    }
+  });
+}
 
-  window.saveAboutAdmin = saveAboutAdmin;
+window.loadAboutAdmin = loadAboutAdmin;
 
-  window.openTeamMemberModal = openTeamMemberModal;
+window.saveAboutAdmin = saveAboutAdmin;
 
-  window.saveTeamMember = saveTeamMember;
+window.openTeamMemberModal = openTeamMemberModal;
 
-  window.deleteTeamMember = deleteTeamMember;
+window.saveTeamMember = saveTeamMember;
 
-  // ========================================
-  // AUTH HELPERS (About / Categories / etc.)
-  // ========================================
-  function getAuthHeaders(extra = {}) {
-    const token =
-      localStorage.getItem("token") ||
-      localStorage.getItem("adminToken") ||
-      localStorage.getItem("authToken") ||
-      null;
+window.deleteTeamMember = deleteTeamMember;
 
-    return {
-      ...extra,
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    };
-  }
-  async function loadSettings() {
-    const container = document.getElementById("ajustes-section");
-    if (!container) return;
+// ========================================
+// AUTH HELPERS (About / Categories / etc.)
+// ========================================
+function getAuthHeaders(extra = {}) {
+  const token =
+    localStorage.getItem("token") ||
+    localStorage.getItem("adminToken") ||
+    localStorage.getItem("authToken") ||
+    null;
 
-    try {
-      const response = await fetch(`${API_URL}/settings`);
-      if (!response.ok) throw new Error("Error cargando settings");
+  return {
+    ...extra,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+}
+async function loadSettings() {
+  const container = document.getElementById("ajustes-section");
+  if (!container) return;
 
-      const currentSettings = await response.json();
-      console.log("✅ Settings cargados:", currentSettings);
+  try {
+    const response = await fetch(`${API_URL}/settings`);
+    if (!response.ok) throw new Error("Error cargando settings");
 
-      container.innerHTML = `
+    const currentSettings = await response.json();
+    console.log("✅ Settings cargados:", currentSettings);
+
+    container.innerHTML = `
       <div class="filters-bar">
         <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
       </div>
@@ -4057,109 +4070,109 @@ function openCouponModal(coupon = null) {
       </div>
     `;
 
-      // Event listeners
-      document
-        .getElementById("storeInfoForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            store_name: document.getElementById("storeName").value,
-            store_email: document.getElementById("storeEmail").value,
-            store_phone: document.getElementById("storePhone").value,
-            store_address: document.getElementById("storeAddress").value,
-            store_city: document.getElementById("storeCity").value,
-            store_schedule: document.getElementById("storeSchedule").value,
-          };
-          await guardarSettings(payload);
-        });
-
-      document
-        .getElementById("socialMediaForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            facebook_url: document.getElementById("facebookUrl").value,
-            instagram_url: document.getElementById("instagramUrl").value,
-            whatsapp_url: document.getElementById("whatsappUrl").value,
-            tiktok_url: document.getElementById("tiktokUrl").value,
-          };
-          await guardarSettings(payload);
-        });
-
-      document.getElementById("taxForm").addEventListener("submit", async (e) => {
+    // Event listeners
+    document
+      .getElementById("storeInfoForm")
+      .addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-          iva_percent: parseFloat(document.getElementById("ivaPercent").value),
+          store_name: document.getElementById("storeName").value,
+          store_email: document.getElementById("storeEmail").value,
+          store_phone: document.getElementById("storePhone").value,
+          store_address: document.getElementById("storeAddress").value,
+          store_city: document.getElementById("storeCity").value,
+          store_schedule: document.getElementById("storeSchedule").value,
         };
         await guardarSettings(payload);
       });
 
-      document
-        .getElementById("footerForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            footer_text: document.getElementById("footerText").value,
-          };
-          await guardarSettings(payload);
-        });
-    } catch (error) {
-      console.error("❌ Error al cargar settings:", error);
-      showToast("Error al cargar configuración", "error", "Error");
-    }
-  }
-
-  async function guardarSettings(payload) {
-    try {
-      const response = await fetch(`${API_URL}/settings`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(payload),
+    document
+      .getElementById("socialMediaForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          facebook_url: document.getElementById("facebookUrl").value,
+          instagram_url: document.getElementById("instagramUrl").value,
+          whatsapp_url: document.getElementById("whatsappUrl").value,
+          tiktok_url: document.getElementById("tiktokUrl").value,
+        };
+        await guardarSettings(payload);
       });
 
-      if (!response.ok) throw new Error("Error al guardar");
+    document.getElementById("taxForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        iva_percent: parseFloat(document.getElementById("ivaPercent").value),
+      };
+      await guardarSettings(payload);
+    });
 
-      showToast("Configuración guardada exitosamente", "success", "Éxito");
-      await loadSettings();
-    } catch (error) {
-      console.error("Error al guardar settings:", error);
-      showToast("Error al guardar configuración", "error", "Error");
-    }
+    document
+      .getElementById("footerForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          footer_text: document.getElementById("footerText").value,
+        };
+        await guardarSettings(payload);
+      });
+  } catch (error) {
+    console.error("❌ Error al cargar settings:", error);
+    showToast("Error al cargar configuración", "error", "Error");
   }
-  window.getAuthHeaders = getAuthHeaders;
+}
 
-  // ========================================
-  // DOCUMENTOS LEGALES - EDITOR QUILL
-  // Agregable a admin-pro.js
-  // ========================================
+async function guardarSettings(payload) {
+  try {
+    const response = await fetch(`${API_URL}/settings`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
 
-  let quillPrivacy = null;
-  let quillTerms = null;
+    if (!response.ok) throw new Error("Error al guardar");
 
-  async function loadAjustesCompleto() {
-    const container = document.getElementById("ajustes-section");
-    if (!container) return;
+    showToast("Configuración guardada exitosamente", "success", "Éxito");
+    await loadSettings();
+  } catch (error) {
+    console.error("Error al guardar settings:", error);
+    showToast("Error al guardar configuración", "error", "Error");
+  }
+}
+window.getAuthHeaders = getAuthHeaders;
 
-    // Mostrar spinner mientras carga
-    container.innerHTML = `
+// ========================================
+// DOCUMENTOS LEGALES - EDITOR QUILL
+// Agregable a admin-pro.js
+// ========================================
+
+let quillPrivacy = null;
+let quillTerms = null;
+
+async function loadAjustesCompleto() {
+  const container = document.getElementById("ajustes-section");
+  if (!container) return;
+
+  // Mostrar spinner mientras carga
+  container.innerHTML = `
     <div class="loading">
       <div class="spinner"></div>
       <p>Cargando configuración...</p>
     </div>
   `;
 
-    try {
-      // Cargar datos actuales
-      const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
-      if (!res.ok) throw new Error("Error cargando settings");
+  try {
+    // Cargar datos actuales
+    const res = await fetch(`${API_URL}/settings`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Error cargando settings");
 
-      const data = await res.json();
+    const data = await res.json();
 
-      // Renderizar la interfaz COMPLETA (Settings + Documentos Legales)
-      container.innerHTML = `
+    // Renderizar la interfaz COMPLETA (Settings + Documentos Legales)
+    container.innerHTML = `
       <!-- SETTINGS -->
       <div class="filters-bar">
         <h3 style="margin: 0;">⚙️ Configuración del Sistema</h3>
@@ -4381,86 +4394,86 @@ function openCouponModal(coupon = null) {
       </div>
     `;
 
-      // Inicializar Quill después de renderizar
-      setTimeout(() => {
-        initQuillEditors(data);
-      }, 200);
+    // Inicializar Quill después de renderizar
+    setTimeout(() => {
+      initQuillEditors(data);
+    }, 200);
 
-      // Event listeners de SETTINGS
-      document
-        .getElementById("storeInfoForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            store_name: document.getElementById("storeName").value,
-            store_email: document.getElementById("storeEmail").value,
-            store_phone: document.getElementById("storePhone").value,
-            store_address: document.getElementById("storeAddress").value,
-            store_city: document.getElementById("storeCity").value,
-            store_schedule: document.getElementById("storeSchedule").value,
-          };
-          await guardarSettings(payload);
-        });
-      // Event listener para datos bancarios
-      document
-        .getElementById("bankForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            bank_name: document.getElementById("bankName").value,
-            account_type: document.getElementById("accountType").value,
-            account_number: document.getElementById("accountNumber").value,
-            account_holder: document.getElementById("accountHolder").value,
-            account_id: document.getElementById("accountId").value,
-          };
-          await guardarSettings(payload);
-        });
-
-      // Event listener para mensaje de WhatsApp
-      document
-        .getElementById("whatsappForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            whatsapp_message: document.getElementById("whatsappMessage").value,
-          };
-          await guardarSettings(payload);
-        });
-
-      document
-        .getElementById("socialMediaForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            facebook_url: document.getElementById("facebookUrl").value,
-            instagram_url: document.getElementById("instagramUrl").value,
-            whatsapp_url: document.getElementById("whatsappUrl").value,
-            tiktok_url: document.getElementById("tiktokUrl").value,
-          };
-          await guardarSettings(payload);
-        });
-
-      document.getElementById("taxForm").addEventListener("submit", async (e) => {
+    // Event listeners de SETTINGS
+    document
+      .getElementById("storeInfoForm")
+      .addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = {
-          iva_percent: parseFloat(document.getElementById("ivaPercent").value),
+          store_name: document.getElementById("storeName").value,
+          store_email: document.getElementById("storeEmail").value,
+          store_phone: document.getElementById("storePhone").value,
+          store_address: document.getElementById("storeAddress").value,
+          store_city: document.getElementById("storeCity").value,
+          store_schedule: document.getElementById("storeSchedule").value,
+        };
+        await guardarSettings(payload);
+      });
+    // Event listener para datos bancarios
+    document
+      .getElementById("bankForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          bank_name: document.getElementById("bankName").value,
+          account_type: document.getElementById("accountType").value,
+          account_number: document.getElementById("accountNumber").value,
+          account_holder: document.getElementById("accountHolder").value,
+          account_id: document.getElementById("accountId").value,
         };
         await guardarSettings(payload);
       });
 
-      document
-        .getElementById("footerForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const payload = {
-            footer_text: document.getElementById("footerText").value,
-          };
-          await guardarSettings(payload);
-        });
-    } catch (error) {
-      console.error("❌ Error al cargar documentos legales:", error);
-      showToast("Error al cargar documentos legales", "error", "Error");
-      container.innerHTML = `
+    // Event listener para mensaje de WhatsApp
+    document
+      .getElementById("whatsappForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          whatsapp_message: document.getElementById("whatsappMessage").value,
+        };
+        await guardarSettings(payload);
+      });
+
+    document
+      .getElementById("socialMediaForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          facebook_url: document.getElementById("facebookUrl").value,
+          instagram_url: document.getElementById("instagramUrl").value,
+          whatsapp_url: document.getElementById("whatsappUrl").value,
+          tiktok_url: document.getElementById("tiktokUrl").value,
+        };
+        await guardarSettings(payload);
+      });
+
+    document.getElementById("taxForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const payload = {
+        iva_percent: parseFloat(document.getElementById("ivaPercent").value),
+      };
+      await guardarSettings(payload);
+    });
+
+    document
+      .getElementById("footerForm")
+      .addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = {
+          footer_text: document.getElementById("footerText").value,
+        };
+        await guardarSettings(payload);
+      });
+  } catch (error) {
+    console.error("❌ Error al cargar documentos legales:", error);
+    showToast("Error al cargar documentos legales", "error", "Error");
+    container.innerHTML = `
       <div class="card">
         <div style="padding: 2rem; text-align: center;">
           <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #ef4444; margin-bottom: 1rem;"></i>
@@ -4471,167 +4484,167 @@ function openCouponModal(coupon = null) {
         </div>
       </div>
     `;
-    }
-  }
-
-  function initQuillEditors(data) {
-    if (typeof Quill === "undefined") {
-      console.error(
-        "❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html",
-      );
-      showToast(
-        "Editor Quill no cargó. Revisa el CDN en admin-pro.html",
-        "error",
-        "Error",
-      );
-      return;
-    }
-
-    // Esperar a que los elementos existan en el DOM
-    const privacyEl = document.getElementById("privacyEditor");
-    const termsEl = document.getElementById("termsEditor");
-
-    if (!privacyEl || !termsEl) {
-      console.error("❌ Los elementos del editor no se encontraron en el DOM");
-      setTimeout(() => initQuillEditors(data), 300); // Reintentar
-      return;
-    }
-
-    const toolbarOptions = [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline", "strike"],
-      [{ color: [] }, { background: [] }],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ align: [] }],
-      ["blockquote"],
-      ["link"],
-      ["clean"],
-    ];
-
-    // Destruir editores anteriores si existen
-    if (quillPrivacy) {
-      quillPrivacy = null;
-    }
-    if (quillTerms) {
-      quillTerms = null;
-    }
-
-    // Crear nuevos editores
-    try {
-      quillPrivacy = new Quill("#privacyEditor", {
-        theme: "snow",
-        modules: { toolbar: toolbarOptions },
-        placeholder: "Escribe la política de privacidad aquí...",
-      });
-
-      quillTerms = new Quill("#termsEditor", {
-        theme: "snow",
-        modules: { toolbar: toolbarOptions },
-        placeholder: "Escribe los términos y condiciones aquí...",
-      });
-
-      // Cargar contenido existente
-      if (data.privacy_policy_html) {
-        quillPrivacy.root.innerHTML = data.privacy_policy_html;
-      }
-
-      if (data.terms_conditions_html) {
-        quillTerms.root.innerHTML = data.terms_conditions_html;
-      }
-
-      console.log("✅ Editores Quill inicializados correctamente");
-    } catch (error) {
-      console.error("❌ Error inicializando Quill:", error);
-      showToast("Error inicializando editor: " + error.message, "error", "Error");
-    }
-  }
-
-  async function saveLegalDocs(docType) {
-    try {
-      if (!quillPrivacy || !quillTerms) {
-        showToast(
-          "Los editores no se inicializaron correctamente",
-          "warning",
-          "Aviso",
-        );
-        return;
-      }
-
-      const payload = {};
-
-      if (docType === "privacy") {
-        payload.privacy_policy_html = quillPrivacy.root.innerHTML;
-      } else if (docType === "terms") {
-        payload.terms_conditions_html = quillTerms.root.innerHTML;
-      } else {
-        // Guardar ambos
-        payload.privacy_policy_html = quillPrivacy.root.innerHTML;
-        payload.terms_conditions_html = quillTerms.root.innerHTML;
-      }
-
-      const res = await fetch(`${API_URL}/settings`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        const error = await res.json().catch(() => ({}));
-        throw new Error(error.error || "Error guardando documentos");
-      }
-
-      showToast("Documento legal guardado exitosamente ✅", "success", "Éxito");
-      console.log("✅ Documento guardado:", docType);
-    } catch (error) {
-      console.error("❌ Error al guardar documentos:", error);
-      showToast(error.message || "Error guardando documento", "error", "Error");
-    }
-  }
-
-  // Exportar función global
-  window.loadAjustesCompleto = loadAjustesCompleto;
-  window.saveLegalDocs = saveLegalDocs;
-  window.openCategoryModal = openCategoryModal;
-  window.closeCategoryModal = closeCategoryModal;
-  window.handleCategorySubmit = handleCategorySubmit;
-  window.selectCategoryIcon = selectCategoryIcon;
-  window.deleteCategory = deleteCategory;
-
-  async function guardarSettings(payload) {
-    try {
-      console.log("📤 Enviando payload:", payload); // DEBUG
-
-      const response = await fetch(`${API_URL}/settings`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("❌ Error del servidor:", errorData);
-        throw new Error(errorData.error || "Error al guardar");
-      }
-
-      const result = await response.json();
-      console.log("✅ Respuesta del servidor:", result);
-
-      showToast("Configuración guardada exitosamente", "success", "Éxito");
-
-      await loadAjustesCompleto();
-    } catch (error) {
-      console.error("❌ Error al guardar settings:", error);
-      showToast(
-        error.message || "Error al guardar configuración",
-        "error",
-        "Error",
-      );
-    }
   }
 }
+
+function initQuillEditors(data) {
+  if (typeof Quill === "undefined") {
+    console.error(
+      "❌ Quill no está cargado. Verifica que el CDN esté en admin-pro.html",
+    );
+    showToast(
+      "Editor Quill no cargó. Revisa el CDN en admin-pro.html",
+      "error",
+      "Error",
+    );
+    return;
+  }
+
+  // Esperar a que los elementos existan en el DOM
+  const privacyEl = document.getElementById("privacyEditor");
+  const termsEl = document.getElementById("termsEditor");
+
+  if (!privacyEl || !termsEl) {
+    console.error("❌ Los elementos del editor no se encontraron en el DOM");
+    setTimeout(() => initQuillEditors(data), 300); // Reintentar
+    return;
+  }
+
+  const toolbarOptions = [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ color: [] }, { background: [] }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ align: [] }],
+    ["blockquote"],
+    ["link"],
+    ["clean"],
+  ];
+
+  // Destruir editores anteriores si existen
+  if (quillPrivacy) {
+    quillPrivacy = null;
+  }
+  if (quillTerms) {
+    quillTerms = null;
+  }
+
+  // Crear nuevos editores
+  try {
+    quillPrivacy = new Quill("#privacyEditor", {
+      theme: "snow",
+      modules: { toolbar: toolbarOptions },
+      placeholder: "Escribe la política de privacidad aquí...",
+    });
+
+    quillTerms = new Quill("#termsEditor", {
+      theme: "snow",
+      modules: { toolbar: toolbarOptions },
+      placeholder: "Escribe los términos y condiciones aquí...",
+    });
+
+    // Cargar contenido existente
+    if (data.privacy_policy_html) {
+      quillPrivacy.root.innerHTML = data.privacy_policy_html;
+    }
+
+    if (data.terms_conditions_html) {
+      quillTerms.root.innerHTML = data.terms_conditions_html;
+    }
+
+    console.log("✅ Editores Quill inicializados correctamente");
+  } catch (error) {
+    console.error("❌ Error inicializando Quill:", error);
+    showToast("Error inicializando editor: " + error.message, "error", "Error");
+  }
+}
+
+async function saveLegalDocs(docType) {
+  try {
+    if (!quillPrivacy || !quillTerms) {
+      showToast(
+        "Los editores no se inicializaron correctamente",
+        "warning",
+        "Aviso",
+      );
+      return;
+    }
+
+    const payload = {};
+
+    if (docType === "privacy") {
+      payload.privacy_policy_html = quillPrivacy.root.innerHTML;
+    } else if (docType === "terms") {
+      payload.terms_conditions_html = quillTerms.root.innerHTML;
+    } else {
+      // Guardar ambos
+      payload.privacy_policy_html = quillPrivacy.root.innerHTML;
+      payload.terms_conditions_html = quillTerms.root.innerHTML;
+    }
+
+    const res = await fetch(`${API_URL}/settings`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const error = await res.json().catch(() => ({}));
+      throw new Error(error.error || "Error guardando documentos");
+    }
+
+    showToast("Documento legal guardado exitosamente ✅", "success", "Éxito");
+    console.log("✅ Documento guardado:", docType);
+  } catch (error) {
+    console.error("❌ Error al guardar documentos:", error);
+    showToast(error.message || "Error guardando documento", "error", "Error");
+  }
+}
+
+// Exportar función global
+window.loadAjustesCompleto = loadAjustesCompleto;
+window.saveLegalDocs = saveLegalDocs;
+window.openCategoryModal = openCategoryModal;
+window.closeCategoryModal = closeCategoryModal;
+window.handleCategorySubmit = handleCategorySubmit;
+window.selectCategoryIcon = selectCategoryIcon;
+window.deleteCategory = deleteCategory;
+
+async function guardarSettings(payload) {
+  try {
+    console.log("📤 Enviando payload:", payload); // DEBUG
+
+    const response = await fetch(`${API_URL}/settings`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${currentToken}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("❌ Error del servidor:", errorData);
+      throw new Error(errorData.error || "Error al guardar");
+    }
+
+    const result = await response.json();
+    console.log("✅ Respuesta del servidor:", result);
+
+    showToast("Configuración guardada exitosamente", "success", "Éxito");
+
+    await loadAjustesCompleto();
+  } catch (error) {
+    console.error("❌ Error al guardar settings:", error);
+    showToast(
+      error.message || "Error al guardar configuración",
+      "error",
+      "Error",
+    );
+  }
+}
+
