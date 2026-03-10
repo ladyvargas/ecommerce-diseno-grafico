@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { auth, adminAuth } = require('../middleware/auth');
 const { pool } = require('../config/database');
 
 // Obtener todas las promociones
@@ -34,42 +35,42 @@ router.get('/active', async (req, res) => {
 });
 
 // Crear promoción
-router.post('/', async (req, res) => {
+router.post('/', auth, adminAuth, async (req, res) => {
     try {
-        const { 
-            name, 
-            description, 
-            discount_type, 
-            discount_value, 
+        const {
+            name,
+            description,
+            discount_type,
+            discount_value,
             applies_to,
             product_ids,
             category_ids,
-            start_date, 
-            end_date, 
-            active 
+            start_date,
+            end_date,
+            active
         } = req.body;
-        
+
         const [result] = await pool.query(`
             INSERT INTO promotions 
             (name, description, discount_type, discount_value, applies_to, product_ids, category_ids, start_date, end_date, active)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `, [
-            name, 
-            description, 
-            discount_type, 
-            discount_value, 
+            name,
+            description,
+            discount_type,
+            discount_value,
             applies_to || 'all',
             product_ids ? JSON.stringify(product_ids) : null,
             category_ids ? JSON.stringify(category_ids) : null,
-            start_date, 
-            end_date, 
+            start_date,
+            end_date,
             active !== false
         ]);
-        
-        res.status(201).json({ 
-            success: true, 
+
+        res.status(201).json({
+            success: true,
             id: result.insertId,
-            message: 'Promoción creada exitosamente' 
+            message: 'Promoción creada exitosamente'
         });
     } catch (error) {
         console.error('Error al crear promoción:', error);
@@ -78,21 +79,21 @@ router.post('/', async (req, res) => {
 });
 
 // Actualizar promoción
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, adminAuth, async (req, res) => {
     try {
-        const { 
-            name, 
-            description, 
-            discount_type, 
+        const {
+            name,
+            description,
+            discount_type,
             discount_value,
             applies_to,
             product_ids,
             category_ids,
-            start_date, 
-            end_date, 
-            active 
+            start_date,
+            end_date,
+            active
         } = req.body;
-        
+
         await pool.query(`
             UPDATE promotions 
             SET name = ?, description = ?, discount_type = ?, discount_value = ?, 
@@ -100,19 +101,19 @@ router.put('/:id', async (req, res) => {
                 start_date = ?, end_date = ?, active = ?
             WHERE id = ?
         `, [
-            name, 
-            description, 
-            discount_type, 
+            name,
+            description,
+            discount_type,
             discount_value,
             applies_to,
             product_ids ? JSON.stringify(product_ids) : null,
             category_ids ? JSON.stringify(category_ids) : null,
-            start_date, 
-            end_date, 
-            active, 
+            start_date,
+            end_date,
+            active,
             req.params.id
         ]);
-        
+
         res.json({ success: true, message: 'Promoción actualizada' });
     } catch (error) {
         console.error('Error al actualizar promoción:', error);
@@ -121,7 +122,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // Eliminar promoción
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, adminAuth, async (req, res) => {
     try {
         await pool.query('DELETE FROM promotions WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Promoción eliminada' });

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { auth, adminAuth } = require("../middleware/auth");
 const { pool } = require("../config/database");
 
 // Obtener todas las categorías
@@ -61,7 +62,7 @@ router.get("/:slug", async (req, res) => {
 });
 
 // POST /api/categories - Crear
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", auth, adminAuth, async (req, res) => {
   const { name, color, icon } = req.body;
   const [result] = await pool.query(
     "INSERT INTO categories (name, color, icon) VALUES (?, ?, ?)",
@@ -71,7 +72,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 // PUT /api/categories/:id - Editar
-router.put("/:id", authMiddleware, async (req, res) => {
+router.put("/:id", auth, adminAuth, async (req, res) => {
   const { name, color, icon } = req.body;
   await pool.query("UPDATE categories SET name=?, color=?, icon=? WHERE id=?", [
     name,
@@ -83,7 +84,7 @@ router.put("/:id", authMiddleware, async (req, res) => {
 });
 
 // DELETE /api/categories/:id - Eliminar
-router.delete("/:id", authMiddleware, async (req, res) => {
+router.delete("/:id", auth, adminAuth, async (req, res) => {
   await pool.query("DELETE FROM categories WHERE id=?", [req.params.id]);
   res.json({ success: true });
 });
