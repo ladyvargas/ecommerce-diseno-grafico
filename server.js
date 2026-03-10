@@ -16,15 +16,15 @@ const fs = require('fs');
 const uploadsPath = path.join(__dirname, 'uploads');
 
 if (!fs.existsSync(uploadsPath)) {
-  fs.mkdirSync(uploadsPath, { recursive: true });
-  console.log('📁 Carpeta uploads creada');
+    fs.mkdirSync(uploadsPath, { recursive: true });
+    console.log('📁 Carpeta uploads creada');
 }
 
 app.use('/uploads', express.static(uploadsPath));
 app.use(express.static(path.join(__dirname, 'public')));
 console.log(
-  'Uploads path:',
-  path.join(__dirname, 'uploads')
+    'Uploads path:',
+    path.join(__dirname, 'uploads')
 );
 
 // Importar configuración de base de datos
@@ -38,8 +38,9 @@ const { pool, initializeDatabase, seedDatabase } = require('./src/config/databas
         await seedDatabase();
         console.log('✅ Base de datos lista');
     } catch (error) {
-        console.error('❌ Error al inicializar base de datos:', error);
-        process.exit(1);
+        console.error('⚠️ Advertencia: No se pudo conectar a la base de datos. El diseño dinámico podría no cargarse.');
+        console.error('❌ Detalle del error:', error.message);
+        // process.exit(1);
     }
 })();
 
@@ -50,7 +51,7 @@ app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/products', require('./src/routes/products'));
 app.use('/api/cart', require('./src/routes/cart'));
 app.use('/api/orders', require('./src/routes/orders'));
-app.use('/api/categories', require('./src/routes/categories'));
+// app.use('/api/categories', require('./src/routes/categories')); // Movido al final
 app.use('/api/about', require('./src/routes/about'));
 app.use('/api/reviews', require('./src/routes/reviews'));
 app.use('/api/dashboard', require('./src/routes/dashboard'));
@@ -113,6 +114,13 @@ app.use('/api/promotions', require('./src/routes/promotions'));
 app.use('/api/settings', require('./src/routes/settings'));
 app.use('/api/export', require('./src/routes/export'));
 app.use('/api/legal', require('./src/routes/legal'));
+
+// Ruta de TEST para ver si el API responde
+app.get('/api/test-server', (req, res) => {
+    res.json({ status: 'OK', message: 'El servidor está respondiendo correctamente' });
+});
+
+app.use('/api/categories', require('./src/routes/categories'));
 
 console.log('✅ APIs adicionales cargadas');
 

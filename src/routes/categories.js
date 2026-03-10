@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+console.log('📦 Router de Categorías CARGADO');
 const { auth, adminAuth } = require("../middleware/auth");
 const { pool } = require("../config/database");
 
