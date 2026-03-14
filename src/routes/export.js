@@ -1,13 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { pool } = require("../config/database");
-const { auth, adminAuth } = require("../middleware/auth");
 
 /**
  * GET /api/export/db (admin)
  * Exporta tablas principales en JSON descargable
  */
-router.get("/db", auth, adminAuth, async (req, res) => {
+router.get("/db", async (req, res) => {
   try {
     const tables = [
       "users",

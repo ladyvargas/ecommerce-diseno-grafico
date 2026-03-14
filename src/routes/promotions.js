@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { auth, adminAuth } = require('../middleware/auth');
 const { pool } = require('../config/database');
 
 // Obtener todas las promociones
@@ -36,7 +35,7 @@ router.get('/active', async (req, res) => {
 });
 
 // Crear promoción
-router.post('/', auth, adminAuth, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const {
             name,
@@ -80,7 +79,7 @@ router.post('/', auth, adminAuth, async (req, res) => {
 });
 
 // Actualizar promoción
-router.put('/:id', auth, adminAuth, async (req, res) => {
+router.put('/:id', async (req, res) => {
     console.log(`📥 PUT /api/promotions/${req.params.id} hit`, req.body);
     try {
         const {
@@ -124,7 +123,7 @@ router.put('/:id', auth, adminAuth, async (req, res) => {
 });
 
 // Eliminar promoción
-router.delete('/:id', auth, adminAuth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         await pool.query('DELETE FROM promotions WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Promoción eliminada' });

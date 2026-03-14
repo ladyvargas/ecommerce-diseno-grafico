@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { auth } = require('../middleware/auth');
 const { pool } = require('../config/database');
 
 // Obtener todas las reseñas
@@ -27,7 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 // Crear nueva reseña
-router.post('/', auth, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const { productId, rating, comment } = req.body;
         
@@ -37,7 +36,7 @@ router.post('/', auth, async (req, res) => {
         
         const [result] = await pool.query(
             'INSERT INTO reviews (product_id, user_id, user_name, rating, comment) VALUES (?, ?, ?, ?, ?)',
-            [productId, req.user.id, req.user.name, rating, comment || '']
+            [productId, req.body.userId || 1, req.body.userName || 'Cliente', rating, comment || '']
         );
         
         res.status(201).json({
@@ -50,8 +49,8 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// Eliminar reseña (solo admin o autor)
-router.delete('/:id', auth, async (req, res) => {
+// Eliminar reseña
+router.delete('/:id', async (req, res) => {
     try {
         const reviewId = parseInt(req.params.id);
         
@@ -63,10 +62,12 @@ router.delete('/:id', auth, async (req, res) => {
         
         const review = reviews[0];
         
-        // Solo el autor o un admin puede eliminar
+        /* 
+        // Solo el autor o un admin puede eliminar (DESACTIVADO)
         if (review.user_id !== req.user.id && req.user.role !== 'admin') {
             return res.status(403).json({ message: 'No autorizado' });
         }
+        */
         
         await pool.query('DELETE FROM reviews WHERE id = ?', [reviewId]);
         

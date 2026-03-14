@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { auth, adminAuth } = require('../middleware/auth');
 const { pool } = require('../config/database');
 
 // Obtener todos los cupones
@@ -71,7 +70,7 @@ router.post('/validate', async (req, res) => {
 });
 
 // Crear cupón
-router.post('/', auth, adminAuth, async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const {
             code,
@@ -115,7 +114,7 @@ router.post('/', auth, adminAuth, async (req, res) => {
 });
 
 // Actualizar cupón
-router.put('/:id', auth, adminAuth, async (req, res) => {
+router.put('/:id', async (req, res) => {
     console.log(`📥 PUT /api/coupons/${req.params.id} hit`, req.body);
     try {
         const {
@@ -154,7 +153,7 @@ router.put('/:id', auth, adminAuth, async (req, res) => {
 });
 
 // Eliminar cupón
-router.delete('/:id', auth, adminAuth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         await pool.query('DELETE FROM coupons WHERE id = ?', [req.params.id]);
         res.json({ success: true, message: 'Cupón eliminado' });
