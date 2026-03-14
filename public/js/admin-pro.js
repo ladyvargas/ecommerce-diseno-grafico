@@ -841,7 +841,6 @@ async function handleProductSubmit(e) {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(formData),
     });
@@ -874,7 +873,6 @@ async function loadOrders() {
     // Intentar primero con autenticación
     let response = await fetch(`${API_URL}/orders`, {
       headers: {
-        Authorization: `Bearer ${currentToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -969,9 +967,14 @@ function renderOrdersTable(orders) {
                         <td>${renderPaymentBadge(order.payment_status || order.paymentStatus)}</td>
                         <td>${formatDate(order.created_at || order.createdAt)}</td>
                         <td>
-                            <button class="btn btn-primary btn-sm" onclick="viewOrderDetail(${order.id})" title="Ver Detalle">
-                                <i class="fas fa-eye"></i>
-                            </button>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary btn-sm" onclick="viewOrderDetail(${order.id})" title="Ver Detalle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-warning btn-sm" onclick="viewOrderDetail(${order.id})" title="Editar Pedido">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `,
@@ -1017,7 +1020,6 @@ async function updateOrderStatus(orderId, newStatus) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({ status: newStatus }),
     });
@@ -1039,7 +1041,7 @@ function viewOrderDetail(orderId) {
   if (!order) return;
 
   const detailHTML = `
-        <div class="modal" id="orderDetailModal" style="display: flex;">
+        <div class="modal show" id="orderDetailModal" style="display: flex;">
             <div class="modal-dialog" style="max-width: 800px;">
                 <div class="modal-header">
                     <h2 class="modal-title">Pedido #${order.id}</h2>
@@ -1173,7 +1175,6 @@ async function updateOrderStatus(orderId) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({ status: newStatus }),
     });
@@ -1213,7 +1214,6 @@ async function updatePaymentStatus(orderId) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${currentToken}`,
         },
         body: JSON.stringify({ payment_status: newPaymentStatus }),
       },
@@ -2469,7 +2469,6 @@ async function handleCouponSubmit(e) {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(formData),
     });
@@ -2504,7 +2503,6 @@ async function toggleCouponStatus(id) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify({ ...coupon, active: !coupon.active }),
     });
@@ -2887,7 +2885,6 @@ async function handlePromotionSubmit(e) {
       method,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(formData),
     });
@@ -3840,7 +3837,6 @@ async function saveAboutAdmin(e) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(payload),
     });
@@ -4193,7 +4189,6 @@ async function guardarSettings(payload) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(payload),
     });
@@ -4651,7 +4646,6 @@ async function saveLegalDocs(docType) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(payload),
     });
@@ -4686,7 +4680,6 @@ async function guardarSettings(payload) {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${currentToken}`,
       },
       body: JSON.stringify(payload),
     });
