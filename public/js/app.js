@@ -287,7 +287,7 @@ async function loadCart() {
     
     try {
         const response = await fetch(`${API_URL}/cart`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (response.ok) {
@@ -311,7 +311,6 @@ async function addToCart(productId) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({ productId, quantity: 1 })
         });
@@ -334,7 +333,6 @@ async function updateCartQuantity(productId, quantity) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({ productId, quantity })
         });
@@ -353,7 +351,7 @@ async function removeFromCart(productId) {
     try {
         const response = await fetch(`${API_URL}/cart/remove/${productId}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (response.ok) {
@@ -454,7 +452,6 @@ async function handleCheckout(e) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify({ shippingAddress, paymentMethod })
         });
@@ -484,7 +481,7 @@ async function handleCheckout(e) {
 async function showMyOrders() {
     try {
         const response = await fetch(`${API_URL}/orders/my-orders`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (response.ok) {
@@ -599,7 +596,7 @@ async function deleteProduct(productId) {
     try {
         const response = await fetch(`${API_URL}/products/${productId}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (response.ok) {
@@ -645,7 +642,6 @@ async function handleProductFormSubmit(e) {
             method,
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
             },
             body: JSON.stringify(productData)
         });

@@ -9,10 +9,13 @@ let salesChart = null;
 let productsChart = null;
 
 // Verificar autenticación
+// Autenticación desactivada por requerimiento del usuario
+/*
 if (!currentToken || currentUser.role !== 'admin') {
     alert('Debes ser administrador para acceder a este panel');
     window.location.href = '/';
 }
+*/
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
@@ -103,7 +106,7 @@ function navigateToSection(section) {
 async function loadDashboard() {
     try {
         const response = await fetch(`${API_URL}/dashboard`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (!response.ok) throw new Error('Error al cargar dashboard');
@@ -346,7 +349,7 @@ async function deleteProduct(id) {
     try {
         const response = await fetch(`${API_URL}/products/${id}`, {
             method: 'DELETE',
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         
         if (response.ok) {
@@ -386,8 +389,7 @@ async function handleProductSubmit(e) {
         const response = await fetch(url, {
             method,
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
         });
@@ -408,7 +410,7 @@ async function handleProductSubmit(e) {
 async function loadOrders() {
     try {
         const response = await fetch(`${API_URL}/orders`, {
-            headers: { 'Authorization': `Bearer ${currentToken}` }
+            headers: { 'Content-Type': 'application/json' }
         });
         allOrders = await response.json();
         renderOrdersTable(allOrders);
@@ -484,8 +486,7 @@ async function updateOrderStatus(orderId, newStatus) {
         const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${currentToken}`
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({ status: newStatus })
         });
@@ -521,7 +522,7 @@ async function generateReport() {
     setTimeout(async () => {
         try {
             const response = await fetch(`${API_URL}/dashboard`, {
-                headers: { 'Authorization': `Bearer ${currentToken}` }
+                headers: { 'Content-Type': 'application/json' }
             });
             const data = await response.json();
             
